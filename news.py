@@ -37,6 +37,11 @@ import feedparser
 import yfinance as yf
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
+try:
+    from pandas.errors import Pandas4Warning
+    warnings.filterwarnings("ignore", category=Pandas4Warning)
+except Exception:
+    pass
 
 
 # ----------------------------

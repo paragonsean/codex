@@ -1,0 +1,289 @@
+
+🧪 Running tests/test_complete_report_system.py
+🧪 Testing Complete Report Generation System
+============================================================
+
+📰 Testing complete report generation for MU...
+Processing market data for MU (180 days)...
+✅ Report generation test completed successfully!
+📄 HTML length: 28039
+📋 Markdown length: 3997
+
+🧪 Running tests/test_csv_import.py
+📥 Testing CSV Import Functionality
+========================================
+📄 Reading from: /Users/seanbaker/codex/sample_portfolio.csv
+✅ CSV columns validated: ticker, num_shares, cost_per_share, purchase_date, notes
+  ✅ Row 1: AAPL - 100.0 shares @ $150.25
+  ✅ Row 2: MSFT - 50.0 shares @ $250.5
+  ✅ Row 3: GOOGL - 25.0 shares @ $2800.0
+  ✅ Row 4: NVDA - 75.0 shares @ $450.75
+  ✅ Row 5: TSLA - 30.0 shares @ $200.0
+  ✅ Row 6: BRK.B - 10.0 shares @ $350.0
+
+📊 Import Summary:
+  • Total positions imported: 6
+  • Portfolio saved to: /Users/seanbaker/codex/tests/test_imported_portfolio.json
+  • Total portfolio value: $140,856.25
+
+📋 Imported Positions:
+  • AAPL: 100.0 shares @ $150.25 = $15,025.00
+    📅 Purchased: 2023-01-15
+    📝 Notes: Core position
+  • MSFT: 50.0 shares @ $250.50 = $12,525.00
+    📅 Purchased: 2023-02-20
+    📝 Notes: Cloud exposure
+  • GOOGL: 25.0 shares @ $2800.00 = $70,000.00
+    📅 Purchased: 2023-03-10
+    📝 Notes: Search dominance
+  • NVDA: 75.0 shares @ $450.75 = $33,806.25
+    📅 Purchased: 2023-04-05
+    📝 Notes: AI play
+  • TSLA: 30.0 shares @ $200.00 = $6,000.00
+    📅 Purchased: 2023-05-12
+    📝 Notes: Growth stock
+  • BRK.B: 10.0 shares @ $350.00 = $3,500.00
+    📅 Purchased: 2023-06-08
+    📝 Notes: Value holding
+
+✅ CSV import test completed successfully!
+
+📤 Testing CSV Export Functionality
+========================================
+✅ Portfolio exported to: /Users/seanbaker/codex/tests/test_portfolio_export.csv
+📊 Exported 2 positions
+
+📄 Exported CSV content:
+ticker,num_shares,cost_per_share,purchase_date,notes
+AAPL,100,150.25,2023-01-15,Core position
+MSFT,50,250.5,2023-02-20,Cloud exposure
+
+
+✅ CSV export test completed successfully!
+
+🧪 Running tests/test_dual_scoring.py
+🧪 Testing Dual Scoring System
+============================================================
+
+================================================================================
+🎯 Analyzing MU
+================================================================================
+
+================================================================================
+🎯 DUAL SCORING ANALYSIS - MU
+================================================================================
+
+📊 OVERALL ASSESSMENT:
+  Opportunity Score: 100.0/100
+  Sell-Risk Score:  100.0/100
+  Overall Bias:      HOLD
+  Confidence:        28.7%
+
+🟢 OPPORTUNITY CLUSTERS:
+  Technical Momentum: 80.0% strength ✅ ACTIVE
+    • Strong 21D momentum
+    • Bullish trend (50>200)
+    • Volume confirms upside
+  Value/Reversal: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+  Breakout Potential: 60.0% strength ✅ ACTIVE
+    • Near 20D high
+    • Volume surge
+
+🔴 SELL-RISK CLUSTERS:
+  Technical Overheating: 90.0% strength ⚠️  ACTIVE
+    • RSI overbought (>70)
+    • Potential RSI divergence
+    • Extended gains (>50% in 3mo)
+  Trend Deterioration: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+  Distribution Behavior: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+  Volatility Regime Shift: 30.0% strength ❌ INACTIVE
+    • No signals triggered
+
+🎯 KEY DRIVING FACTORS:
+  1. 🔴 RSI overbought (>70)
+  2. 🔴 Potential RSI divergence
+  3. 🟢 Strong 21D momentum
+
+📋 TRADING IMPLICATIONS:
+  • Maintain current positions
+  • Slight bearish bias - watch for exit signals
+
+📊 Cluster Analysis:
+Opportunity Clusters Triggered: 2/3
+Sell-Risk Clusters Triggered: 1/4
+
+🎯 Trading Recommendation:
+⚖️  HOLD - Balanced opportunity (100.0) and risk (100.0) scores
+
+================================================================================
+🎯 Analyzing WDC
+================================================================================
+
+================================================================================
+🎯 DUAL SCORING ANALYSIS - WDC
+================================================================================
+
+📊 OVERALL ASSESSMENT:
+  Opportunity Score: 100.0/100
+  Sell-Risk Score:  100.0/100
+  Overall Bias:      HOLD
+  Confidence:        18.8%
+
+🟢 OPPORTUNITY CLUSTERS:
+  Technical Momentum: 60.0% strength ✅ ACTIVE
+    • Strong 21D momentum
+    • Bullish trend (50>200)
+  Value/Reversal: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+  Breakout Potential: 30.0% strength ❌ INACTIVE
+    • No signals triggered
+
+🔴 SELL-RISK CLUSTERS:
+  Technical Overheating: 90.0% strength ⚠️  ACTIVE
+    • RSI overbought (>70)
+    • Potential RSI divergence
+    • Extended gains (>50% in 3mo)
+  Trend Deterioration: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+  Distribution Behavior: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+  Volatility Regime Shift: 30.0% strength ❌ INACTIVE
+    • No signals triggered
+
+🎯 KEY DRIVING FACTORS:
+  1. 🔴 RSI overbought (>70)
+  2. 🔴 Potential RSI divergence
+  3. 🟢 Strong 21D momentum
+
+📋 TRADING IMPLICATIONS:
+  • Maintain current positions
+  • Slight bearish bias - watch for exit signals
+
+📊 Cluster Analysis:
+Opportunity Clusters Triggered: 1/3
+Sell-Risk Clusters Triggered: 1/4
+
+🎯 Trading Recommendation:
+⚖️  HOLD - Balanced opportunity (100.0) and risk (100.0) scores
+
+================================================================================
+🎯 Analyzing AAPL
+================================================================================
+
+================================================================================
+🎯 DUAL SCORING ANALYSIS - AAPL
+================================================================================
+
+📊 OVERALL ASSESSMENT:
+  Opportunity Score: 100.0/100
+  Sell-Risk Score:  100.0/100
+  Overall Bias:      HOLD
+  Confidence:        17.5%
+
+🟢 OPPORTUNITY CLUSTERS:
+  Technical Momentum: 40.0% strength ❌ INACTIVE
+    • No signals triggered
+  Value/Reversal: 40.0% strength ✅ ACTIVE
+    • Low volatility regime
+    • Near 20D support
+  Breakout Potential: 30.0% strength ❌ INACTIVE
+    • No signals triggered
+
+🔴 SELL-RISK CLUSTERS:
+  Technical Overheating: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+  Trend Deterioration: 100.0% strength ⚠️  ACTIVE
+    • Trading below 50DMA
+    • 50DMA resistance
+    • Bearish trend (50<200)
+  Distribution Behavior: 20.0% strength ❌ INACTIVE
+    • No signals triggered
+  Volatility Regime Shift: 0.0% strength ❌ INACTIVE
+    • No signals triggered
+
+🎯 KEY DRIVING FACTORS:
+  1. 🔴 Trading below 50DMA
+  2. 🔴 50DMA resistance
+  3. 🟢 Low volatility regime
+
+📋 TRADING IMPLICATIONS:
+  • Maintain current positions
+  • Slight bearish bias - watch for exit signals
+
+📊 Cluster Analysis:
+Opportunity Clusters Triggered: 1/3
+Sell-Risk Clusters Triggered: 1/4
+
+🎯 Trading Recommendation:
+⚖️  HOLD - Balanced opportunity (100.0) and risk (100.0) scores
+
+================================================================================
+🔍 SIGNAL CLUSTERING DEMONSTRATION
+================================================================================
+
+📋 Why Signal Clustering Matters:
+• Single indicators can be noisy and unreliable
+• Clusters of related signals provide stronger confirmation
+• Different market conditions require different signal emphasis
+• Reduces false signals and improves decision quality
+
+🎯 Example: MU Overheating Analysis
+Individual Signals:
+  • RSI = 77.5 (overbought) → Moderate sell signal
+  • 21D return = +56.6% (strong gains) → Moderate sell signal
+  • Volatility = 67% (high) → Weak sell signal
+  • Volume Z-score = 2.1 (high) → Ambiguous signal
+
+Cluster Analysis:
+  📊 Technical Overheating Cluster:
+    • RSI overbought (>70) ✅
+    • Extended gains (>30% in 3mo) ✅
+    • High volatility with gains ✅
+    → Cluster STRENGTH: 0.7 (Strong)
+    → Cluster WEIGHT: 0.35 (High importance)
+
+  📊 Distribution Behavior Cluster:
+    • High volume win rate = 60% ❌ (Good)
+    • Failed breakout frequency = 15% ❌ (Low)
+    → Cluster STRENGTH: 0.0 (Not triggered)
+
+🎯 Final Assessment:
+• Multiple overheating signals create strong sell-risk cluster
+• Lack of distribution signals reduces overall risk
+• Result: Moderate sell-risk score with specific overheating concerns
+
+🧪 Running tests/test_fixed_reports.py
+🧪 Testing Fixed Report Generation
+==================================================
+
+📰 Testing report generation for MU...
+
+🔄 Running analyze_ticker...
+Processing market data for MU (180 days)...
+✅ Analysis completed successfully!
+📄 Testing HTML report...
+✅ HTML report generated (28039 characters)
+📋 Testing Markdown report...
+✅ Markdown report generated (3997 characters)
+📈 Testing News Impact Section...
+✅ News impact section generated (8505 characters)
+📋 Testing News Impact Markdown...
+✅ News impact markdown generated (929 characters)
+📊 Testing Sentiment Breakdown Section...
+✅ Sentiment breakdown generated (821 characters)
+📰 Testing News Headlines Section...
+✅ News headlines section generated (6849 characters)
+
+✅ All report generation tests passed!
+
+📊 Sample Data:
+  Data Quality Score: 100.0
+  News Catalysts: 25 items
+  Recommendation: EXIT/RISK OFF
+
+✅ Fixed report test completed!
+
+🧪 Running tests/test_fixed_system.py

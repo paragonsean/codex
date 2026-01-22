@@ -27,6 +27,8 @@ from advanced_trading_system import AdvancedTradingSystem
 from news import fetch_headlines_for_ticker
 from market_data_processor import MarketDataProcessor
 from stock_report_generator import StockReportGenerator
+from portfolio_manager import PortfolioManager, PortfolioPosition
+from settings_manager import SettingsManager
 
 
 class TradingSystemMenu:
@@ -34,8 +36,12 @@ class TradingSystemMenu:
     
     def __init__(self):
         self.system = AdvancedTradingSystem()
-        self.portfolio_file = "portfolio.json"
-        self.default_keywords = ["AI", "HBM", "DRAM", "NAND", "chipsets", "semiconductor", "datacenter", "cloud"]
+        self.settings = SettingsManager()
+        self.portfolio_file = self.settings.portfolio_file
+        self.default_keywords = self.settings.default_keywords
+
+    def _get_portfolio_manager(self) -> PortfolioManager:
+        return PortfolioManager(self.portfolio_file)
         
     def run(self):
         """Run the interactive menu."""
@@ -73,6 +79,65 @@ class TradingSystemMenu:
             except Exception as e:
                 print(f"❌ Error: {e}")
                 input("Press Enter to continue...")
+
+    def _generate_advanced_report(self, results: Dict, ticker: str, days: int, format_choice: str = "both"):
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+        if format_choice not in ["html", "markdown", "both"]:
+            format_choice = "both"
+
+        os.makedirs("reports", exist_ok=True)
+
+        if format_choice in ["html", "both"]:
+            html_content = self._create_html_report(results, ticker, days)
+            html_path = f"reports/{ticker}_report_{timestamp}.html"
+            with open(html_path, 'w') as f:
+                f.write(html_content)
+            print(f"✅ HTML report saved: {html_path}")
+
+        if format_choice in ["markdown", "both"]:
+            md_content = self._create_markdown_report(results, ticker, days)
+            md_path = f"reports/{ticker}_report_{timestamp}.md"
+            with open(md_path, 'w') as f:
+                f.write(md_content)
+            print(f"✅ Markdown report saved: {md_path}")
+
+        print(f"📁 Reports saved to 'reports/' directory")
+
+    def _create_html_report(self, results: Dict, ticker: str, days: int) -> str:
+        generator = StockReportGenerator()
+        return generator.generate_advanced_single_html(results, ticker, days)
+
+    def _create_markdown_report(self, results: Dict, ticker: str, days: int) -> str:
+        generator = StockReportGenerator()
+        return generator.generate_advanced_single_markdown(results, ticker, days)
+
+    def _create_news_impact_section(self, good_news_analysis) -> str:
+        generator = StockReportGenerator()
+        return generator._advanced_news_impact_section(good_news_analysis)
+
+    def _create_news_impact_markdown(self, good_news_analysis) -> str:
+        generator = StockReportGenerator()
+        return generator._advanced_news_impact_markdown(good_news_analysis)
+
+    def _create_news_headlines_section(self, results: Dict) -> str:
+        generator = StockReportGenerator()
+        return generator._advanced_news_headlines_section(results.get('good_news_analysis', {}))
+
+    def _create_sentiment_breakdown_section(self, results: Dict) -> str:
+        generator = StockReportGenerator()
+        return generator._advanced_sentiment_breakdown_section(
+            results.get('news_catalysts_data', {}),
+            results.get('good_news_analysis', {}),
+        )
+
+    def _get_impact_color(self, impact_class: str) -> str:
+        generator = StockReportGenerator()
+        return generator._advanced_impact_color(impact_class)
+
+    def _get_recommendation_class(self, tier: str) -> str:
+        generator = StockReportGenerator()
+        return generator._advanced_recommendation_class(tier)
     
     def _display_main_menu(self):
         """Display the main menu."""
@@ -136,6 +201,35 @@ class TradingSystemMenu:
             else:
                 print("❌ Invalid choice.")
                 input("Press Enter to continue...")
+
+    def _save_portfolio_to_file(self):
+        """Save portfolio to a specific file."""
+        print("\n💾 Save Portfolio to File")
+        print("-" * 30)
+
+        portfolio = self._load_portfolio_data()
+        file_path = input("Enter destination file path (leave empty to use current): ").strip()
+
+        if not file_path:
+            try:
+                self._save_portfolio_data(portfolio)
+                print(f"✅ Portfolio saved to: {self.portfolio_file}")
+            except Exception as e:
+                print(f"❌ Error saving portfolio: {e}")
+            input("Press Enter to continue...")
+            return
+
+        try:
+            manager = PortfolioManager(file_path)
+            manager.save(portfolio)
+            self.portfolio_file = file_path
+            self.settings.set("portfolio_file", file_path)
+            self.settings.save()
+            print(f"✅ Portfolio saved to: {file_path}")
+        except Exception as e:
+            print(f"❌ Error saving portfolio: {e}")
+
+        input("Press Enter to continue...")
     
     def _add_stock_to_portfolio(self):
         """Add a stock to the portfolio."""
@@ -155,36 +249,35 @@ class TradingSystemMenu:
             
             # Load current portfolio
             portfolio = self._load_portfolio_data()
-            
-            # Check if ticker already exists
-            existing_positions = [p for p in portfolio.get('positions', []) if p['ticker'] == ticker]
+
+            existing_positions = [p for p in portfolio.get('positions', []) if p.get('ticker') == ticker]
+            manager = self._get_portfolio_manager()
+
             if existing_positions:
                 print(f"⚠️  {ticker} already exists in portfolio.")
                 action = input("Update existing position? (y/n): ").lower()
                 if action != 'y':
                     input("Press Enter to continue...")
                     return
-                
-                # Update existing position
-                for pos in portfolio['positions']:
-                    if pos['ticker'] == ticker:
-                        pos['shares'] = shares
-                        pos['cost_basis'] = cost_basis
-                        pos['notes'] = notes
-                        break
+
+                portfolio, _ = manager.edit_position(
+                    portfolio,
+                    ticker=ticker,
+                    shares=shares,
+                    cost_basis=cost_basis,
+                    notes=notes,
+                )
+                self._save_portfolio_data(portfolio)
+                print(f"✅ {ticker} updated successfully!")
             else:
-                # Add new position
-                new_position = {
-                    'ticker': ticker,
-                    'shares': shares,
-                    'cost_basis': cost_basis,
-                    'notes': notes
-                }
-                portfolio.setdefault('positions', []).append(new_position)
-            
-            # Save portfolio
-            self._save_portfolio_data(portfolio)
-            print(f"✅ {ticker} {'updated' if existing_positions else 'added'} successfully!")
+                portfolio, status = manager.add_position(
+                    portfolio,
+                    PortfolioPosition(ticker=ticker, shares=shares, cost_basis=cost_basis, notes=notes),
+                )
+                if status != "ok":
+                    print(f"⚠️  {status}")
+                self._save_portfolio_data(portfolio)
+                print(f"✅ {ticker} added successfully!")
             
         except ValueError:
             print("❌ Invalid input. Please enter valid numbers.")
@@ -213,10 +306,14 @@ class TradingSystemMenu:
             if choice == 0:
                 return
             if 1 <= choice <= len(positions):
-                removed = positions.pop(choice - 1)
-                portfolio['positions'] = positions
-                self._save_portfolio_data(portfolio)
-                print(f"✅ {removed['ticker']} removed from portfolio!")
+                removed = positions[choice - 1]
+                manager = self._get_portfolio_manager()
+                portfolio, did_remove = manager.remove_position(portfolio, removed.get('ticker', ''))
+                if did_remove:
+                    self._save_portfolio_data(portfolio)
+                    print(f"✅ {removed['ticker']} removed from portfolio!")
+                else:
+                    print("❌ Could not remove position.")
             else:
                 print("❌ Invalid position number.")
         except ValueError:
@@ -255,16 +352,20 @@ class TradingSystemMenu:
                 new_shares = input(f"Enter new shares (current: {pos['shares']}): ").strip()
                 new_cost = input(f"Enter new cost basis (current: ${pos['cost_basis']:.2f}): ").strip()
                 new_notes = input(f"Enter new notes (current: {pos.get('notes', 'N/A')}): ").strip()
-                
-                if new_shares:
-                    pos['shares'] = float(new_shares)
-                if new_cost:
-                    pos['cost_basis'] = float(new_cost)
-                if new_notes:
-                    pos['notes'] = new_notes
-                
-                self._save_portfolio_data(portfolio)
-                print(f"✅ {pos['ticker']} updated successfully!")
+
+                manager = self._get_portfolio_manager()
+                portfolio, updated = manager.edit_position(
+                    portfolio,
+                    ticker=pos.get('ticker', ''),
+                    shares=float(new_shares) if new_shares else None,
+                    cost_basis=float(new_cost) if new_cost else None,
+                    notes=new_notes if new_notes else None,
+                )
+                if updated:
+                    self._save_portfolio_data(portfolio)
+                    print(f"✅ {pos['ticker']} updated successfully!")
+                else:
+                    print("❌ Could not update position.")
             else:
                 print("❌ Invalid position number.")
         except ValueError:
@@ -296,15 +397,15 @@ class TradingSystemMenu:
         
         # Get max headlines
         try:
-            max_headlines = int(input("Max headlines per ticker (default 20): ") or "20")
+            max_headlines = int(input(f"Max headlines per ticker (default {self.settings.default_max_headlines}): ") or str(self.settings.default_max_headlines))
         except ValueError:
-            max_headlines = 20
+            max_headlines = self.settings.default_max_headlines
         
         # Get analysis period
         try:
-            days = int(input("Analysis period in days (default 180): ") or "180")
+            days = int(input(f"Analysis period in days (default {self.settings.default_days}): ") or str(self.settings.default_days))
         except ValueError:
-            days = 180
+            days = self.settings.default_days
         
         print(f"\n🔄 Analyzing news for {len(tickers)} tickers...")
         
@@ -354,9 +455,9 @@ class TradingSystemMenu:
             return
         
         try:
-            days = int(input("Analysis period in days (default 180): ") or "180")
+            days = int(input(f"Analysis period in days (default {self.settings.default_days}): ") or str(self.settings.default_days))
         except ValueError:
-            days = 180
+            days = self.settings.default_days
         
         print(f"\n🔄 Running dual scoring analysis for {len(tickers)} tickers...")
         
@@ -402,9 +503,9 @@ class TradingSystemMenu:
             return
         
         try:
-            days = int(input("Analysis period in days (default 180): ") or "180")
+            days = int(input(f"Analysis period in days (default {self.settings.default_days}): ") or str(self.settings.default_days))
         except ValueError:
-            days = 180
+            days = self.settings.default_days
         
         output_format = input("Output format (terminal/json/csv, default terminal): ").strip() or "terminal"
         if output_format not in ["terminal", "json", "csv"]:
@@ -511,7 +612,7 @@ class TradingSystemMenu:
                 input("Press Enter to continue...")
     
     def _generate_single_stock_report(self):
-        """Generate single stock report."""
+        """Generate a report for a single stock."""
         print("\n📄 Generate Single Stock Report")
         print("-" * 35)
         
@@ -522,9 +623,9 @@ class TradingSystemMenu:
             return
         
         try:
-            days = int(input("Analysis period in days (default 180): ") or "180")
+            days = int(input(f"Analysis period in days (default {self.settings.default_days}): ") or str(self.settings.default_days))
         except ValueError:
-            days = 180
+            days = self.settings.default_days
         
         format_choice = input("Report format (html/markdown/both, default both): ").strip().lower()
         if format_choice not in ["html", "markdown", "both"]:
@@ -547,120 +648,10 @@ class TradingSystemMenu:
         
         input("Press Enter to continue...")
     
-    def _generate_advanced_report(self, results: Dict, ticker: str, days: int, format_choice: str):
-        """Generate report using advanced trading system data."""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
-        if format_choice in ["html", "both"]:
-            html_content = self._create_html_report(results, ticker, days)
-            html_path = f"reports/{ticker}_report_{timestamp}.html"
-            
-            # Ensure reports directory exists
-            os.makedirs("reports", exist_ok=True)
-            
-            with open(html_path, 'w') as f:
-                f.write(html_content)
-            
-            print(f"✅ HTML report saved: {html_path}")
-        
-        if format_choice in ["markdown", "both"]:
-            md_content = self._create_markdown_report(results, ticker, days)
-            md_path = f"reports/{ticker}_report_{timestamp}.md"
-            
-            # Ensure reports directory exists
-            os.makedirs("reports", exist_ok=True)
-            
-            with open(md_path, 'w') as f:
-                f.write(md_content)
-            
-            print(f"✅ Markdown report saved: {md_path}")
-        
-        print(f"📁 Reports saved to 'reports/' directory")
-    
-    def _create_html_report(self, results: Dict, ticker: str, days: int) -> str:
-        """Create HTML report from advanced trading system results."""
-        generator = StockReportGenerator()
-        return generator.generate_advanced_single_html(results, ticker, days)
-    
-    def _create_markdown_report(self, results: Dict, ticker: str, days: int) -> str:
-        """Create Markdown report from advanced trading system results."""
-        generator = StockReportGenerator()
-        return generator.generate_advanced_single_markdown(results, ticker, days)
-    
-    def _get_recommendation_class(self, tier: str) -> str:
-        generator = StockReportGenerator()
-        return generator._advanced_recommendation_class(tier)
-    
-    def _create_news_impact_section(self, good_news_analysis) -> str:
-        generator = StockReportGenerator()
-        return generator._advanced_news_impact_section(good_news_analysis)
-    
-    def _get_impact_color(self, impact_class: str) -> str:
-        generator = StockReportGenerator()
-        return generator._advanced_impact_color(impact_class)
-    
-    def _create_sentiment_breakdown_section(self, results: Dict) -> str:
-        news_catalysts_data = results.get('news_catalysts_data', {})
-        good_news_analysis = results.get('good_news_analysis', {})
-        generator = StockReportGenerator()
-        return generator._advanced_sentiment_breakdown_section(news_catalysts_data, good_news_analysis)
-    
-    def _create_news_headlines_section(self, results: Dict) -> str:
-        good_news = results.get('good_news_analysis', {})
-        generator = StockReportGenerator()
-        return generator._advanced_news_headlines_section(good_news)
-    
-    def _create_news_impact_markdown(self, good_news_analysis) -> str:
-        generator = StockReportGenerator()
-        return generator._advanced_news_impact_markdown(good_news_analysis)
-    
-    def _generate_portfolio_report(self):
-        """Generate portfolio report."""
-        print("\n📚 Generate Portfolio Report")
-        print("-" * 30)
-        
-        portfolio = self._load_portfolio_data()
-        positions = portfolio.get('positions', [])
-        
-        if not positions:
-            print("📭 Portfolio is empty.")
-            input("Press Enter to continue...")
-            return
-        
-        try:
-            days = int(input("Analysis period in days (default 180): ") or "180")
-        except ValueError:
-            days = 180
-        
-        format_choice = input("Report format (html/markdown/both, default both): ").strip().lower()
-        if format_choice not in ["html", "markdown", "both"]:
-            format_choice = "both"
-        
-        print(f"\n🔄 Generating portfolio report...")
-        
-        try:
-            generator = StockReportGenerator()
-            tickers = [pos['ticker'] for pos in positions]
-            
-            if format_choice in ["html", "both"]:
-                generator.generate_html_report(tickers, days, portfolio_file=self.portfolio_file)
-                print("✅ HTML report generated")
-            
-            if format_choice in ["markdown", "both"]:
-                generator.generate_markdown_report(tickers, days, portfolio_file=self.portfolio_file)
-                print("✅ Markdown report generated")
-            
-            print(f"📁 Reports saved to 'reports/' directory")
-            
-        except Exception as e:
-            print(f"❌ Error generating report: {e}")
-        
-        input("Press Enter to continue...")
-    
     def _generate_market_summary_report(self):
         """Generate market summary report."""
         print("\n📊 Generate Market Summary Report")
-        print("-" * 40)
+        print("-" * 35)
         
         tickers_input = input("Enter tickers (comma-separated): ").strip()
         tickers = [t.strip().upper() for t in tickers_input.split(',') if t.strip()]
@@ -671,9 +662,9 @@ class TradingSystemMenu:
             return
         
         try:
-            days = int(input("Analysis period in days (default 180): ") or "180")
+            days = int(input(f"Analysis period in days (default {self.settings.default_days}): ") or str(self.settings.default_days))
         except ValueError:
-            days = 180
+            days = self.settings.default_days
         
         format_choice = input("Report format (html/markdown/both, default both): ").strip().lower()
         if format_choice not in ["html", "markdown", "both"]:
@@ -753,9 +744,9 @@ class TradingSystemMenu:
             return
         
         try:
-            days = int(input("Analysis period in days (default 180): ") or "180")
+            days = int(input(f"Analysis period in days (default {self.settings.default_days}): ") or str(self.settings.default_days))
         except ValueError:
-            days = 180
+            days = self.settings.default_days
         
         print(f"\n🔄 Running comprehensive analysis for {ticker}...")
         
@@ -900,6 +891,8 @@ class TradingSystemMenu:
         
         if new_file:
             self.portfolio_file = new_file
+            self.settings.set("portfolio_file", new_file)
+            self.settings.save()
             print(f"✅ Portfolio file set to: {self.portfolio_file}")
         
         input("Press Enter to continue...")
@@ -911,17 +904,20 @@ class TradingSystemMenu:
         
         if new_keywords:
             self.default_keywords = [k.strip() for k in new_keywords.split(',') if k.strip()]
+            self.settings.set("default_keywords", self.default_keywords)
+            self.settings.save()
             print(f"✅ Default keywords updated: {', '.join(self.default_keywords)}")
         
         input("Press Enter to continue...")
     
     def _set_default_period(self):
         """Set default analysis period."""
-        print(f"\n📊 Current default period: 180 days")
+        print(f"\n📊 Current default period: {self.settings.default_days} days")
         try:
             new_period = int(input("Enter new default period in days: "))
             if new_period > 0:
-                # Note: This would need to be stored in a config file for persistence
+                self.settings.set("default_days", new_period)
+                self.settings.save()
                 print(f"✅ Default period set to: {new_period} days")
             else:
                 print("❌ Period must be positive.")
@@ -932,11 +928,12 @@ class TradingSystemMenu:
     
     def _set_max_headlines(self):
         """Set default max headlines."""
-        print(f"\n📈 Current default max headlines: 20")
+        print(f"\n📈 Current default max headlines: {self.settings.default_max_headlines}")
         try:
             new_max = int(input("Enter new default max headlines: "))
             if new_max > 0:
-                # Note: This would need to be stored in a config file for persistence
+                self.settings.set("default_max_headlines", new_max)
+                self.settings.save()
                 print(f"✅ Default max headlines set to: {new_max}")
             else:
                 print("❌ Max headlines must be positive.")
@@ -979,6 +976,8 @@ class TradingSystemMenu:
         print(f"📁 Working Directory: {os.getcwd()}")
         print(f"📁 Portfolio File: {self.portfolio_file}")
         print(f"🔑 Default Keywords: {', '.join(self.default_keywords)}")
+        print(f"📊 Default Period: {self.settings.default_days} days")
+        print(f"📈 Default Max Headlines: {self.settings.default_max_headlines}")
         
         # Check data files
         data_files = [f for f in os.listdir('.') if f.endswith(('.csv', '.json')) and not f.startswith('.')]
@@ -993,21 +992,14 @@ class TradingSystemMenu:
     
     def _load_portfolio_data(self) -> Dict:
         """Load portfolio data from file."""
-        if os.path.exists(self.portfolio_file):
-            try:
-                with open(self.portfolio_file, 'r') as f:
-                    return json.load(f)
-            except Exception as e:
-                print(f"Warning: Could not load portfolio file: {e}")
-        
-        # Return empty portfolio if file doesn't exist or is invalid
-        return {"portfolio_name": "My Portfolio", "positions": []}
+        manager = self._get_portfolio_manager()
+        return manager.load()
     
     def _save_portfolio_data(self, portfolio: Dict):
         """Save portfolio data to file."""
+        manager = self._get_portfolio_manager()
         try:
-            with open(self.portfolio_file, 'w') as f:
-                json.dump(portfolio, f, indent=2)
+            manager.save(portfolio)
         except Exception as e:
             print(f"Error saving portfolio: {e}")
     
@@ -1030,6 +1022,8 @@ class TradingSystemMenu:
                 portfolio = json.load(f)
             
             self.portfolio_file = file_path
+            self.settings.set("portfolio_file", file_path)
+            self.settings.save()
             print(f"✅ Portfolio loaded from: {file_path}")
             print(f"📊 Found {len(portfolio.get('positions', []))} positions")
             
@@ -1059,98 +1053,36 @@ class TradingSystemMenu:
             return
         
         try:
-            import csv
-            
-            imported_positions = []
-            skipped_rows = []
-            
-            with open(file_path, 'r') as f:
-                reader = csv.DictReader(f)
-                
-                # Check required columns
-                required_columns = ['ticker', 'num_shares', 'cost_per_share']
-                if not all(col in reader.fieldnames for col in required_columns):
-                    print(f"❌ CSV must contain columns: {', '.join(required_columns)}")
-                    print(f"Found columns: {', '.join(reader.fieldnames)}")
-                    input("Press Enter to continue...")
-                    return
-                
-                for row_num, row in enumerate(reader, 2):  # Start at 2 (after header)
-                    try:
-                        ticker = row['ticker'].strip().upper()
-                        if not ticker:
-                            skipped_rows.append(f"Row {row_num}: Empty ticker")
-                            continue
-                        
-                        shares = float(row['num_shares'])
-                        if shares <= 0:
-                            skipped_rows.append(f"Row {row_num}: Invalid shares ({shares})")
-                            continue
-                        
-                        cost_per_share = float(row['cost_per_share'])
-                        if cost_per_share <= 0:
-                            skipped_rows.append(f"Row {row_num}: Invalid cost per share ({cost_per_share})")
-                            continue
-                        
-                        purchase_date = row.get('purchase_date', '').strip()
-                        notes = row.get('notes', '').strip()
-                        
-                        position = {
-                            'ticker': ticker,
-                            'shares': shares,
-                            'cost_basis': cost_per_share,
-                            'purchase_date': purchase_date,
-                            'notes': notes
-                        }
-                        
-                        imported_positions.append(position)
-                        
-                    except ValueError as e:
-                        skipped_rows.append(f"Row {row_num}: Invalid data - {e}")
-                    except Exception as e:
-                        skipped_rows.append(f"Row {row_num}: Error - {e}")
-            
+            manager = self._get_portfolio_manager()
+            imported_portfolio = manager.import_csv(file_path)
+            imported_positions = imported_portfolio.get('positions', [])
+
             if imported_positions:
-                # Load current portfolio
                 portfolio = self._load_portfolio_data()
-                
-                # Check for duplicates
-                existing_tickers = {pos['ticker'] for pos in portfolio.get('positions', [])}
-                duplicates = [pos for pos in imported_positions if pos['ticker'] in existing_tickers]
-                
+
+                existing_tickers = {pos.get('ticker') for pos in portfolio.get('positions', [])}
+                duplicates = [pos for pos in imported_positions if pos.get('ticker') in existing_tickers]
+
                 if duplicates:
                     print(f"⚠️  Found {len(duplicates)} duplicate tickers:")
                     for dup in duplicates:
-                        print(f"    • {dup['ticker']}")
-                    
+                        print(f"    • {dup.get('ticker')}")
+
                     action = input("Replace duplicates or skip? (replace/skip/cancel): ").lower()
                     if action == 'cancel':
                         input("Press Enter to continue...")
                         return
-                    elif action == 'replace':
-                        # Remove existing duplicates
-                        portfolio['positions'] = [pos for pos in portfolio['positions'] 
-                                                if pos['ticker'] not in {dup['ticker'] for dup in duplicates}]
+                    if action == 'replace':
+                        portfolio['positions'] = [
+                            pos for pos in portfolio.get('positions', [])
+                            if pos.get('ticker') not in {dup.get('ticker') for dup in duplicates}
+                        ]
                     elif action == 'skip':
-                        # Skip duplicates from import
-                        imported_positions = [pos for pos in imported_positions 
-                                            if pos['ticker'] not in existing_tickers]
-                
-                # Add imported positions
+                        imported_positions = [pos for pos in imported_positions if pos.get('ticker') not in existing_tickers]
+
                 portfolio.setdefault('positions', []).extend(imported_positions)
-                
-                # Save portfolio
                 self._save_portfolio_data(portfolio)
-                
                 print(f"✅ Successfully imported {len(imported_positions)} positions")
-                
-                if skipped_rows:
-                    print(f"⚠️  Skipped {len(skipped_rows)} rows:")
-                    for skipped in skipped_rows[:5]:  # Show first 5
-                        print(f"    • {skipped}")
-                    if len(skipped_rows) > 5:
-                        print(f"    ... and {len(skipped_rows) - 5} more")
-                
             else:
                 print("❌ No valid positions found in CSV")
                 
@@ -1180,23 +1112,8 @@ class TradingSystemMenu:
             file_path += '.csv'
         
         try:
-            import csv
-            
-            with open(file_path, 'w', newline='') as f:
-                fieldnames = ['ticker', 'num_shares', 'cost_per_share', 'purchase_date', 'notes']
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                
-                for pos in positions:
-                    row = {
-                        'ticker': pos['ticker'],
-                        'num_shares': pos['shares'],
-                        'cost_per_share': pos['cost_basis'],
-                        'purchase_date': pos.get('purchase_date', ''),
-                        'notes': pos.get('notes', '')
-                    }
-                    writer.writerow(row)
-            
+            manager = self._get_portfolio_manager()
+            manager.export_csv(portfolio, file_path)
             print(f"✅ Portfolio exported to: {file_path}")
             print(f"📊 Exported {len(positions)} positions")
             
