@@ -33,6 +33,724 @@ class StockReportGenerator:
     def __init__(self, output_dir: str = "reports"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
+
+    def generate_advanced_single_html(self, results: Dict, ticker: str, days: int) -> str:
+        market_data = results["market_data"]
+        dual_scores = results["dual_scores"]
+        cycle_analysis = results["cycle_analysis"]
+        recommendation = results["recommendation"]
+        good_news_analysis = results.get("good_news_analysis")
+        news_catalysts_data = results.get("news_catalysts_data", {})
+
+        html_content = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Stock Analysis Report - {ticker}</title>
+    <style>
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }}
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }}
+        .header {{
+            text-align: center;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }}
+        .header h1 {{
+            color: #007bff;
+            margin: 0;
+            font-size: 2.5em;
+        }}
+        .header p {{
+            color: #666;
+            margin: 5px 0 0 0;
+        }}
+        .section {{
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }}
+        .section h2 {{
+            color: #007bff;
+            margin-top: 0;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+        }}
+        .metric {{
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }}
+        .metric-label {{
+            font-weight: bold;
+            color: #495057;
+        }}
+        .metric-value {{
+            font-weight: bold;
+            color: #007bff;
+        }}
+        .score {{
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px;
+        }}
+        .opportunity {{
+            background: #28a745;
+            color: white;
+        }}
+        .sell-risk {{
+            background: #dc3545;
+            color: white;
+        }}
+        .recommendation {{
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }}
+        .buy {{
+            background: #28a745;
+            color: white;
+        }}
+        .sell {{
+            background: #dc3545;
+            color: white;
+        }}
+        .hold {{
+            background: #ffc107;
+            color: #212529;
+        }}
+        .reasons {{
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }}
+        .reasons ul {{
+            margin: 0;
+            padding-left: 20px;
+        }}
+        .reasons li {{
+            margin: 5px 0;
+        }}
+        .levels {{
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }}
+        .level {{
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+            background: #e9ecef;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Advanced Stock Analysis Report</h1>
+            <p>{ticker} - {days} Day Analysis</p>
+            <p>Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Key Metrics</h2>
+            <div class="metric">
+                <span class="metric-label">Current Price:</span>
+                <span class="metric-value">${market_data.current_price:.2f}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Opportunity Score:</span>
+                <span class="score opportunity">{dual_scores.opportunity_score:.1f}/100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Sell-Risk Score:</span>
+                <span class="score sell-risk">{dual_scores.sell_risk_score:.1f}/100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Overall Bias:</span>
+                <span class="metric-value">{dual_scores.overall_bias}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Confidence:</span>
+                <span class="metric-value">{dual_scores.confidence:.1f}%</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📈 Price & Volume Data</h2>
+            <div class="metric">
+                <span class="metric-label">20-Day High:</span>
+                <span class="metric-value">${market_data.indicators.get('high_20d', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">20-Day Low:</span>
+                <span class="metric-value">${market_data.indicators.get('low_20d', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">50-Day High:</span>
+                <span class="metric-value">${market_data.indicators.get('high_50d', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">50-Day Low:</span>
+                <span class="metric-value">${market_data.indicators.get('low_50d', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Volume Z-Score:</span>
+                <span class="metric-value">{market_data.indicators.get('volume_z_score', 'N/A'):.2f}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">ATR (14):</span>
+                <span class="metric-value">{market_data.indicators.get('atr_14', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Position vs 20D High:</span>
+                <span class="metric-value">{market_data.indicators.get('position_20d_high', 'N/A'):.1f}%</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📰 News Sentiment Analysis</h2>
+            <div class="metric">
+                <span class="metric-label">Total Headlines:</span>
+                <span class="metric-value">{news_catalysts_data.get('total_headlines', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Positive Catalysts:</span>
+                <span class="metric-value">{news_catalysts_data.get('positive_catalysts', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Negative Catalysts:</span>
+                <span class="metric-value">{news_catalysts_data.get('negative_catalysts', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Neutral Headlines:</span>
+                <span class="metric-value">{news_catalysts_data.get('neutral_catalysts', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Good News Effectiveness:</span>
+                <span class="metric-value">{good_news_analysis.effectiveness_score:.1f}/100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Good News Failure Rate:</span>
+                <span class="metric-value">{good_news_analysis.failure_rate:.1%}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Positive Headlines:</span>
+                <span class="metric-value">{len(good_news_analysis.positive_headlines)}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Alert Triggered:</span>
+                <span class="metric-value">{good_news_analysis.alert_triggered}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Consecutive Failures:</span>
+                <span class="metric-value">{good_news_analysis.consecutive_failures}</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📰 Recent News Headlines</h2>
+            {self._advanced_news_headlines_section(good_news_analysis)}
+        </div>
+        
+        <div class="section">
+            <h2>📈 News Sentiment Breakdown</h2>
+            {self._advanced_sentiment_breakdown_section(news_catalysts_data, good_news_analysis)}
+        </div>
+        
+        <div class="section">
+            <h2>📈 News Price Impact Analysis</h2>
+            {self._advanced_news_impact_section(good_news_analysis)}
+        </div>
+        
+        <div class="section">
+            <h2>🔄 Cycle Analysis</h2>
+            <div class="metric">
+                <span class="metric-label">Cycle Phase:</span>
+                <span class="metric-value">{cycle_analysis.cycle_phase.replace('_', ' ').title()}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Cycle Confidence:</span>
+                <span class="metric-value">{cycle_analysis.cycle_confidence:.1%}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">News Risk Score:</span>
+                <span class="metric-value">{cycle_analysis.news_risk_score:.1f}/100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Good News Effectiveness:</span>
+                <span class="metric-value">{cycle_analysis.good_news_effectiveness:.1f}/100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Transition Risk:</span>
+                <span class="metric-value">{cycle_analysis.phase_transition_risk if hasattr(cycle_analysis, 'phase_transition_risk') else 'N/A'}</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Recommendation</h2>
+            <div class="recommendation {self._advanced_recommendation_class(recommendation['tier'])}">
+                {recommendation['tier']}
+            </div>
+            <div class="metric">
+                <span class="metric-label">Confidence:</span>
+                <span class="metric-value">{recommendation['confidence']:.1%}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Urgency:</span>
+                <span class="metric-value">{recommendation['urgency']}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Next Review:</span>
+                <span class="metric-value">{recommendation['next_review_date']}</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💡 Top 3 Reasons</h2>
+            <div class="reasons">
+                <ul>
+                    {''.join([f"<li>{reason}</li>" for reason in recommendation['top_3_reasons']])}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📍 Key Levels</h2>
+            <div class="levels">
+                {''.join([f"<div class='level'><strong>{level_type.replace('_', ' ').title()}:</strong> {level_value}</div>" 
+                         for level_type, level_value in recommendation['key_levels'].items()])}
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📈 Technical Indicators</h2>
+            <div class="metric">
+                <span class="metric-label">RSI (14):</span>
+                <span class="metric-value">{market_data.indicators.get('rsi_14', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">21D Return:</span>
+                <span class="metric-value">{market_data.indicators.get('ret_21d', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">63D Return:</span>
+                <span class="metric-value">{market_data.indicators.get('ret_63d', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Volume Z-Score:</span>
+                <span class="metric-value">{market_data.indicators.get('volume_z_score', 'N/A'):.2f}</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Risk Metrics</h2>
+            <div class="metric">
+                <span class="metric-label">Current Drawdown:</span>
+                <span class="metric-value">{market_data.risk_metrics.get('current_drawdown', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Max Drawdown:</span>
+                <span class="metric-value">{market_data.risk_metrics.get('max_drawdown', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Volatility (20D):</span>
+                <span class="metric-value">{market_data.risk_metrics.get('volatility_20d', 'N/A')}</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Volatility Regime:</span>
+                <span class="metric-value">{market_data.risk_metrics.get('volatility_regime', 'N/A')}</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+        """
+        return html_content
+
+    def generate_advanced_single_markdown(self, results: Dict, ticker: str, days: int) -> str:
+        market_data = results["market_data"]
+        dual_scores = results["dual_scores"]
+        cycle_analysis = results["cycle_analysis"]
+        recommendation = results["recommendation"]
+        good_news_analysis = results.get("good_news_analysis")
+        news_catalysts_data = results.get("news_catalysts_data", {})
+
+        md_content = f"""# 🎯 Advanced Stock Analysis Report - {ticker}
+
+**Analysis Period:** {days} days  
+**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+---
+
+## 📊 Key Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Current Price** | ${market_data.current_price:.2f} |
+| **Opportunity Score** | {dual_scores.opportunity_score:.1f}/100 |
+| **Sell-Risk Score** | {dual_scores.sell_risk_score:.1f}/100 |
+| **Overall Bias** | {dual_scores.overall_bias} |
+| **Confidence** | {dual_scores.confidence:.1%} |
+
+---
+
+## 📈 Price & Volume Data
+
+| Metric | Value |
+|--------|-------|
+| **20-Day High** | ${market_data.indicators.get('high_20d', 'N/A')} |
+| **20-Day Low** | ${market_data.indicators.get('low_20d', 'N/A')} |
+| **50-Day High** | ${market_data.indicators.get('high_50d', 'N/A')} |
+| **50-Day Low** | ${market_data.indicators.get('low_50d', 'N/A')} |
+| **Volume Z-Score** | {market_data.indicators.get('volume_z_score', 'N/A'):.2f} |
+| **ATR (14)** | {market_data.indicators.get('atr_14', 'N/A'):.2f} |
+| **Position vs 20D High** | {market_data.indicators.get('position_20d_high', 'N/A'):.1%} |
+
+---
+
+## 📰 News Sentiment Analysis
+
+| Metric | Value |
+|--------|-------|
+| **Total Headlines** | {news_catalysts_data.get('total_headlines', 'N/A')} |
+| **Positive Catalysts** | {news_catalysts_data.get('positive_catalysts', 'N/A')} |
+| **Negative Catalysts** | {news_catalysts_data.get('negative_catalysts', 'N/A')} |
+| **Neutral Headlines** | {news_catalysts_data.get('neutral_catalysts', 'N/A')} |
+| **Good News Effectiveness** | {good_news_analysis.effectiveness_score:.1f}/100 |
+| **Good News Failure Rate** | {good_news_analysis.failure_rate:.1%} |
+| **Positive Headlines** | {len(good_news_analysis.positive_headlines)} |
+| **Alert Triggered** | {good_news_analysis.alert_triggered} |
+| **Consecutive Failures** | {good_news_analysis.consecutive_failures} |
+
+---
+
+## 📰 Recent News Headlines
+
+{self._advanced_news_headlines_markdown(good_news_analysis)}
+
+---
+
+## 📈 News Sentiment Breakdown
+
+{self._advanced_sentiment_breakdown_markdown(news_catalysts_data, good_news_analysis)}
+
+---
+
+## 📈 News Price Impact Analysis
+
+{self._advanced_news_impact_markdown(good_news_analysis)}
+
+---
+
+## 🔄 Cycle Analysis
+
+| Metric | Value |
+|--------|-------|
+| **Cycle Phase** | {cycle_analysis.cycle_phase.replace('_', ' ').title()} |
+| **Cycle Confidence** | {cycle_analysis.cycle_confidence:.1%} |
+| **News Risk Score** | {cycle_analysis.news_risk_score:.1f}/100 |
+| **Good News Effectiveness** | {cycle_analysis.good_news_effectiveness:.1f}/100 |
+| **Transition Risk** | {cycle_analysis.phase_transition_risk if hasattr(cycle_analysis, 'phase_transition_risk') else 'N/A'} |
+
+---
+
+## 🎯 Recommendation
+
+**{recommendation['tier']}
+- **Confidence:** {recommendation['confidence']:.1%}
+- **Urgency:** {recommendation['urgency']}
+- **Next Review:** {recommendation['next_review_date']}
+
+---
+
+## 💡 Top 3 Reasons
+
+{chr(10).join([f"{i+1}. {reason}" for i, reason in enumerate(recommendation['top_3_reasons'], 1)])}
+
+---
+
+## 📍 Key Levels
+
+{chr(10).join([f"• **{level_type.replace('_', ' ').title()}:** {level_value}" 
+                     for level_type, level_value in recommendation['key_levels'].items()])}
+
+---
+
+## 📈 Technical Indicators
+
+| Indicator | Value |
+|-----------|-------|
+| **RSI (14)** | {market_data.indicators.get('rsi_14', 'N/A'):.1f} |
+| **21D Return** | {market_data.indicators.get('ret_21d', 'N/A')} |
+| **63D Return** | {market_data.indicators.get('ret_63d', 'N/A')} |
+| **Volume Z-Score** | {market_data.indicators.get('volume_z_score', 'N/A'):.2f} |
+
+---
+
+## ⚠️ Risk Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Current Drawdown** | {market_data.risk_metrics.get('current_drawdown', 'N/A')} |
+| **Max Drawdown** | {market_data.risk_metrics.get('max_drawdown', 'N/A')} |
+| **Volatility (20D)** | {market_data.risk_metrics.get('volatility_20d', 'N/A')} |
+| **Volatility Regime** | {market_data.risk_metrics.get('volatility_regime', 'N/A')} |
+
+---
+
+*Report generated by Advanced Trading System*
+"""
+        return md_content
+
+    def _advanced_recommendation_class(self, tier: str) -> str:
+        if "BUY" in tier:
+            return "buy"
+        if "SELL" in tier:
+            return "sell"
+        return "hold"
+
+    def _advanced_impact_color(self, impact_class: str) -> str:
+        colors = {
+            "strong-positive": "#28a745",
+            "moderate-positive": "#17a2b8",
+            "weak-positive": "#ffc107",
+            "negative": "#dc3545",
+        }
+        return colors.get(impact_class, "#6c757d")
+
+    def _advanced_news_impact_section(self, good_news_analysis) -> str:
+        forward_returns = good_news_analysis.forward_return_analysis if hasattr(good_news_analysis, 'forward_return_analysis') else {}
+        if not forward_returns:
+            return "<p>No forward return analysis available</p>"
+
+        impact_html = ""
+        sorted_headlines = sorted(forward_returns.items(), key=lambda x: x[0], reverse=True)
+        for i, (headline, returns) in enumerate(sorted_headlines[:10]):
+            if returns and len(returns) > 0:
+                avg_1d = returns.get('1d', 0) * 100
+                avg_2d = returns.get('2d', 0) * 100
+                avg_3d = returns.get('3d', 0) * 100
+
+                if avg_1d > 2:
+                    impact_strength = "Strong Positive"
+                    impact_class = "strong-positive"
+                elif avg_1d > 0.5:
+                    impact_strength = "Moderate Positive"
+                    impact_class = "moderate-positive"
+                elif avg_1d > 0:
+                    impact_strength = "Weak Positive"
+                    impact_class = "weak-positive"
+                else:
+                    impact_strength = "Negative"
+                    impact_class = "negative"
+
+                impact_html += f"""
+                <div class="metric" style="border-left: 4px solid {self._advanced_impact_color(impact_class)}; padding-left: 10px;">
+                    <div style="font-weight: bold; margin-bottom: 5px;">{i+1}. {headline[:50]}...</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                        <span style="color: #666;">1D:</span>
+                        <span class="metric-value" style="color: {self._advanced_impact_color(impact_class)};">{avg_1d:+.1f}%</span>
+                        <span style="color: #666;">2D:</span>
+                        <span class="metric-value" style="color: {self._advanced_impact_color(impact_class)};">{avg_2d:+.1f}%</span>
+                        <span style="color: #666;">3D:</span>
+                        <span class="metric-value" style="color: {self._advanced_impact_color(impact_class)};">{avg_3d:+.1f}%</span>
+                    </div>
+                    <div style="font-style: italic; color: #666; margin-top: 5px;">{impact_strength}</div>
+                </div>
+                """
+
+        return impact_html
+
+    def _advanced_sentiment_breakdown_section(self, news_catalysts_data: Dict, good_news_analysis) -> str:
+        total_catalysts = news_catalysts_data.get('total_headlines', 0)
+        positive_catalysts = news_catalysts_data.get('positive_catalysts', 0)
+        negative_catalysts = news_catalysts_data.get('negative_catalysts', 0)
+        neutral_catalysts = news_catalysts_data.get('neutral_catalysts', 0)
+
+        if total_catalysts > 0:
+            positive_pct = (positive_catalysts / total_catalysts) * 100
+            negative_pct = (negative_catalysts / total_catalysts) * 100
+            neutral_pct = (neutral_catalysts / total_catalysts) * 100
+        else:
+            positive_pct = negative_pct = neutral_pct = 0
+
+        failure_rate = getattr(good_news_analysis, 'failure_rate', 0)
+        breakdown_html = f"""
+        <div class="metric">
+            <span class="metric-label">Total Articles:</span>
+            <span class="metric-value">{total_catalysts}</span>
+        </div>
+        <div class="metric">
+            <span class="metric-label">Positive Articles:</span>
+            <span class="metric-value">{positive_catalysts} ({positive_pct:.1f}%)</span>
+        </div>
+        <div class="metric">
+            <span class="metric-label">Negative Articles:</span>
+            <span class="metric-value">{negative_catalysts} ({negative_pct:.1f}%)</span>
+        </div>
+        <div class="metric">
+            <span class="metric-label">Neutral Articles:</span>
+            <span class="metric-value">{neutral_catalysts} ({neutral_pct:.1f}%)</span>
+        </div>
+        <div class="metric">
+            <span class="metric-label">Good News Success Rate:</span>
+            <span class="metric-value">{100 - failure_rate:.1f}%</span>
+        </div>
+        """
+        return breakdown_html
+
+    def _advanced_news_headlines_section(self, good_news_analysis) -> str:
+        forward_returns = good_news_analysis.forward_return_analysis if hasattr(good_news_analysis, 'forward_return_analysis') else {}
+        headlines_html = ""
+        if forward_returns and len(forward_returns) > 0:
+            sorted_headlines = sorted(forward_returns.items(), key=lambda x: x[0], reverse=True)
+            headlines_html += """
+        <div class="metric">
+            <span class="metric-label">Recent News Headlines (Top 10)</span>
+        </div>
+        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #f8f9fa; color: white;">
+                        <th style="padding: 8px; text-align: left;">#</th>
+                        <th style="padding: 8px; text-align: left;">Headline</th>
+                        <th style="padding: 8px; text-align: left;">Date</th>
+                        <th style="padding: 8px; text-align: left;">1D Return</th>
+                        <th style="padding: 8px; text-align: left;">2D Return</th>
+                        <th style="padding: 8px; text-align: left;">3D Return</th>
+                        <th style="padding: 8px; text-align: left;">Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+            for i, (headline, returns) in enumerate(sorted_headlines[:10]):
+                if returns and len(returns) > 0:
+                    avg_1d = returns.get('1d', 0) * 100
+                    avg_2d = returns.get('2d', 0) * 100
+                    avg_3d = returns.get('3d', 0) * 100
+
+                    if avg_1d > 2:
+                        impact_strength = "Strong Positive 🚀"
+                        impact_class = "strong-positive"
+                    elif avg_1d > 0.5:
+                        impact_strength = "Moderate Positive 📈"
+                        impact_class = "moderate-positive"
+                    elif avg_1d > 0:
+                        impact_strength = "Weak Positive 📊"
+                        impact_class = "weak-positive"
+                    else:
+                        impact_strength = "Negative 📉"
+                        impact_class = "negative"
+
+                    impact_color = self._advanced_impact_color(impact_class)
+                    headlines_html += f"""
+                    <tr>
+                        <td style="padding: 8px;">{i+1}</td>
+                        <td style="padding: 8px; max-width: 300px;">{headline[:60]}...</td>
+                        <td style="padding: 8px;">{headline[:50]}</td>
+                        <td style="padding: 8px;">{avg_1d:+.1f}%</td>
+                        <td style="padding: 8px;">{avg_2d:+.1f}%</td>
+                        <td style="padding: 8px;">{avg_3d:+.1f}%</td>
+                        <td style="padding: 8px; color: {impact_color}; font-weight: bold;">{impact_strength}</td>
+                    </tr>
+            """
+            headlines_html += """
+                </tbody>
+            </table>
+        </div>
+        """
+        return headlines_html
+
+    def _advanced_news_impact_markdown(self, good_news_analysis) -> str:
+        forward_returns = good_news_analysis.forward_return_analysis if hasattr(good_news_analysis, 'forward_return_analysis') else {}
+        if not forward_returns:
+            return "No forward return analysis available"
+
+        impact_md = "\n### Recent News Price Impact (Top 10)\n\n"
+        sorted_headlines = sorted(forward_returns.items(), key=lambda x: x[0], reverse=True)
+        impact_md += "| # | Headline | 1D Return | 2D Return | 3D Return | Impact |\n"
+        impact_md += "|---|---|---|---|---|---|\n"
+
+        for i, (headline, returns) in enumerate(sorted_headlines[:10]):
+            if returns and len(returns) > 0:
+                avg_1d = returns.get('1d', 0) * 100
+                avg_2d = returns.get('2d', 0) * 100
+                avg_3d = returns.get('3d', 0) * 100
+
+                if avg_1d > 2:
+                    impact_strength = "Strong Positive 🚀"
+                elif avg_1d > 0.5:
+                    impact_strength = "Moderate Positive 📈"
+                elif avg_1d > 0:
+                    impact_strength = "Weak Positive 📊"
+                else:
+                    impact_strength = "Negative 📉"
+
+                impact_md += f"| {i+1} | {headline[:40]}... | {avg_1d:+.1f}% | {avg_2d:+.1f}% | {avg_3d:+.1f}% | {impact_strength} |\n"
+        return impact_md
+
+    def _advanced_news_headlines_markdown(self, good_news_analysis) -> str:
+        forward_returns = good_news_analysis.forward_return_analysis if hasattr(good_news_analysis, 'forward_return_analysis') else {}
+        if not forward_returns:
+            return "No forward return analysis available"
+        sorted_headlines = sorted(forward_returns.items(), key=lambda x: x[0], reverse=True)
+        lines = []
+        for i, (headline, returns) in enumerate(sorted_headlines[:10], 1):
+            avg_1d = returns.get('1d', 0) * 100 if returns else 0
+            avg_2d = returns.get('2d', 0) * 100 if returns else 0
+            avg_3d = returns.get('3d', 0) * 100 if returns else 0
+            lines.append(f"{i}. {headline} (1D {avg_1d:+.1f}%, 2D {avg_2d:+.1f}%, 3D {avg_3d:+.1f}%)")
+        return "\n".join(lines)
+
+    def _advanced_sentiment_breakdown_markdown(self, news_catalysts_data: Dict, good_news_analysis) -> str:
+        total_catalysts = news_catalysts_data.get('total_headlines', 0)
+        positive_catalysts = news_catalysts_data.get('positive_catalysts', 0)
+        negative_catalysts = news_catalysts_data.get('negative_catalysts', 0)
+        neutral_catalysts = news_catalysts_data.get('neutral_catalysts', 0)
+
+        if total_catalysts > 0:
+            positive_pct = (positive_catalysts / total_catalysts) * 100
+            negative_pct = (negative_catalysts / total_catalysts) * 100
+            neutral_pct = (neutral_catalysts / total_catalysts) * 100
+        else:
+            positive_pct = negative_pct = neutral_pct = 0
+        failure_rate = getattr(good_news_analysis, 'failure_rate', 0)
+        return (
+            f"Total Articles: {total_catalysts}\n\n"
+            f"Positive Articles: {positive_catalysts} ({positive_pct:.1f}%)\n"
+            f"Negative Articles: {negative_catalysts} ({negative_pct:.1f}%)\n"
+            f"Neutral Articles: {neutral_catalysts} ({neutral_pct:.1f}%)\n"
+            f"Good News Success Rate: {100 - failure_rate:.1f}%\n"
+        )
         
     def generate_html_report(self, reports: List[TickerReport], days: int) -> str:
         """Generate a comprehensive HTML report."""

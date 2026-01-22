@@ -31,22 +31,14 @@ def test_news_analysis():
         print('📈 Fetching price data...')
         from news import fetch_prices
         df = fetch_prices(ticker, days=180)
-        prices_df = summarize_prices(ticker, df)
+        price_summary = summarize_prices(ticker, df)
         
-        if prices_df is not None and not prices_df.empty:
-            price_summary = PriceSummary(
-                current_price=prices_df['Close'].iloc[-1],
-                change=prices_df['Close'].iloc[-1] - prices_df['Close'].iloc[0],
-                change_pct=0.0,  # Would calculate properly
-                high=prices_df['High'].max(),
-                low=prices_df['Low'].min(),
-                volume=prices_df['Volume'].mean()
-            )
-            print(f'✅ Price data: ${price_summary.current_price:.2f}')
+        if price_summary is not None:
+            print(f'✅ Price data: ${price_summary.last_close:.2f}')
             
             # Compute combined signal
             print('📊 Computing combined signal...')
-            combined_signal = compute_combined_signal(headlines, price_summary)
+            combined_signal, notes = compute_combined_signal(price_summary, headlines)
             print(f'✅ Combined signal: {combined_signal:+.2f}')
             
             # Display results
@@ -54,13 +46,13 @@ def test_news_analysis():
             for i, headline in enumerate(headlines[:5], 1):
                 print(f'  {i}. {headline.title[:60]}...')
                 print(f'     Sentiment: {headline.sentiment:+.1f}')
-                print(f'     Quality: {headline.quality_score:.1f}')
+                print(f'     Quality: {headline.quality:.1f}')
             
             print('\n📈 Price Summary:')
-            print(f'  Current: ${price_summary.current_price:.2f}')
-            print(f'  Change: ${price_summary.change:+.2f} ({price_summary.change_pct:+.1f}%)')
-            print(f'  Range: ${price_summary.low:.2f} - ${price_summary.high:.2f}')
-            print(f'  Avg Volume: {price_summary.volume:,.0f}')
+            print(f'  Current: ${price_summary.last_close:.2f}')
+            print(f'  5D Return: {price_summary.ret_5d:+.1%}')
+            print(f'  21D Return: {price_summary.ret_21d:+.1%}')
+            print(f'  63D Return: {price_summary.ret_63d:+.1%}')
             
         else:
             print('❌ No price data available')

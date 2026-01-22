@@ -20,6 +20,7 @@ import json
 import os
 import sys
 from datetime import datetime, timezone
+from dataclasses import asdict, is_dataclass
 from typing import Dict, Any, List, Optional
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -118,7 +119,7 @@ class AdvancedTradingSystem:
         except Exception as e:
             return {"error": f"Analysis failed for {ticker}: {str(e)}"}
     
-    def _apply_data_quality_gates(self, market_data: Dict, lookback_days: int) -> Dict[str, Any]:
+    def _apply_data_quality_gates(self, market_data, lookback_days: int) -> Dict[str, Any]:
         """Apply data quality gates to prevent bogus signals."""
         gates = {
             "lookback_days": lookback_days,
@@ -129,10 +130,15 @@ class AdvancedTradingSystem:
         }
         
         try:
-            # Count available trading days
-            if 'indicators' in market_data and market_data['indicators']:
-                # Get the actual number of data points available
-                indicators = market_data['indicators']
+            indicators = getattr(market_data, "indicators", None)
+            if indicators:
+                # Best-effort estimate of trading days available
+                data_df = getattr(market_data, "data", None)
+                if data_df is not None:
+                    try:
+                        gates["trading_days_available"] = int(len(data_df))
+                    except Exception:
+                        pass
                 
                 # Count NaN values in key indicators
                 key_indicators = ['rsi_14', 'sma_50', 'sma_200', 'ema_20', 'ema_50']
@@ -174,7 +180,7 @@ class AdvancedTradingSystem:
         
         return gates
     
-    def _apply_news_availability_gates(self, news_catalysts: Dict, good_news_analysis: Dict) -> Dict[str, Any]:
+    def _apply_news_availability_gates(self, news_catalysts, good_news_analysis) -> Dict[str, Any]:
         """Apply news availability gates to prevent bogus signals."""
         gates = {
             "total_headlines": 0,
@@ -184,9 +190,13 @@ class AdvancedTradingSystem:
         
         try:
             # Get news counts
-            total_headlines = news_catalysts.get('total_headlines', 0)
-            positive_catalysts = news_catalysts.get('positive_catalysts', 0)
-            positive_headlines = good_news_analysis.get('positive_headlines', 0)
+            total_headlines = len(news_catalysts) if isinstance(news_catalysts, list) else 0
+            positive_headlines = 0
+            if hasattr(good_news_analysis, "positive_headlines"):
+                try:
+                    positive_headlines = len(good_news_analysis.positive_headlines)
+                except Exception:
+                    positive_headlines = 0
             
             gates["total_headlines"] = total_headlines
             gates["positive_events"] = positive_headlines
@@ -210,7 +220,7 @@ class AdvancedTradingSystem:
         """Apply final confidence gates to prevent bogus STRONG_* calls."""
         # Convert dataclass to dict for modification
         gated_recommendation = {
-            'ticker': recommendation.tier,
+            'ticker': recommendation.ticker,
             'tier': recommendation.tier,
             'confidence': recommendation.confidence,
             'urgency': recommendation.urgency,
@@ -287,13 +297,19 @@ class AdvancedTradingSystem:
             for position in positions:
                 ticker_analysis = self.analyze_ticker(position.ticker, days)
                 if "error" not in ticker_analysis:
+                    market_data = ticker_analysis.get("market_data")
+                    current_price = getattr(market_data, "current_price", None)
+                    if current_price is None:
+                        # Skip if we cannot compute position values
+                        continue
+
                     # Add position information
                     ticker_analysis["position"] = {
                         "shares": position.shares,
                         "cost_basis": position.cost_basis,
-                        "current_value": position.shares * ticker_analysis["market_data"]["current_price"],
-                        "unrealized_pnl": (ticker_analysis["market_data"]["current_price"] - position.cost_basis) * position.shares,
-                        "unrealized_pnl_pct": ((ticker_analysis["market_data"]["current_price"] - position.cost_basis) / position.cost_basis) * 100
+                        "current_value": position.shares * float(current_price),
+                        "unrealized_pnl": (float(current_price) - position.cost_basis) * position.shares,
+                        "unrealized_pnl_pct": ((float(current_price) - position.cost_basis) / position.cost_basis) * 100
                     }
                     results["positions"].append(ticker_analysis)
                     
@@ -372,7 +388,9 @@ class AdvancedTradingSystem:
         distribution = {"early": 0, "mid": 0, "late-mid": 0, "late": 0, "rollover_risk": 0}
         
         for position in positions:
-            phase = position.get("cycle_analysis", {}).get("cycle_phase", "unknown")
+            cycle = position.get("cycle_analysis")
+            phase = getattr(cycle, "cycle_phase", None) if cycle is not None else None
+            phase = phase or "unknown"
             if phase in distribution:
                 distribution[phase] += 1
         
@@ -458,22 +476,24 @@ class AdvancedTradingSystem:
             
             # Key metrics
             print(f"\n📊 Key Metrics:")
-            print(f"  Current Price: ${results['market_data']['current_price']:.2f}")
-            print(f"  Opportunity Score: {results['dual_scores']['opportunity_score']:.1f}/100")
-            print(f"  Sell-Risk Score: {results['dual_scores']['sell_risk_score']:.1f}/100")
-            print(f"  Overall Bias: {results['dual_scores']['overall_bias']}")
+            md = results.get('market_data')
+            ds = results.get('dual_scores')
+            print(f"  Current Price: ${md.current_price:.2f}")
+            print(f"  Opportunity Score: {ds.opportunity_score:.1f}/100")
+            print(f"  Sell-Risk Score: {ds.sell_risk_score:.1f}/100")
+            print(f"  Overall Bias: {ds.overall_bias}")
             
             # Cycle analysis
             cycle = results["cycle_analysis"]
             print(f"\n🔄 Cycle Analysis:")
-            print(f"  Phase: {cycle['cycle_phase'].replace('_', ' ').title()}")
-            print(f"  Confidence: {cycle['cycle_confidence']:.1%}")
-            print(f"  News Risk: {cycle['news_risk_score']:.1f}/100")
-            print(f"  Good News Effectiveness: {cycle['good_news_effectiveness']:.1f}/100")
+            print(f"  Phase: {cycle.cycle_phase.replace('_', ' ').title()}")
+            print(f"  Confidence: {cycle.cycle_confidence:.1%}")
+            print(f"  News Risk: {cycle.news_risk_score:.1f}/100")
+            print(f"  Good News Effectiveness: {cycle.good_news_effectiveness:.1f}/100")
             
-            if cycle['key_signals']:
+            if getattr(cycle, 'key_cycle_signals', None):
                 print(f"  Key Signals:")
-                for signal in cycle['key_signals']:
+                for signal in cycle.key_cycle_signals:
                     print(f"    • {signal}")
             
             # Recommendation
@@ -508,6 +528,8 @@ class AdvancedTradingSystem:
             return float(obj)
         elif isinstance(obj, np.integer):
             return int(obj)
+        elif is_dataclass(obj):
+            return {k: self._make_json_serializable(v) for k, v in asdict(obj).items()}
         elif isinstance(obj, dict):
             return {k: self._make_json_serializable(v) for k, v in obj.items()}
         elif isinstance(obj, list):
@@ -535,16 +557,19 @@ class AdvancedTradingSystem:
                 writer.writeheader()
                 
                 for position in results["positions"]:
+                    md = position.get('market_data')
+                    ds = position.get('dual_scores')
+                    ca = position.get('cycle_analysis')
                     row = {
                         'ticker': position['ticker'],
                         'shares': position['position']['shares'],
                         'cost_basis': position['position']['cost_basis'],
-                        'current_price': position['market_data']['current_price'],
+                        'current_price': getattr(md, 'current_price', None),
                         'unrealized_pnl_pct': position['position']['unrealized_pnl_pct'],
                         'recommendation_tier': position['recommendation']['tier'],
-                        'cycle_phase': position['cycle_analysis']['cycle_phase'],
-                        'sell_risk_score': position['dual_scores']['sell_risk_score'],
-                        'opportunity_score': position['dual_scores']['opportunity_score']
+                        'cycle_phase': getattr(ca, 'cycle_phase', None),
+                        'sell_risk_score': getattr(ds, 'sell_risk_score', None),
+                        'opportunity_score': getattr(ds, 'opportunity_score', None)
                     }
                     writer.writerow(row)
         

@@ -7,8 +7,9 @@ Test the complete interactive menu report generation system.
 
 import sys
 import os
-import subprocess
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from interactive_menu import TradingSystemMenu
 
 def test_complete_report_system():
     """Test the complete report generation system."""
@@ -20,33 +21,24 @@ def test_complete_report_system():
     print(f'\n📰 Testing complete report generation for {ticker}...')
     
     try:
-        # Test the interactive menu directly
-        cmd = [
-            'python', 'interactive_menu.py'
-        ]
-        
-        # We'll simulate user input for testing
-        user_input = f'{ticker}\n180\nboth\n'
-        
-        # Use subprocess to send input
-        process = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            cwd='/Users/seanbaker/codex'
-        )
-        
-        # Send the simulated input
-        stdout, stderr = process.communicate(input=user_input, timeout=30)
-        
-        if process.returncode == 0:
-            print('✅ Report generation test completed successfully!')
-            print('\n📋 Output:')
-            print(stdout)
-        else:
-            print(f'❌ Error: {stderr}')
+        menu = TradingSystemMenu()
+        days = 180
+
+        results = menu.system.analyze_ticker(ticker, days)
+        if "error" in results:
+            print(f"❌ Error: {results['error']}")
+            return
+
+        html = menu._create_html_report(results, ticker, days)
+        md = menu._create_markdown_report(results, ticker, days)
+
+        if not html or not md:
+            print("❌ Report generation produced empty output")
+            return
+
+        print('✅ Report generation test completed successfully!')
+        print(f"📄 HTML length: {len(html)}")
+        print(f"📋 Markdown length: {len(md)}")
             
     except Exception as e:
         print(f'❌ Error: {e}')
