@@ -5,9 +5,7 @@ test_news_analysis.py
 Test the news analysis functionality.
 """
 
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import _bootstrap
 
 from news import fetch_headlines_for_ticker, summarize_prices, compute_combined_signal
 from news import Headline, PriceSummary

@@ -5,9 +5,7 @@ test_gated_system.py
 Test the new gating mechanisms to prevent bogus signals.
 """
 
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import _bootstrap
 
 from advanced_trading_system import AdvancedTradingSystem
 

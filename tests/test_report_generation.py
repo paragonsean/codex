@@ -5,9 +5,7 @@ test_report_generation.py
 Test the fixed report generation functionality.
 """
 
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import _bootstrap
 
 from interactive_menu import TradingSystemMenu
 

@@ -5,9 +5,7 @@ test_mock_data.py
 Test the improved mock data generation.
 """
 
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import _bootstrap
 
 from test_dual_scoring import create_mock_market_data
 

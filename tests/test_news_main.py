@@ -5,10 +5,10 @@ test_news_main.py
 Test the news.py main function directly.
 """
 
-import sys
 import os
 import subprocess
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import _bootstrap
 
 def test_news_main():
     """Test the news.py main function."""

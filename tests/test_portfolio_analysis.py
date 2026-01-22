@@ -5,10 +5,10 @@ test_portfolio_analysis.py
 Test portfolio analysis with improved mock data.
 """
 
-import sys
 import os
 import json
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import _bootstrap
 
 from advanced_trading_system import AdvancedTradingSystem
 

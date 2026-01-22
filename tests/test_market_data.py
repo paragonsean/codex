@@ -5,10 +5,10 @@ test_market_data.py
 Simple test of market data processing using the working news.py approach.
 """
 
-import sys
 import os
 import pandas as pd
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import _bootstrap
 
 from news import fetch_prices, summarize_prices
 from market_data_processor import MarketDataProcessor

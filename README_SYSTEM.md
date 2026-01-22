@@ -32,9 +32,19 @@ A comprehensive Python-based system for analyzing stocks using technical indicat
 ├── stock_report_generator.py  # Professional HTML/Markdown report generator
 ├── report_viewer.py           # Report viewing and PDF conversion utility
 ├── demo_workflow.py           # Complete workflow demonstration
+├── tests/                     # Test scripts
+├── run_tests.sh               # Test runner (writes logs to test_logs/)
 ├── reports/                   # Generated reports directory
 └── README_SYSTEM.md           # This documentation
 ```
+
+## 🧪 Testing
+
+```bash
+./run_tests.sh
+```
+
+Test output is written to `test_logs/run_tests_<timestamp>.log` and `test_logs/run_tests_latest.log`.
 
 ## 🛠 Installation
 

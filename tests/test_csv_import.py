@@ -8,9 +8,8 @@ Test the CSV import functionality for the interactive menu.
 import csv
 import json
 import os
-import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import _bootstrap
 
 def test_csv_import():
     """Test CSV import functionality."""
@@ -18,7 +17,7 @@ def test_csv_import():
     print("=" * 40)
     
     # Check if sample CSV exists
-    csv_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "sample_portfolio.csv")
+    csv_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "sample_portfolio.csv")
     if not os.path.exists(csv_file):
         print(f"❌ Sample CSV file not found: {csv_file}")
         return

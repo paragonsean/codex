@@ -43,7 +43,7 @@ python interactive_menu.py
 
 #### **4. Enter CSV File Path:**
 ```
-Enter CSV file path: sample_portfolio.csv
+Enter CSV file path: tests/fixtures/sample_portfolio.csv
 ```
 
 ### **✅ Features:**
@@ -91,7 +91,7 @@ Enter CSV file path: sample_portfolio.csv
 4. **Backup First**: Export current portfolio before importing new data
 
 ### **📁 Files Created:**
-- `sample_portfolio.csv` - Example CSV file
+- `tests/fixtures/sample_portfolio.csv` - Example CSV file
 - `test_imported_portfolio.json` - Test import result
 - `test_portfolio_export.csv` - Test export result
 

@@ -5,9 +5,7 @@ test_report_functions.py
 Test the report generation functions directly.
 """
 
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import _bootstrap
 
 from interactive_menu import TradingSystemMenu
 

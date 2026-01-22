@@ -182,7 +182,7 @@ python demo_workflow.py
 
 **Usage**:
 ```bash
-python test_market_data.py
+python tests/test_market_data.py
 ```
 
 #### **`test_dual_scoring.py`** - Dual Scoring System Testing
@@ -196,7 +196,7 @@ python test_market_data.py
 
 **Usage**:
 ```bash
-python test_dual_scoring.py
+python tests/test_dual_scoring.py
 ```
 
 ### 📚 Documentation
@@ -595,6 +595,13 @@ HIGH_QUALITY_SOURCES = {
 - **Edge Case Handling**: Market condition extremes
 - **Integration Testing**: End-to-end workflow validation
 
+### Running Tests
+```bash
+./run_tests.sh
+```
+
+Test output is written to `test_logs/run_tests_<timestamp>.log` and `test_logs/run_tests_latest.log`.
+
 ## 🔒 Security & Privacy
 
 ### Data Handling
@@ -616,7 +623,7 @@ HIGH_QUALITY_SOURCES = {
 git clone <repository>
 cd stock-analysis-system
 pip install -r requirements.txt
-python -m pytest tests/
+./run_tests.sh
 ```
 
 ### Code Standards

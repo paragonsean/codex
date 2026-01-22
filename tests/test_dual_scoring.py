@@ -5,11 +5,11 @@ test_dual_scoring.py
 Test the dual scoring system with real market data.
 """
 
-import sys
 import os
 import pandas as pd
 import numpy as np
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import _bootstrap
 
 from dual_scoring_system import DualScoringSystem, DualScores, SignalCluster
 from market_data_processor import MarketData
