@@ -104,6 +104,146 @@ def create_mock_market_data(ticker: str) -> MarketData:
                 'avg_intraday_weakness': -0.15,
                 'gap_down_frequency': 0.08
             }
+        },
+        'MSFT': {  # Tech giant - moderate growth
+            'current_price': 380.50,
+            'indicators': {
+                'rsi_14': 65.2,
+                'ret_5d': 0.025,
+                'ret_21d': 0.08,
+                'ret_63d': 0.22,
+                'trend_50_200': 'bullish',
+                'price_vs_sma_50': 0.05,
+                'price_vs_sma_200': 0.15,
+                'volume_z_score': 0.8,
+                'position_20d_high': 0.65,
+                'atr_pct': 0.04
+            },
+            'risk_metrics': {
+                'current_drawdown': -0.05,
+                'max_drawdown': -0.18,
+                'volatility_regime': 'normal',
+                'volatility_20d': 0.25,
+                'volatility_50d': 0.22
+            },
+            'news_effectiveness': {
+                'high_volume_win_rate': 0.65,
+                'failed_breakout_frequency': 0.12,
+                'avg_intraday_weakness': -0.03,
+                'gap_down_frequency': 0.04
+            }
+        },
+        'GOOGL': {  # Search giant - recovering
+            'current_price': 142.80,
+            'indicators': {
+                'rsi_14': 45.3,
+                'ret_5d': -0.015,
+                'ret_21d': -0.12,
+                'ret_63d': -0.28,
+                'trend_50_200': 'bearish',
+                'price_vs_sma_50': -0.15,
+                'price_vs_sma_200': -0.25,
+                'volume_z_score': 1.5,
+                'position_20d_high': 0.25,
+                'atr_pct': 0.05
+            },
+            'risk_metrics': {
+                'current_drawdown': -0.18,
+                'max_drawdown': -0.35,
+                'volatility_regime': 'elevated',
+                'volatility_20d': 0.35,
+                'volatility_50d': 0.28
+            },
+            'news_effectiveness': {
+                'high_volume_win_rate': 0.45,
+                'failed_breakout_frequency': 0.20,
+                'avg_intraday_weakness': -0.08,
+                'gap_down_frequency': 0.06
+            }
+        },
+        'NVDA': {  # AI chip leader - volatile
+            'current_price': 485.60,
+            'indicators': {
+                'rsi_14': 78.9,
+                'ret_5d': 0.12,
+                'ret_21d': 0.35,
+                'ret_63d': 0.95,
+                'trend_50_200': 'bullish',
+                'price_vs_sma_50': 0.18,
+                'price_vs_sma_200': 0.35,
+                'volume_z_score': 2.5,
+                'position_20d_high': 0.95,
+                'atr_pct': 0.09
+            },
+            'risk_metrics': {
+                'current_drawdown': 0.0,
+                'max_drawdown': -0.22,
+                'volatility_regime': 'high',
+                'volatility_20d': 0.85,
+                'volatility_50d': 0.65
+            },
+            'news_effectiveness': {
+                'high_volume_win_rate': 0.75,
+                'failed_breakout_frequency': 0.08,
+                'avg_intraday_weakness': -0.02,
+                'gap_down_frequency': 0.02
+            }
+        },
+        'TSLA': {  # EV maker - high volatility
+            'current_price': 195.30,
+            'indicators': {
+                'rsi_14': 55.8,
+                'ret_5d': -0.05,
+                'ret_21d': -0.18,
+                'ret_63d': 0.15,
+                'trend_50_200': 'bearish',
+                'price_vs_sma_50': -0.12,
+                'price_vs_sma_200': -0.08,
+                'volume_z_score': 1.8,
+                'position_20d_high': 0.45,
+                'atr_pct': 0.08
+            },
+            'risk_metrics': {
+                'current_drawdown': -0.15,
+                'max_drawdown': -0.45,
+                'volatility_regime': 'high',
+                'volatility_20d': 0.65,
+                'volatility_50d': 0.55
+            },
+            'news_effectiveness': {
+                'high_volume_win_rate': 0.35,
+                'failed_breakout_frequency': 0.30,
+                'avg_intraday_weakness': -0.12,
+                'gap_down_frequency': 0.10
+            }
+        },
+        'BRK.B': {  # Berkshire Hathaway - stable value
+            'current_price': 425.80,
+            'indicators': {
+                'rsi_14': 42.1,
+                'ret_5d': 0.008,
+                'ret_21d': 0.02,
+                'ret_63d': 0.08,
+                'trend_50_200': 'bullish',
+                'price_vs_sma_50': 0.02,
+                'price_vs_sma_200': 0.12,
+                'volume_z_score': 0.3,
+                'position_20d_high': 0.35,
+                'atr_pct': 0.02
+            },
+            'risk_metrics': {
+                'current_drawdown': -0.03,
+                'max_drawdown': -0.15,
+                'volatility_regime': 'low',
+                'volatility_20d': 0.12,
+                'volatility_50d': 0.15
+            },
+            'news_effectiveness': {
+                'high_volume_win_rate': 0.70,
+                'failed_breakout_frequency': 0.05,
+                'avg_intraday_weakness': -0.01,
+                'gap_down_frequency': 0.01
+            }
         }
     }
     
@@ -115,10 +255,10 @@ def create_mock_market_data(ticker: str) -> MarketData:
     dates = dates[dates.weekday < 5]
     
     # Generate realistic price data
-    np.random.seed(42)
+    np.random.seed(hash(ticker) % 2**32)  # Use ticker for consistent random seed
     base_price = scenario['current_price']
     returns = np.random.normal(0.001, 0.02, len(dates))
-    prices = [base_price * 0.8]  # Start lower
+    prices = [base_price * 0.9]  # Start lower
     
     for ret in returns:
         prices.append(prices[-1] * (1 + ret))
@@ -144,7 +284,7 @@ def create_mock_market_data(ticker: str) -> MarketData:
             'data_points': len(df),
             'start_date': df.index[0].strftime('%Y-%m-%d'),
             'end_date': df.index[-1].strftime('%Y-%m-%d'),
-            'data_quality': 'good',
+            'data_quality': 'mock',
             'missing_days': 0
         }
     )

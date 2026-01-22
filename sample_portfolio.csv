@@ -1,0 +1,7 @@
+ticker,num_shares,cost_per_share,purchase_date,notes
+AAPL,100,150.25,2023-01-15,Core position
+MSFT,50,250.50,2023-02-20,Cloud exposure
+GOOGL,25,2800.00,2023-03-10,Search dominance
+NVDA,75,450.75,2023-04-05,AI play
+TSLA,30,200.00,2023-05-12,Growth stock
+BRK.B,10,350.00,2023-06-08,Value holding

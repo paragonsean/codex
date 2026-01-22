@@ -1,0 +1,47 @@
+{
+  "portfolio_name": "Imported Portfolio",
+  "positions": [
+    {
+      "ticker": "AAPL",
+      "shares": 100.0,
+      "cost_basis": 150.25,
+      "purchase_date": "2023-01-15",
+      "notes": "Core position"
+    },
+    {
+      "ticker": "MSFT",
+      "shares": 50.0,
+      "cost_basis": 250.5,
+      "purchase_date": "2023-02-20",
+      "notes": "Cloud exposure"
+    },
+    {
+      "ticker": "GOOGL",
+      "shares": 25.0,
+      "cost_basis": 2800.0,
+      "purchase_date": "2023-03-10",
+      "notes": "Search dominance"
+    },
+    {
+      "ticker": "NVDA",
+      "shares": 75.0,
+      "cost_basis": 450.75,
+      "purchase_date": "2023-04-05",
+      "notes": "AI play"
+    },
+    {
+      "ticker": "TSLA",
+      "shares": 30.0,
+      "cost_basis": 200.0,
+      "purchase_date": "2023-05-12",
+      "notes": "Growth stock"
+    },
+    {
+      "ticker": "BRK.B",
+      "shares": 10.0,
+      "cost_basis": 350.0,
+      "purchase_date": "2023-06-08",
+      "notes": "Value holding"
+    }
+  ]
+}
