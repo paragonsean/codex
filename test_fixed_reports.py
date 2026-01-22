@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-test_report_functions.py
+test_fixed_reports.py
 
-Test the report generation functions directly.
+Test the fixed report generation system.
 """
 
 import sys
@@ -11,26 +11,26 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from interactive_menu import TradingSystemMenu
 
-def test_report_functions():
-    """Test the report generation functions directly."""
-    print('🧪 Testing Report Generation Functions')
+def test_fixed_reports():
+    """Test the fixed report generation system."""
+    print('🧪 Testing Fixed Report Generation')
     print('=' * 50)
+    
+    # Create menu instance
+    menu = TradingSystemMenu()
     
     # Test with a sample ticker
     ticker = 'MU'
-    print(f'\n📰 Testing report functions for {ticker}...')
+    print(f'\n📰 Testing report generation for {ticker}...')
     
     try:
-        # Create menu instance
-        menu = TradingSystemMenu()
-        
-        # Test single stock report generation
-        print('\n📄 Testing Single Stock Report Generation...')
-        
-        # Get analysis data
+        # Get analysis data using the fixed system
+        print('\n🔄 Running analyze_ticker...')
         results = menu.system.analyze_ticker(ticker, 180)
         
         if "error" not in results:
+            print('✅ Analysis completed successfully!')
+            
             # Test HTML report generation
             print('📄 Testing HTML report...')
             html_content = menu._create_html_report(results, ticker, 180)
@@ -52,7 +52,23 @@ def test_report_functions():
             news_impact_md = menu._create_news_impact_markdown(good_news)
             print(f'✅ News impact markdown generated ({len(news_impact_md)} characters)')
             
+            # Test sentiment breakdown
+            print('📊 Testing Sentiment Breakdown Section...')
+            sentiment_html = menu._create_sentiment_breakdown_section(results)
+            print(f'✅ Sentiment breakdown generated ({len(sentiment_html)} characters)')
+            
+            # Test news headlines section
+            print('📰 Testing News Headlines Section...')
+            headlines_html = menu._create_news_headlines_section(results)
+            print(f'✅ News headlines section generated ({len(headlines_html)} characters)')
+            
             print('\n✅ All report generation tests passed!')
+            
+            # Show sample of the data
+            print('\n📊 Sample Data:')
+            print(f'  Data Quality Score: {results.get("data_gates", {}).get("data_quality_score", "N/A")}')
+            print(f'  News Catalysts: {len(results.get("news_catalysts", []))} items')
+            print(f'  Recommendation: {results.get("recommendation", {}).get("tier", "N/A")}')
             
         else:
             print(f'❌ Error in analysis: {results["error"]}')
@@ -61,6 +77,8 @@ def test_report_functions():
         print(f'❌ Error: {e}')
         import traceback
         traceback.print_exc()
+    
+    print('\n✅ Fixed report test completed!')
 
 if __name__ == "__main__":
-    test_report_functions()
+    test_fixed_reports()

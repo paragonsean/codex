@@ -1,12 +1,6 @@
 {
-  "portfolio_name": "My Portfolio",
+  "portfolio_name": "Imported Portfolio",
   "positions": [
-    {
-      "ticker": "MU",
-      "shares": 1.0,
-      "cost_basis": 300.0,
-      "notes": ""
-    },
     {
       "ticker": "AAPL",
       "shares": 100.0,
@@ -48,18 +42,6 @@
       "cost_basis": 350.0,
       "purchase_date": "2023-06-08",
       "notes": "Value holding"
-    },
-    {
-      "ticker": "CORZ",
-      "shares": 1.0,
-      "cost_basis": 10.0,
-      "notes": ""
-    },
-    {
-      "ticker": "TXN",
-      "shares": 2.0,
-      "cost_basis": 19.0,
-      "notes": "n"
     }
   ]
 }

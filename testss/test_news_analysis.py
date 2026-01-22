@@ -29,7 +29,9 @@ def test_news_analysis():
         
         # Fetch price data
         print('📈 Fetching price data...')
-        prices_df = summarize_prices(ticker)
+        from news import fetch_prices
+        df = fetch_prices(ticker, days=180)
+        prices_df = summarize_prices(ticker, df)
         
         if prices_df is not None and not prices_df.empty:
             price_summary = PriceSummary(

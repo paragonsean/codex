@@ -35,6 +35,8 @@ import pandas as pd
 import requests
 import feedparser
 import yfinance as yf
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 # ----------------------------

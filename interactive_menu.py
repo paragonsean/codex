@@ -726,23 +726,23 @@ class TradingSystemMenu:
             <h2>📊 Key Metrics</h2>
             <div class="metric">
                 <span class="metric-label">Current Price:</span>
-                <span class="metric-value">${market_data['current_price']:.2f}</span>
+                <span class="metric-value">${market_data.current_price:.2f}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Opportunity Score:</span>
-                <span class="score opportunity">{dual_scores['opportunity_score']:.1f}/100</span>
+                <span class="score opportunity">{dual_scores.opportunity_score:.1f}/100</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Sell-Risk Score:</span>
-                <span class="score sell-risk">{dual_scores['sell_risk_score']:.1f}/100</span>
+                <span class="score sell-risk">{dual_scores.sell_risk_score:.1f}/100</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Overall Bias:</span>
-                <span class="metric-value">{dual_scores['overall_bias']}</span>
+                <span class="metric-value">{dual_scores.overall_bias}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Confidence:</span>
-                <span class="metric-value">{dual_scores['confidence']:.1%}</span>
+                <span class="metric-value">{dual_scores.confidence:.1f}%</span>
             </div>
         </div>
         
@@ -750,31 +750,31 @@ class TradingSystemMenu:
             <h2>📈 Price & Volume Data</h2>
             <div class="metric">
                 <span class="metric-label">20-Day High:</span>
-                <span class="metric-value">${market_data['indicators'].get('high_20d', 'N/A')}</span>
+                <span class="metric-value">${market_data.indicators.get('high_20d', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">20-Day Low:</span>
-                <span class="metric-value">${market_data['indicators'].get('low_20d', 'N/A')}</span>
+                <span class="metric-value">${market_data.indicators.get('low_20d', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">50-Day High:</span>
-                <span class="metric-value">${market_data['indicators'].get('high_50d', 'N/A')}</span>
+                <span class="metric-value">${market_data.indicators.get('high_50d', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">50-Day Low:</span>
-                <span class="metric-value">${market_data['indicators'].get('low_50d', 'N/A')}</span>
+                <span class="metric-value">${market_data.indicators.get('low_50d', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Volume Z-Score:</span>
-                <span class="metric-value">{market_data['indicators'].get('volume_z_score', 'N/A'):.2f}</span>
+                <span class="metric-value">{market_data.indicators.get('volume_z_score', 'N/A'):.2f}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">ATR (14):</span>
-                <span class="metric-value">{market_data['indicators'].get('atr_14', 'N/A'):.2f}</span>
+                <span class="metric-value">{market_data.indicators.get('atr_14', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Position vs 20D High:</span>
-                <span class="metric-value">{market_data['indicators'].get('position_20d_high', 'N/A'):.1%}</span>
+                <span class="metric-value">{market_data.indicators.get('position_20d_high', 'N/A'):.1f}%</span>
             </div>
         </div>
         
@@ -782,39 +782,39 @@ class TradingSystemMenu:
             <h2>📰 News Sentiment Analysis</h2>
             <div class="metric">
                 <span class="metric-label">Total Headlines:</span>
-                <span class="metric-value">{results.get('news_catalysts', {}).get('total_headlines', 'N/A')}</span>
+                <span class="metric-value">{results.get('news_catalysts_data', {}).get('total_headlines', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Positive Catalysts:</span>
-                <span class="metric-value">{results.get('news_catalysts', {}).get('positive_catalysts', 'N/A')}</span>
+                <span class="metric-value">{results.get('news_catalysts_data', {}).get('positive_catalysts', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Negative Catalysts:</span>
-                <span class="metric-value">{results.get('news_catalysts', {}).get('negative_catalysts', 'N/A')}</span>
+                <span class="metric-value">{results.get('news_catalysts_data', {}).get('negative_catalysts', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Neutral Headlines:</span>
-                <span class="metric-value">{results.get('news_catalysts', {}).get('neutral_catalysts', 'N/A')}</span>
+                <span class="metric-value">{results.get('news_catalysts_data', {}).get('neutral_catalysts', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Good News Effectiveness:</span>
-                <span class="metric-value">{results.get('good_news_analysis', {}).get('effectiveness_score', 'N/A'):.1f}/100</span>
+                <span class="metric-value">{results.get('good_news_analysis', {}).effectiveness_score:.1f}/100</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Good News Failure Rate:</span>
-                <span class="metric-value">{results.get('good_news_analysis', {}).get('failure_rate', 'N/A'):.1%}</span>
+                <span class="metric-value">{results.get('good_news_analysis', {}).failure_rate:.1%}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Positive Headlines:</span>
-                <span class="metric-value">{results.get('good_news_analysis', {}).get('positive_headlines', 'N/A')}</span>
+                <span class="metric-value">{results.get('good_news_analysis', {}).positive_headlines}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Alert Triggered:</span>
-                <span class="metric-value">{results.get('good_news_analysis', {}).get('alert_triggered', 'N/A')}</span>
+                <span class="metric-value">{results.get('good_news_analysis', {}).alert_triggered}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Consecutive Failures:</span>
-                <span class="metric-value">{results.get('good_news_analysis', {}).get('consecutive_failures', 'N/A')}</span>
+                <span class="metric-value">{results.get('good_news_analysis', {}).consecutive_failures}</span>
             </div>
         </div>
         
@@ -837,23 +837,23 @@ class TradingSystemMenu:
             <h2>🔄 Cycle Analysis</h2>
             <div class="metric">
                 <span class="metric-label">Cycle Phase:</span>
-                <span class="metric-value">{cycle_analysis['cycle_phase'].replace('_', ' ').title()}</span>
+                <span class="metric-value">{cycle_analysis.cycle_phase.replace('_', ' ').title()}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Cycle Confidence:</span>
-                <span class="metric-value">{cycle_analysis['cycle_confidence']:.1%}</span>
+                <span class="metric-value">{cycle_analysis.cycle_confidence:.1%}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">News Risk Score:</span>
-                <span class="metric-value">{cycle_analysis['news_risk_score']:.1f}/100</span>
+                <span class="metric-value">{cycle_analysis.news_risk_score:.1f}/100</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Good News Effectiveness:</span>
-                <span class="metric-value">{cycle_analysis['good_news_effectiveness']:.1f}/100</span>
+                <span class="metric-value">{cycle_analysis.good_news_effectiveness:.1f}/100</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Transition Risk:</span>
-                <span class="metric-value">{cycle_analysis.get('phase_transition_risk', 'N/A')}</span>
+                <span class="metric-value">{cycle_analysis.phase_transition_risk if hasattr(cycle_analysis, 'phase_transition_risk') else 'N/A'}</span>
             </div>
         </div>
         
@@ -897,15 +897,15 @@ class TradingSystemMenu:
             <h2>📈 Technical Indicators</h2>
             <div class="metric">
                 <span class="metric-label">RSI (14):</span>
-                <span class="metric-value">{market_data['indicators'].get('rsi_14', 'N/A'):.1f}</span>
+                <span class="metric-value">{market_data.indicators.get('rsi_14', 'N/A'):.1f}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">21D Return:</span>
-                <span class="metric-value">{market_data['indicators'].get('ret_21d', 'N/A')}</span>
+                <span class="metric-value">{market_data.indicators.get('ret_21d', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">63D Return:</span>
-                <span class="metric-value">{market_data['indicators'].get('ret_63d', 'N/A')}</span>
+                <span class="metric-value">{market_data.indicators.get('ret_63d', 'N/A')}</span>
             </div>
             <div class="metric">
                 <span class="metric-label">Volume Z-Score:</span>
@@ -994,6 +994,12 @@ class TradingSystemMenu:
 
 ---
 
+## 📰 Recent News Headlines
+
+{self._create_news_headlines_section(results)}
+
+---
+
 ## 📈 News Sentiment Breakdown
 
 {self._create_sentiment_breakdown_section(results)}
@@ -1075,9 +1081,9 @@ class TradingSystemMenu:
         else:
             return "hold"
     
-    def _create_news_impact_section(self, good_news_analysis: Dict) -> str:
+    def _create_news_impact_section(self, good_news_analysis) -> str:
         """Create detailed news price impact analysis section."""
-        forward_returns = good_news_analysis.get('forward_return_analysis', {})
+        forward_returns = good_news_analysis.forward_return_analysis if hasattr(good_news_analysis, 'forward_return_analysis') else {}
         
         if not forward_returns:
             return "<p>No forward return analysis available</p>"
@@ -1137,14 +1143,13 @@ class TradingSystemMenu:
     
     def _create_sentiment_breakdown_section(self, results: Dict) -> str:
         """Create detailed sentiment breakdown section."""
-        news_catalysts = results.get('news_catalysts', {})
-        good_news = results.get('good_news_analysis', {})
+        news_catalysts_data = results.get('news_catalysts_data', {})
+        good_news_analysis = results.get('good_news_analysis', {})
         
-        # Calculate sentiment breakdown from news_catalysts
-        total_catalysts = news_catalysts.get('total_headlines', 0)
-        positive_catalysts = news_catalysts.get('positive_catalysts', 0)
-        negative_catalysts = news_catalysts.get('negative_catalysts', 0)
-        neutral_catalysts = total_catalysts - positive_catalysts - negative_catalysts
+        total_catalysts = news_catalysts_data.get('total_headlines', 0)
+        positive_catalysts = news_catalysts_data.get('positive_catalysts', 0)
+        negative_catalysts = news_catalysts_data.get('negative_catalysts', 0)
+        neutral_catalysts = news_catalysts_data.get('neutral_catalysts', 0)
         
         # Calculate percentages
         if total_catalysts > 0:
@@ -1153,6 +1158,9 @@ class TradingSystemMenu:
             neutral_pct = (neutral_catalysts / total_catalysts) * 100
         else:
             positive_pct = negative_pct = neutral_pct = 0
+        
+        # Get failure rate for good news analysis
+        failure_rate = good_news_analysis.get('failure_rate', 0) if hasattr(good_news_analysis, 'get') else 0
         
         # Create sentiment breakdown HTML
         breakdown_html = f"""
@@ -1174,7 +1182,7 @@ class TradingSystemMenu:
         </div>
         <div class="metric">
             <span class="metric-label">Good News Success Rate:</span>
-            <span class="metric-value">{100 - good_news.get('failure_rate', 0):.1f}%</span>
+            <span class="metric-value">{100 - failure_rate:.1f}%</span>
         </div>
         """
         
@@ -1186,7 +1194,7 @@ class TradingSystemMenu:
         good_news = results.get('good_news_analysis', {})
         
         # Get headlines from good_news_analysis for detailed display
-        forward_returns = good_news.get('forward_return_analysis', {})
+        forward_returns = good_news.forward_return_analysis if hasattr(good_news, 'forward_return_analysis') else {}
         
         headlines_html = ""
         

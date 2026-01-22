@@ -25,6 +25,8 @@ import pandas as pd
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from news import Headline, fetch_headlines_for_ticker
 from market_data_processor import MarketData
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 @dataclass

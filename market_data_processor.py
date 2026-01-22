@@ -28,6 +28,8 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 import yfinance as yf
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 @dataclass
@@ -115,13 +117,18 @@ class MarketDataProcessor:
             # Handle multi-index columns (yfinance can return MultiIndex columns)
             if isinstance(data.columns, pd.MultiIndex):
                 # Extract the ticker data from multi-index
-                level_values = data.columns.get_level_values(1)
-                if ticker in level_values.tolist():
-                    # Filter columns for our ticker
-                    ticker_data = data.xs(ticker, axis=1, level=1)
-                    ticker_data.columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
-                    data = ticker_data
-                else:
+                try:
+                    level_values = data.columns.get_level_values(1)
+                    if ticker in level_values.tolist():
+                        # Filter columns for our ticker
+                        ticker_data = data.xs(ticker, axis=1, level=1)
+                        ticker_data.columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+                        data = ticker_data
+                    else:
+                        # Fallback: take first level
+                        data.columns = data.columns.get_level_values(0)
+                except (IndexError, KeyError, AttributeError) as e:
+                    print(f"MultiIndex handling failed for {ticker}: {e}")
                     # Fallback: take first level
                     data.columns = data.columns.get_level_values(0)
             

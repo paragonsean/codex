@@ -16,10 +16,11 @@ Usage:
 
 import argparse
 import json
+import json
 import os
 import sys
 from datetime import datetime, timezone
-from typing import Dict, List, Optional
+from typing import Dict, Any, List, Optional
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -30,6 +31,8 @@ from dual_scoring_system import DualScoringSystem
 from market_data_processor import MarketDataProcessor
 from news import fetch_headlines_for_ticker
 from trading_strategy_analyzer import Position, TradingStrategy, TRADING_STRATEGIES
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class AdvancedTradingSystem:
@@ -46,88 +49,211 @@ class AdvancedTradingSystem:
         # Load portfolio if available
         self.portfolio = self._load_portfolio()
     
-    def analyze_ticker(self, ticker: str, days: int = 180, max_headlines: int = 25) -> Dict:
-        """Perform comprehensive analysis of a single ticker."""
-        print(f"\n🔄 Analyzing {ticker}...")
+    def analyze_ticker(self, ticker: str, lookback_days: int = 180) -> Dict[str, Any]:
+        """
+        Perform comprehensive analysis of a ticker.
         
+        Args:
+            ticker: Stock ticker symbol
+            lookback_days: Number of days of historical data to analyze
+            
+        Returns:
+            Dictionary containing comprehensive analysis results
+        """
         try:
             # Fetch market data
-            market_data = self._fetch_market_data(ticker, days)
+            market_data = self.market_processor.fetch_and_process(ticker, lookback_days)
+            
             if market_data is None:
-                return {"error": f"No market data available for {ticker}"}
+                return {"error": f"Could not fetch market data for {ticker}"}
             
-            # Fetch news headlines
-            headlines = fetch_headlines_for_ticker(
-                ticker=ticker,
-                max_items=max_headlines,
-                keywords=["AI", "HBM", "DRAM", "NAND", "capex", "guidance", "inventory", "datacenter"]
-            )
+            # Apply data quality gates
+            data_gates = self._apply_data_quality_gates(market_data, lookback_days)
             
-            # Perform dual scoring analysis
+            # Generate dual scores
             dual_scores = self.dual_scorer.calculate_scores(market_data)
             
-            # Perform advanced news interpretation
+            # Analyze news
+            from news import fetch_headlines_for_ticker
+            headlines = fetch_headlines_for_ticker(ticker, max_items=25, keywords=[])
             news_catalysts = self.news_interpreter.analyze_news_catalysts(headlines, market_data)
-            cycle_analysis = self.news_interpreter.analyze_cycle_conditions(ticker, headlines, market_data)
             good_news_analysis = self.news_interpreter.analyze_good_news_effectiveness(headlines, market_data)
             
-            # Generate actionable recommendation
+            # Apply news availability gates
+            news_gates = self._apply_news_availability_gates(news_catalysts, good_news_analysis)
+            
+            # Create news catalysts data dictionary for easy access
+            news_catalysts_data = {
+                "total_headlines": len(news_catalysts),
+                "positive_catalysts": len([c for c in news_catalysts if c.catalyst_type == "positive_catalyst"]),
+                "negative_catalysts": len([c for c in news_catalysts if c.catalyst_type == "negative_catalyst"]),
+                "neutral_catalysts": len([c for c in news_catalysts if c.catalyst_type == "neutral_catalyst"])
+            }
+            
+            # Perform cycle analysis
+            cycle_analysis = self.news_interpreter.analyze_cycle_conditions(ticker, headlines, market_data)
+            
+            # Generate recommendation
             recommendation = self.recommendations_engine.generate_recommendation(
                 ticker, dual_scores, cycle_analysis, good_news_analysis, market_data
             )
             
-            # Compile results
-            results = {
+            # Apply final confidence gates
+            final_recommendation = self._apply_confidence_gates(recommendation, data_gates, news_gates)
+            
+            return {
                 "ticker": ticker,
                 "timestamp": datetime.now(timezone.utc).isoformat(),
-                "market_data": {
-                    "current_price": market_data.current_price,
-                    "indicators": market_data.indicators,
-                    "risk_metrics": market_data.risk_metrics
-                },
-                "dual_scores": {
-                    "opportunity_score": dual_scores.opportunity_score,
-                    "sell_risk_score": dual_scores.sell_risk_score,
-                    "overall_bias": dual_scores.overall_bias,
-                    "confidence": dual_scores.confidence
-                },
-                "cycle_analysis": {
-                    "cycle_phase": cycle_analysis.cycle_phase,
-                    "cycle_confidence": cycle_analysis.cycle_confidence,
-                    "news_risk_score": cycle_analysis.news_risk_score,
-                    "good_news_effectiveness": cycle_analysis.good_news_effectiveness,
-                    "key_signals": cycle_analysis.key_cycle_signals,
-                    "transition_risk": cycle_analysis.phase_transition_risk
-                },
-                "good_news_analysis": {
-                    "positive_headlines": len(good_news_analysis.positive_headlines),
-                    "failure_rate": good_news_analysis.failure_rate,
-                    "effectiveness_score": good_news_analysis.effectiveness_score,
-                    "alert_triggered": good_news_analysis.alert_triggered,
-                    "consecutive_failures": good_news_analysis.consecutive_failures
-                },
-                "recommendation": {
-                    "tier": recommendation.tier,
-                    "confidence": recommendation.confidence,
-                    "urgency": recommendation.urgency,
-                    "top_3_reasons": recommendation.top_3_reasons,
-                    "key_levels": recommendation.key_levels,
-                    "next_review_date": recommendation.next_review_date,
-                    "position_sizing": recommendation.position_sizing,
-                    "hedge_suggestions": recommendation.hedge_suggestions
-                },
-                "news_catalysts": {
-                    "total_headlines": len(headlines),
-                    "positive_catalysts": len([c for c in news_catalysts if c.catalyst_type == "positive_catalyst"]),
-                    "negative_catalysts": len([c for c in news_catalysts if c.catalyst_type == "negative_catalyst"]),
-                    "risk_flags": len([c for c in news_catalysts if c.catalyst_type == "risk_flag"])
-                }
+                "market_data": market_data,
+                "dual_scores": dual_scores,
+                "cycle_analysis": cycle_analysis,
+                "good_news_analysis": good_news_analysis,
+                "recommendation": final_recommendation,
+                "news_catalysts": news_catalysts,
+                "news_catalysts_data": news_catalysts_data,
+                "data_gates": data_gates,
+                "news_gates": news_gates
             }
-            
-            return results
             
         except Exception as e:
             return {"error": f"Analysis failed for {ticker}: {str(e)}"}
+    
+    def _apply_data_quality_gates(self, market_data: Dict, lookback_days: int) -> Dict[str, Any]:
+        """Apply data quality gates to prevent bogus signals."""
+        gates = {
+            "lookback_days": lookback_days,
+            "trading_days_available": 0,
+            "nan_count": 0,
+            "data_quality_score": 100.0,
+            "restrictions": []
+        }
+        
+        try:
+            # Count available trading days
+            if 'indicators' in market_data and market_data['indicators']:
+                # Get the actual number of data points available
+                indicators = market_data['indicators']
+                
+                # Count NaN values in key indicators
+                key_indicators = ['rsi_14', 'sma_50', 'sma_200', 'ema_20', 'ema_50']
+                nan_count = 0
+                total_indicators = 0
+                
+                for indicator in key_indicators:
+                    if indicator in indicators:
+                        total_indicators += 1
+                        if indicators[indicator] == 'N/A' or indicators[indicator] is None:
+                            nan_count += 1
+                
+                gates["nan_count"] = nan_count
+                gates["total_indicators"] = total_indicators
+                
+                # Calculate data quality score
+                if total_indicators > 0:
+                    gates["data_quality_score"] = ((total_indicators - nan_count) / total_indicators) * 100
+                
+                # Apply lookback restrictions
+                if lookback_days < 60:
+                    gates["restrictions"].append("50DMA cluster disabled - insufficient lookback")
+                
+                if lookback_days < 210:
+                    gates["restrictions"].append("200DMA cluster disabled - insufficient lookback")
+                
+                # Apply NaN restrictions
+                if nan_count > total_indicators * 0.3:  # More than 30% NaN
+                    gates["restrictions"].append("High NaN count - confidence capped")
+                    gates["data_quality_score"] = max(50.0, gates["data_quality_score"])
+                
+                if nan_count > total_indicators * 0.5:  # More than 50% NaN
+                    gates["restrictions"].append("Very high NaN count - STRONG_* calls disabled")
+                    gates["data_quality_score"] = max(30.0, gates["data_quality_score"])
+        
+        except Exception as e:
+            gates["restrictions"].append(f"Data quality check failed: {str(e)}")
+            gates["data_quality_score"] = 0.0
+        
+        return gates
+    
+    def _apply_news_availability_gates(self, news_catalysts: Dict, good_news_analysis: Dict) -> Dict[str, Any]:
+        """Apply news availability gates to prevent bogus signals."""
+        gates = {
+            "total_headlines": 0,
+            "positive_events": 0,
+            "restrictions": []
+        }
+        
+        try:
+            # Get news counts
+            total_headlines = news_catalysts.get('total_headlines', 0)
+            positive_catalysts = news_catalysts.get('positive_catalysts', 0)
+            positive_headlines = good_news_analysis.get('positive_headlines', 0)
+            
+            gates["total_headlines"] = total_headlines
+            gates["positive_events"] = positive_headlines
+            
+            # Apply news availability restrictions
+            if positive_headlines < 3:
+                gates["restrictions"].append("Good news not working disabled - insufficient positive events")
+            
+            if total_headlines < 5:
+                gates["restrictions"].append("News sentiment analysis disabled - insufficient headlines")
+            
+            if total_headlines < 10:
+                gates["restrictions"].append("News confidence reduced - limited headline coverage")
+        
+        except Exception as e:
+            gates["restrictions"].append(f"News availability check failed: {str(e)}")
+        
+        return gates
+    
+    def _apply_confidence_gates(self, recommendation: Recommendation, data_gates: Dict, news_gates: Dict) -> Dict[str, Any]:
+        """Apply final confidence gates to prevent bogus STRONG_* calls."""
+        # Convert dataclass to dict for modification
+        gated_recommendation = {
+            'ticker': recommendation.tier,
+            'tier': recommendation.tier,
+            'confidence': recommendation.confidence,
+            'urgency': recommendation.urgency,
+            'top_3_reasons': recommendation.top_3_reasons,
+            'key_levels': recommendation.key_levels,
+            'next_review_date': recommendation.next_review_date,
+            'position_sizing': recommendation.position_sizing,
+            'hedge_suggestions': recommendation.hedge_suggestions
+        }
+        
+        # Get current confidence and tier
+        current_confidence = recommendation.confidence
+        current_tier = recommendation.tier
+        
+        # Apply data quality restrictions
+        data_quality_score = data_gates.get('data_quality_score', 100.0)
+        
+        if data_quality_score < 50:
+            # Cap confidence for poor data quality
+            gated_recommendation['confidence'] = min(current_confidence, 50.0)
+            gated_recommendation['data_quality_restriction'] = "Confidence capped due to poor data quality"
+        
+        if data_quality_score < 30:
+            # Disable STRONG_* calls for very poor data
+            if current_tier.startswith('STRONG_'):
+                gated_recommendation['tier'] = current_tier.replace('STRONG_', '')
+                gated_recommendation['data_quality_restriction'] = "STRONG_* calls disabled due to very poor data quality"
+        
+        # Apply news availability restrictions
+        if "Good news not working disabled" in news_gates.get('restrictions', []):
+            # Remove good news not working from reasons
+            reasons = gated_recommendation.get('top_3_reasons', [])
+            filtered_reasons = [r for r in reasons if "Good news not working" not in r]
+            gated_recommendation['top_3_reasons'] = filtered_reasons
+        
+        # Add gate information to recommendation
+        gated_recommendation['applied_gates'] = {
+            'data_quality_score': data_quality_score,
+            'data_restrictions': data_gates.get('restrictions', []),
+            'news_restrictions': news_gates.get('restrictions', [])
+        }
+        
+        return gated_recommendation
     
     def analyze_portfolio(self, portfolio_file: str, days: int = 180) -> Dict:
         """Analyze entire portfolio with portfolio-aware suggestions."""
