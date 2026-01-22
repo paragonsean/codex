@@ -369,10 +369,31 @@ class AdvancedTradingSystem:
             
             print(f"\n📅 Next Review: {rec['next_review_date']}")
     
+    def _make_json_serializable(self, obj):
+        """Convert pandas objects to JSON-serializable format."""
+        import pandas as pd
+        import numpy as np
+        
+        if isinstance(obj, pd.Series):
+            return float(obj.iloc[-1]) if len(obj) > 0 else None
+        elif isinstance(obj, pd.DataFrame):
+            return obj.to_dict()
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, dict):
+            return {k: self._make_json_serializable(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self._make_json_serializable(item) for item in obj]
+        else:
+            return obj
+    
     def _output_json(self, results: Dict, filename: str):
         """Output results to JSON file."""
+        serializable_results = self._make_json_serializable(results)
         with open(filename, 'w') as f:
-            json.dump(results, f, indent=2)
+            json.dump(serializable_results, f, indent=2)
         print(f"\n📄 JSON report saved: {filename}")
     
     def _output_csv(self, results: Dict, filename: str):

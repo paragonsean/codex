@@ -1,0 +1,106 @@
+{
+  "ticker": "MU",
+  "timestamp": "2026-01-22T19:47:04.898047+00:00",
+  "market_data": {
+    "current_price": 366.7300109863281,
+    "indicators": {
+      "rsi_14": 75.89767792730996,
+      "sma_50": 264.27480072021484,
+      "sma_200": NaN,
+      "ema_20": 316.9721610521093,
+      "ema_50": 274.86352956254194,
+      "trend_50_200": "unknown",
+      "price_vs_sma_50": 0.38768437242936993,
+      "price_vs_sma_200": NaN,
+      "high_20d": 389.1099853515625,
+      "low_20d": 279.989990234375,
+      "high_50d": 389.1099853515625,
+      "low_50d": 212.0,
+      "position_20d_high": 0.7949049178273899,
+      "position_50d_high": 0.8736379864703268,
+      "atr_14": 22.577144077845983,
+      "atr_pct": 0.0615633937815023,
+      "volume_sma_20": 31426310.0,
+      "volume_ratio": 1.8046280330080113,
+      "volume_z_score": 2.1110507378581205,
+      "return_5d": 0.0939980002711096,
+      "return_10d": 0.15302148588732312,
+      "return_21d": 0.49685718769929843,
+      "return_63d": 0.7845742627071928,
+      "volatility_20d": 0.4860198784412881,
+      "volatility_50d": 0.6618459814609668,
+      "momentum_5d": 31.510009765625,
+      "momentum_21d": 121.73001098632812,
+      "roc_5d": 9.399800027110956,
+      "roc_21d": 49.68571876992985
+    },
+    "risk_metrics": {
+      "max_drawdown": -0.22283201551481618,
+      "current_drawdown": 0.0,
+      "avg_drawdown": -0.05969833079160084,
+      "realized_vol_20d": 0.48601987844128836,
+      "realized_vol_50d": 0.6618459814609665,
+      "volatility_regime": "high",
+      "downside_deviation": 0.017931763060712907,
+      "var_95": -0.046661200653433654,
+      "cvar_95": -0.05736235490842352,
+      "skewness": 0.24564063001887293,
+      "kurtosis": 0.19946858698835745,
+      "tail_ratio": 1.410274130058886,
+      "volume_stability": 0.38115049466996215,
+      "price_impact": 0.11467273404517317,
+      "beta_estimate": 2.0,
+      "sharpe_ratio_20d": 10.032811012215076,
+      "sortino_ratio_20d": 22.811825170571574
+    }
+  },
+  "dual_scores": {
+    "opportunity_score": 0.0,
+    "sell_risk_score": 100,
+    "overall_bias": "STRONG_SELL",
+    "confidence": 0.15
+  },
+  "cycle_analysis": {
+    "cycle_phase": "mid",
+    "cycle_confidence": 0.7,
+    "news_risk_score": 1.3,
+    "good_news_effectiveness": 0.0,
+    "key_signals": [
+      "RSI extremely overbought (75.9)",
+      "High volatility with low momentum"
+    ],
+    "transition_risk": 0
+  },
+  "good_news_analysis": {
+    "positive_headlines": 8,
+    "failure_rate": 1.0,
+    "effectiveness_score": 0.0,
+    "alert_triggered": true,
+    "consecutive_failures": 8
+  },
+  "recommendation": {
+    "tier": "EXIT/RISK OFF",
+    "confidence": 0.9,
+    "urgency": "CRITICAL",
+    "top_3_reasons": [
+      "Good news not working - distribution detected",
+      "High positive news failure rate (100%)",
+      "RSI overbought (75.9)"
+    ],
+    "key_levels": {
+      "support": "$279.99",
+      "resistance": "$389.11",
+      "50dma": "$264.27",
+      "200dma": "$nan"
+    },
+    "next_review_date": "2026-01-23",
+    "position_sizing": null,
+    "hedge_suggestions": null
+  },
+  "news_catalysts": {
+    "total_headlines": 25,
+    "positive_catalysts": 0,
+    "negative_catalysts": 0,
+    "risk_flags": 1
+  }
+}

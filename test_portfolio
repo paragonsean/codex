@@ -1,0 +1,4 @@
+ticker,shares,cost_basis,current_price,unrealized_pnl_pct,recommendation_tier,cycle_phase,sell_risk_score,opportunity_score
+MU,100,350.0,366.7300109863281,4.780003138950893,EXIT/RISK OFF,mid,100,0.0
+WDC,50,180.0,226.10000610351562,25.611114501953125,EXIT/RISK OFF,mid,100,0.0
+AMD,75,220.0,235.77999877929688,7.172726717862216,EXIT/RISK OFF,late-mid,100,0.0

@@ -5,7 +5,7 @@
     "last_cycle_phase": "late",
     "last_recommendation_tier": "TRIM 25-50%",
     "last_good_news_effectiveness": 25.0,
-    "last_update": "2026-01-22T19:38:48.820916+00:00",
+    "last_update": "2026-01-22T19:46:35.012403+00:00",
     "alert_history": []
   },
   "WDC": {
@@ -14,7 +14,7 @@
     "last_cycle_phase": "rollover_risk",
     "last_recommendation_tier": "EXIT/RISK OFF",
     "last_good_news_effectiveness": 15.0,
-    "last_update": "2026-01-22T19:38:48.820920+00:00",
+    "last_update": "2026-01-22T19:46:35.012411+00:00",
     "alert_history": []
   },
   "AAPL": {
@@ -23,7 +23,16 @@
     "last_cycle_phase": "late-mid",
     "last_recommendation_tier": "HOLD/ADD",
     "last_good_news_effectiveness": 60.0,
-    "last_update": "2026-01-22T19:38:48.820923+00:00",
+    "last_update": "2026-01-22T19:46:35.012414+00:00",
+    "alert_history": []
+  },
+  "TSLA": {
+    "ticker": "TSLA",
+    "last_sell_risk_score": 75.0,
+    "last_cycle_phase": "late",
+    "last_recommendation_tier": "TRIM 25-50%",
+    "last_good_news_effectiveness": 25.0,
+    "last_update": "2026-01-22T19:46:35.012417+00:00",
     "alert_history": []
   }
 }
