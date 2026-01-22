@@ -115,7 +115,8 @@ class MarketDataProcessor:
             # Handle multi-index columns (yfinance can return MultiIndex columns)
             if isinstance(data.columns, pd.MultiIndex):
                 # Extract the ticker data from multi-index
-                if ticker in data.columns.get_level_values(1):
+                level_values = data.columns.get_level_values(1)
+                if ticker in level_values.tolist():
                     # Filter columns for our ticker
                     ticker_data = data.xs(ticker, axis=1, level=1)
                     ticker_data.columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
@@ -152,7 +153,11 @@ class MarketDataProcessor:
         data = data.sort_index()
         
         # Forward fill any missing values (shouldn't be many after cleaning)
-        data = data.fillna(method='ffill')
+        try:
+            data = data.fillna(method='ffill')
+        except TypeError:
+            # Handle newer pandas versions
+            data = data.ffill()
         
         # Add basic derived columns
         data['Return'] = data['Close'].pct_change()

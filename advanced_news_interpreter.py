@@ -99,6 +99,13 @@ class AdvancedNewsInterpreter:
             "chip", "ai chip", "datacenter", "cloud", "capex", "fab", "wafer"
         }
     
+    def _get_indicator_value(self, indicators: Dict[str, any], key: str, default: float = 0) -> float:
+        """Helper to get scalar value from indicators dict."""
+        value = indicators.get(key, default)
+        if hasattr(value, 'iloc'):
+            return float(value.iloc[-1]) if len(value) > 0 else default
+        return float(value) if value is not None else default
+    
     def analyze_news_catalysts(self, headlines: List[Headline], 
                               market_data: MarketData) -> List[NewsCatalyst]:
         """Analyze news headlines as catalysts and risk flags."""
@@ -166,8 +173,8 @@ class AdvancedNewsInterpreter:
             key_signals.append("Negative cycle keywords in news")
         
         # 4. Volatility regime shift
-        vol_20d = indicators.get('volatility_20d', 0)
-        vol_50d = indicators.get('volatility_50d', 0)
+        vol_20d = self._get_indicator_value(indicators, 'volatility_20d', 0)
+        vol_50d = self._get_indicator_value(indicators, 'volatility_50d', 0)
         if vol_20d > vol_50d * 1.3:
             cycle_indicators['volatility_expansion'] = min(((vol_20d / vol_50d) - 1) * 333, 100)
             key_signals.append("Volatility expansion without price progress")
@@ -179,7 +186,7 @@ class AdvancedNewsInterpreter:
             key_signals.append(f"Capex expansion headlines ({capex_signals})")
         
         # 6. Price momentum vs volatility divergence
-        momentum = abs(indicators.get('ret_21d', 0))
+        momentum = abs(self._get_indicator_value(indicators, 'ret_21d', 0))
         if momentum < 0.05 and vol_20d > 0.3:  # Low momentum, high volatility
             cycle_indicators['momentum_volatility_divergence'] = min(vol_20d * 200 - momentum * 100, 100)
             key_signals.append("High volatility with low momentum")

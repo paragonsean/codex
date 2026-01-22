@@ -58,6 +58,13 @@ class DualScoringSystem:
         self.cluster_weights = self._initialize_cluster_weights()
         self.signal_thresholds = self._initialize_signal_thresholds()
     
+    def _get_indicator_value(self, indicators: Dict[str, any], key: str, default: float = 0) -> float:
+        """Helper to get scalar value from indicators dict."""
+        value = indicators.get(key, default)
+        if hasattr(value, 'iloc'):
+            return float(value.iloc[-1]) if len(value) > 0 else default
+        return float(value) if value is not None else default
+    
     def calculate_scores(self, market_data, news_data=None) -> DualScores:
         """Calculate comprehensive dual scores."""
         ticker = market_data.ticker
@@ -103,10 +110,11 @@ class DualScoringSystem:
         momentum_strength = 0.0
         
         # Positive price momentum
-        if indicators.get('ret_21d', 0) > 0.05:  # 5%+ in 21 days
+        ret_21d = self._get_indicator_value(indicators, 'ret_21d', 0)
+        if ret_21d > 0.05:  # 5%+ in 21 days
             momentum_signals.append("Strong 21D momentum")
             momentum_strength += 0.3
-        elif indicators.get('ret_21d', 0) > 0.02:  # 2%+ in 21 days
+        elif ret_21d > 0.02:  # 2%+ in 21 days
             momentum_signals.append("Moderate 21D momentum")
             momentum_strength += 0.2
         
@@ -126,8 +134,9 @@ class DualScoringSystem:
             momentum_strength += 0.3
         
         # Volume confirmation
-        vol_z = indicators.get('volume_z_score', 0)
-        if vol_z > 1.5 and indicators.get('ret_5d', 0) > 0:
+        vol_z = self._get_indicator_value(indicators, 'volume_z_score', 0)
+        ret_5d = self._get_indicator_value(indicators, 'ret_5d', 0)
+        if vol_z > 1.5 and ret_5d > 0:
             momentum_signals.append("Volume confirms upside")
             momentum_strength += 0.2
         
@@ -196,15 +205,16 @@ class DualScoringSystem:
             breakout_strength += 0.3
         
         # Expanding volatility (pre-breakout)
-        vol_20d = indicators.get('volatility_20d', 0)
-        vol_50d = indicators.get('volatility_50d', 0)
+        vol_20d = self._get_indicator_value(indicators, 'volatility_20d', 0)
+        vol_50d = self._get_indicator_value(indicators, 'volatility_50d', 0)
+            
         if vol_20d > vol_50d * 1.2:
             breakout_signals.append("Volatility expansion")
             breakout_strength += 0.2
         
         # Price momentum acceleration
-        ret_5d = indicators.get('ret_5d', 0)
-        ret_21d = indicators.get('ret_21d', 0)
+        ret_5d = self._get_indicator_value(indicators, 'ret_5d', 0)
+        ret_21d = self._get_indicator_value(indicators, 'ret_21d', 0)
         if ret_5d > ret_21d * 2 and ret_5d > 0:
             breakout_signals.append("Momentum acceleration")
             breakout_strength += 0.2
@@ -242,12 +252,13 @@ class DualScoringSystem:
         
         # RSI divergence (price higher highs, RSI lower highs)
         # Simplified divergence check
-        if rsi > 70 and indicators.get('ret_21d', 0) > 0.1:  # Strong gains but RSI high
+        ret_21d = self._get_indicator_value(indicators, 'ret_21d', 0)
+        if rsi > 70 and ret_21d > 0.1:  # Strong gains but RSI high
             overheating_signals.append("Potential RSI divergence")
             overheating_strength += 0.3
         
         # Extended gains
-        ret_63d = indicators.get('ret_63d', 0)
+        ret_63d = self._get_indicator_value(indicators, 'ret_63d', 0)
         if ret_63d > 0.5:  # 50%+ in 63 days
             overheating_signals.append("Extended gains (>50% in 3mo)")
             overheating_strength += 0.3
@@ -256,9 +267,15 @@ class DualScoringSystem:
             overheating_strength += 0.2
         
         # High volatility with gains
-        vol_20d = indicators.get('volatility_20d', 0)
+        vol_20d = self._get_indicator_value(indicators, 'volatility_20d', 0)
         if vol_20d > 0.4 and ret_21d > 0.05:
             overheating_signals.append("High volatility with gains")
+            overheating_strength += 0.2
+        
+        # New condition: High RSI with low volume
+        vol_z = self._get_indicator_value(indicators, 'volume_z_score', 0)
+        if rsi > 70 and vol_z < -1:
+            overheating_signals.append("High RSI with low volume")
             overheating_strength += 0.2
         
         clusters.append(SignalCluster(
@@ -374,8 +391,8 @@ class DualScoringSystem:
             volatility_strength += 0.2
         
         # Volatility expansion
-        vol_20d = indicators.get('volatility_20d', 0)
-        vol_50d = indicators.get('volatility_50d', 0)
+        vol_20d = self._get_indicator_value(indicators, 'volatility_20d', 0)
+        vol_50d = self._get_indicator_value(indicators, 'volatility_50d', 0)
         if vol_20d > vol_50d * 1.3:
             volatility_signals.append("Rapid volatility expansion")
             volatility_strength += 0.3

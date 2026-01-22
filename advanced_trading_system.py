@@ -53,7 +53,7 @@ class AdvancedTradingSystem:
         try:
             # Fetch market data
             market_data = self._fetch_market_data(ticker, days)
-            if not market_data:
+            if market_data is None:
                 return {"error": f"No market data available for {ticker}"}
             
             # Fetch news headlines
@@ -293,8 +293,9 @@ class AdvancedTradingSystem:
                         print(f"  {phase.replace('_', ' ').title()}: {count}")
             
             # Portfolio suggestions
-            if results.get("portfolio_suggestions"):
-                suggestions = results["portfolio_suggestions"]
+            portfolio_suggestions = results.get("portfolio_suggestions")
+            if portfolio_suggestions is not None:
+                suggestions = portfolio_suggestions
                 print(f"\n💡 Portfolio Suggestions:")
                 print(f"  Timing: {suggestions['timing_guidance']}")
                 

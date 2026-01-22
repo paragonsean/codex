@@ -78,6 +78,13 @@ class ActionableRecommendationsEngine:
             "lowest_risk": ["SNDK"]   # More stable
         }
     
+    def _get_indicator_value(self, indicators: Dict[str, any], key: str, default: float = 0) -> float:
+        """Helper to get scalar value from indicators dict."""
+        value = indicators.get(key, default)
+        if hasattr(value, 'iloc'):
+            return float(value.iloc[-1]) if len(value) > 0 else default
+        return float(value) if value is not None else default
+    
     def generate_recommendation(self, ticker: str, dual_scores: DualScores,
                                cycle_analysis: CycleAnalysis,
                                good_news_analysis: GoodNewsAnalysis,
@@ -279,14 +286,14 @@ class ActionableRecommendationsEngine:
             reasons.append(f"RSI oversold ({rsi:.1f})")
         
         # Price momentum reasons
-        ret_63d = market_data.indicators.get('ret_63d', 0)
+        ret_63d = self._get_indicator_value(market_data.indicators, 'ret_63d', 0)
         if ret_63d > 0.5:
             reasons.append(f"Extended gains ({ret_63d:+.1%})")
         elif ret_63d < -0.3:
             reasons.append(f"Significant losses ({ret_63d:+.1%})")
         
         # Volatility reasons
-        vol_20d = market_data.indicators.get('volatility_20d', 0)
+        vol_20d = self._get_indicator_value(market_data.indicators, 'volatility_20d', 0)
         if vol_20d > 0.5:
             reasons.append(f"High volatility ({vol_20d:.1%})")
         
