@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local virtualenvs
+.venv/
+venv/
+
+# Test output logs
+test_logs/
+
+# Generated reports/output
+reports/
+
+# Caches
+.pytest_cache/
+.mypy_cache/
