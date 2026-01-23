@@ -1,48 +1,44 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from typing import Any, Callable, Dict, Generic, Optional, Tuple, TypeVar
+import time
+from datetime import datetime, timedelta
+from typing import Any, Callable, Dict, Optional
 
 
-T = TypeVar("T")
-
-
-@dataclass
-class CacheEntry(Generic[T]):
-    value: T
-    expires_at: datetime
-
-
-class SimpleTTLCache:
-    def __init__(self, ttl_seconds: int = 60):
-        self.ttl = timedelta(seconds=ttl_seconds)
-        self._store: Dict[str, CacheEntry[Any]] = {}
+class SimpleCache:
+    def __init__(self, ttl_seconds: int = 300):
+        self.ttl_seconds = ttl_seconds
+        self._cache: Dict[str, tuple[Any, float]] = {}
 
     def get(self, key: str) -> Optional[Any]:
-        entry = self._store.get(key)
-        if entry is None:
+        if key not in self._cache:
             return None
-        if datetime.now(timezone.utc) >= entry.expires_at:
-            self._store.pop(key, None)
+        value, timestamp = self._cache[key]
+        if time.time() - timestamp > self.ttl_seconds:
+            del self._cache[key]
             return None
-        return entry.value
+        return value
 
-    def set(self, key: str, value: Any):
-        self._store[key] = CacheEntry(value=value, expires_at=datetime.now(timezone.utc) + self.ttl)
+    def set(self, key: str, value: Any) -> None:
+        self._cache[key] = (value, time.time())
+
+    def clear(self) -> None:
+        self._cache.clear()
 
 
-def cached(cache: SimpleTTLCache, key_fn: Callable[..., str]):
-    def decorator(fn: Callable[..., T]) -> Callable[..., T]:
-        def wrapper(*args, **kwargs):
-            key = key_fn(*args, **kwargs)
-            hit = cache.get(key)
-            if hit is not None:
-                return hit
-            value = fn(*args, **kwargs)
-            cache.set(key, value)
-            return value
+class RateLimiter:
+    def __init__(self, calls_per_minute: int = 60):
+        self.calls_per_minute = calls_per_minute
+        self.call_times: list[float] = []
 
-        return wrapper
+    def wait_if_needed(self) -> None:
+        now = time.time()
+        cutoff = now - 60.0
+        self.call_times = [t for t in self.call_times if t > cutoff]
 
-    return decorator
+        if len(self.call_times) >= self.calls_per_minute:
+            sleep_time = 60.0 - (now - self.call_times[0])
+            if sleep_time > 0:
+                time.sleep(sleep_time)
+
+        self.call_times.append(time.time())

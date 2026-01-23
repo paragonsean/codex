@@ -1,83 +1,92 @@
 from __future__ import annotations
 
+import time
 from datetime import datetime, timezone
-from typing import List, Optional, Sequence
+from typing import List, Optional
+
+import feedparser
+import requests
 
 from domain.enums import NewsCategory
 from domain.models import NewsEvent
-from news import Headline, fetch_headlines_for_ticker
-
-
-def _parse_iso(ts: Optional[str]) -> datetime:
-    if not ts:
-        return datetime.now(timezone.utc)
-    try:
-        # `news.parse_published` produces ISO strings, typically with timezone
-        return datetime.fromisoformat(ts)
-    except Exception:
-        return datetime.now(timezone.utc)
-
-
-def _map_categories(cats) -> Sequence[NewsCategory]:
-    out: List[NewsCategory] = []
-    if isinstance(cats, dict):
-        keys = cats.keys()
-    elif isinstance(cats, (list, tuple, set)):
-        keys = cats
-    else:
-        keys = []
-
-    for k in keys:
-        try:
-            out.append(NewsCategory(str(k)))
-        except Exception:
-            out.append(NewsCategory.OTHER)
-    return out
 
 
 class NewsService:
-    """Domain-facing news service.
+    def __init__(self, timeout: int = 20):
+        self.timeout = timeout
 
-    Phase 2 scaffolding: thin wrapper around existing `news.fetch_headlines_for_ticker`.
-    Returns domain.models.NewsEvent.
-    """
-
-    def get_news_events(
+    def fetch_news_events(
         self,
         ticker: str,
-        since_days: int = 7,
         max_items: int = 25,
-        keywords: Optional[List[str]] = None,
         extra_queries: Optional[List[str]] = None,
+        as_of_date: Optional[datetime] = None,
     ) -> List[NewsEvent]:
-        keywords = keywords or []
-        headlines: List[Headline] = fetch_headlines_for_ticker(
-            ticker=ticker,
-            max_items=max_items,
-            keywords=keywords,
-            extra_queries=extra_queries,
-        )
+        queries = [ticker]
+        if extra_queries:
+            queries.extend(extra_queries)
 
         events: List[NewsEvent] = []
-        for h in headlines:
-            events.append(
-                NewsEvent(
-                    ticker=h.ticker,
-                    title=h.title,
-                    url=h.link,
-                    source=h.source,
-                    published_ts=_parse_iso(h.published_ts),
-                    sentiment=float(h.sentiment),
-                    categories=_map_categories(h.categories),
-                    quality=float(h.quality),
-                    impact=int(h.impact),
-                    entities=h.entities,
-                    raw={
-                        "published": h.published,
-                        "published_ts": h.published_ts,
-                        "keyword_score": h.keyword_score,
-                    },
-                )
-            )
+        seen_titles = set()
 
-        return events
+        for q in queries:
+            url = self._google_news_rss_url(q)
+            feed = feedparser.parse(url)
+
+            for entry in feed.entries[: max_items * 2]:
+                title = getattr(entry, "title", "").strip()
+                if not title or title in seen_titles:
+                    continue
+                seen_titles.add(title)
+
+                link = getattr(entry, "link", "")
+                published_ts = self._parse_published_timestamp(entry)
+                source = self._extract_source(entry)
+
+                events.append(
+                    NewsEvent(
+                        ticker=ticker,
+                        title=title,
+                        url=link,
+                        source=source,
+                        published_ts=published_ts,
+                        sentiment=0.0,
+                        categories=None,
+                        quality=0.0,
+                        impact=0,
+                        entities=None,
+                        raw={
+                            "published_raw": getattr(entry, "published", ""),
+                        },
+                    )
+                )
+
+        # Filter out news published after as_of_date (prevent future data leakage)
+        if as_of_date:
+            cutoff_date = as_of_date
+            if cutoff_date.tzinfo is None:
+                cutoff_date = cutoff_date.replace(tzinfo=timezone.utc)
+            events = [e for e in events if e.published_ts <= cutoff_date]
+        
+        events.sort(key=lambda e: e.published_ts, reverse=True)
+        return events[:max_items]
+
+    def _google_news_rss_url(self, ticker_or_query: str) -> str:
+        q = requests.utils.quote(ticker_or_query)
+        return f"https://news.google.com/rss/search?q={q}%20when:7d&hl=en-US&gl=US&ceid=US:en"
+
+    def _parse_published_timestamp(self, entry) -> datetime:
+        if getattr(entry, "published_parsed", None):
+            return datetime.fromtimestamp(
+                time.mktime(entry.published_parsed), tz=timezone.utc
+            )
+        if getattr(entry, "updated_parsed", None):
+            return datetime.fromtimestamp(
+                time.mktime(entry.updated_parsed), tz=timezone.utc
+            )
+        return datetime.now(timezone.utc)
+
+    def _extract_source(self, entry) -> Optional[str]:
+        if hasattr(entry, "source") and entry.source:
+            return getattr(entry.source, "title", None)
+        return None

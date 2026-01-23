@@ -46,11 +46,15 @@ class ReactionRecord:
 
 @dataclass(frozen=True)
 class FeatureVector:
+    """
+    Immutable feature vector containing all computed features for a ticker.
+    Separates feature computation from scoring logic.
+    """
     ticker: str
     asof: datetime
     regime: RegimeLabel = RegimeLabel.UNKNOWN
-    technical: Optional[Dict[str, Any]] = None
-    news: Optional[Dict[str, Any]] = None
+    technical: Optional['TechnicalFeatures'] = None  # from features.technical_features
+    news: Optional['NewsFeatures'] = None  # from features.news_features
     reactions: Optional[List[ReactionRecord]] = None
     metadata: Optional[Dict[str, Any]] = None
 
