@@ -260,9 +260,10 @@ class HTMLReporter:
         
         # Add news articles section
         if report_data.get('news_events'):
-            html += """
+            num_articles = len(report_data['news_events'])
+            html += f"""
         <div class="section">
-            <h2>📰 Recent News Articles</h2>
+            <h2>📰 Recent News Articles ({num_articles} articles)</h2>
             <table>
                 <thead>
                     <tr>
@@ -304,6 +305,114 @@ class HTMLReporter:
             html += """                </tbody>
             </table>
             <p style="font-size: 0.9em; color: #6c757d; margin-top: 10px;">* Price change shown for articles published more than 1 day ago</p>
+        </div>
+"""
+        
+        # Add weekly news metrics section
+        if report_data.get('news_weekly_metrics') and report_data['news_weekly_metrics'].get('weeks'):
+            weekly_metrics = report_data['news_weekly_metrics']
+            html += """
+        <div class="section">
+            <h2>📈 Weekly News Trends (Last 4 Weeks)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Period</th>
+                        <th>Total</th>
+                        <th>Positive</th>
+                        <th>Negative</th>
+                        <th>Neutral</th>
+                        <th>Sentiment Balance</th>
+                        <th>Avg Quality</th>
+                        <th>Price Change</th>
+                        <th>RSI</th>
+                    </tr>
+                </thead>
+                <tbody>
+"""
+            
+            for week in weekly_metrics['weeks']:
+                balance = week['sentiment_balance']
+                balance_color = '#28a745' if balance > 0 else '#dc3545' if balance < 0 else '#6c757d'
+                balance_emoji = '📈' if balance > 0 else '📉' if balance < 0 else '➡️'
+                quality_color = '#28a745' if week['avg_quality'] > 0.7 else '#ffc107' if week['avg_quality'] > 0.4 else '#6c757d'
+                
+                # Format price change
+                price_change_str = "-"
+                price_change_color = "#6c757d"
+                if week.get('price_change') is not None:
+                    pc = week['price_change']
+                    price_change_emoji = '📈' if pc > 0 else '📉' if pc < 0 else '➡️'
+                    price_change_color = '#28a745' if pc > 0 else '#dc3545' if pc < 0 else '#6c757d'
+                    price_change_str = f"{price_change_emoji} {pc:+.2f}%"
+                
+                # Format RSI
+                rsi_str = "-"
+                rsi_color = "#6c757d"
+                if week.get('rsi') is not None:
+                    rsi = week['rsi']
+                    if rsi > 70:
+                        rsi_color = '#dc3545'  # Overbought - red
+                    elif rsi < 30:
+                        rsi_color = '#28a745'  # Oversold - green
+                    else:
+                        rsi_color = '#ffc107'  # Neutral - yellow
+                    rsi_str = f"{rsi:.1f}"
+                
+                html += f"""
+                    <tr>
+                        <td><strong>{week['week_label']}</strong></td>
+                        <td style="font-size: 0.85em;">{week['week_start']} to {week['week_end']}</td>
+                        <td style="text-align: center; font-weight: bold;">{week['total_count']}</td>
+                        <td style="text-align: center; color: #28a745;">{week['positive_count']}</td>
+                        <td style="text-align: center; color: #dc3545;">{week['negative_count']}</td>
+                        <td style="text-align: center; color: #6c757d;">{week['neutral_count']}</td>
+                        <td style="text-align: center; color: {balance_color}; font-weight: bold;">{balance_emoji} {balance:+d}</td>
+                        <td style="text-align: center; color: {quality_color};">{week['avg_quality']:.2f}</td>
+                        <td style="color: {price_change_color};"><strong>{price_change_str}</strong></td>
+                        <td style="color: {rsi_color};"><strong>{rsi_str}</strong></td>
+                    </tr>
+"""
+            
+            html += """                </tbody>
+            </table>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+                <h3 style="margin-top: 0;">Week-over-Week Changes</h3>
+"""
+            
+            wow = weekly_metrics['week_over_week']
+            total_change = wow['total_change']
+            positive_change = wow['positive_change']
+            negative_change = wow['negative_change']
+            sentiment_change = wow['sentiment_change']
+            
+            total_color = '#28a745' if total_change > 0 else '#dc3545' if total_change < 0 else '#6c757d'
+            pos_color = '#28a745' if positive_change > 0 else '#dc3545' if positive_change < 0 else '#6c757d'
+            neg_color = '#dc3545' if negative_change > 0 else '#28a745' if negative_change < 0 else '#6c757d'
+            sent_color = '#28a745' if sentiment_change > 0 else '#dc3545' if sentiment_change < 0 else '#6c757d'
+            
+            html += f"""
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Total Articles</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: {total_color};">{total_change:+d}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Positive</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: {pos_color};">{positive_change:+d}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Negative</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: {neg_color};">{negative_change:+d}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Avg Sentiment</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: {sent_color};">{sentiment_change:+.3f}</div>
+                    </div>
+                </div>
+            </div>
         </div>
 """
         

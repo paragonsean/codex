@@ -65,7 +65,8 @@ class MarkdownReporter:
         
         # Add news articles section
         if report_data.get('news_events'):
-            md += "\n---\n\n## 📰 Recent News Articles\n\n"
+            num_articles = len(report_data['news_events'])
+            md += f"\n---\n\n## 📰 Recent News Articles ({num_articles} articles)\n\n"
             md += "| # | Headline | Published | Source | Sentiment | Price Change | Quality |\n"
             md += "|---|----------|-----------|--------|-----------|--------------|---------|\n"
             
@@ -91,6 +92,56 @@ class MarkdownReporter:
                 md += f"| {idx} | [{title}]({event['url']}) | {event['published_ts']} | {event['source']} | {sentiment_str} | {price_change_str} | {quality_str} |\n"
             
             md += "\n*Price change shown for articles published more than 1 day ago*\n"
+        
+        # Add weekly news metrics section
+        if report_data.get('news_weekly_metrics') and report_data['news_weekly_metrics'].get('weeks'):
+            weekly_metrics = report_data['news_weekly_metrics']
+            md += "\n---\n\n## 📈 Weekly News Trends (Last 4 Weeks)\n\n"
+            md += "| Week | Period | Total | Positive | Negative | Neutral | Balance | Avg Quality | Price Change | RSI |\n"
+            md += "|------|--------|-------|----------|----------|---------|---------|-------------|--------------|-----|\n"
+            
+            for week in weekly_metrics['weeks']:
+                balance = week['sentiment_balance']
+                balance_emoji = '📈' if balance > 0 else '📉' if balance < 0 else '➡️'
+                quality_emoji = '🟢' if week['avg_quality'] > 0.7 else '🟡' if week['avg_quality'] > 0.4 else '⚪'
+                
+                # Format price change
+                price_change_str = "-"
+                if week.get('price_change') is not None:
+                    pc = week['price_change']
+                    price_change_emoji = '📈' if pc > 0 else '📉' if pc < 0 else '➡️'
+                    price_change_str = f"{price_change_emoji} {pc:+.2f}%"
+                
+                # Format RSI
+                rsi_str = "-"
+                if week.get('rsi') is not None:
+                    rsi = week['rsi']
+                    rsi_str = f"{rsi:.1f}"
+                
+                md += f"| {week['week_label']} | {week['week_start']} to {week['week_end']} | "
+                md += f"**{week['total_count']}** | {week['positive_count']} | {week['negative_count']} | {week['neutral_count']} | "
+                md += f"{balance_emoji} {balance:+d} | {quality_emoji} {week['avg_quality']:.2f} | {price_change_str} | {rsi_str} |\n"
+            
+            # Add week-over-week changes
+            wow = weekly_metrics['week_over_week']
+            md += "\n### Week-over-Week Changes\n\n"
+            md += "| Metric | Change |\n"
+            md += "|--------|--------|\n"
+            
+            total_change = wow['total_change']
+            positive_change = wow['positive_change']
+            negative_change = wow['negative_change']
+            sentiment_change = wow['sentiment_change']
+            
+            total_emoji = '📈' if total_change > 0 else '📉' if total_change < 0 else '➡️'
+            pos_emoji = '📈' if positive_change > 0 else '📉' if positive_change < 0 else '➡️'
+            neg_emoji = '📉' if negative_change > 0 else '📈' if negative_change < 0 else '➡️'
+            sent_emoji = '📈' if sentiment_change > 0 else '📉' if sentiment_change < 0 else '➡️'
+            
+            md += f"| **Total Articles** | {total_emoji} {total_change:+d} |\n"
+            md += f"| **Positive Articles** | {pos_emoji} {positive_change:+d} |\n"
+            md += f"| **Negative Articles** | {neg_emoji} {negative_change:+d} |\n"
+            md += f"| **Avg Sentiment** | {sent_emoji} {sentiment_change:+.3f} |\n"
         
         if report_data.get('semiconductor_analysis'):
             semi = report_data['semiconductor_analysis']

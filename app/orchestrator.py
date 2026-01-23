@@ -112,6 +112,10 @@ class Orchestrator:
             as_of_date=self.config.as_of_date,
         )
         
+        # Enrich news events with sentiment scores for reporting
+        from features.news_features import NewsFeatures
+        enriched_news_events = NewsFeatures.enrich_events(news_events)
+        
         features = self.feature_pipeline.build_feature_vector(
             ticker=ticker,
             price_series=price_series,
@@ -135,7 +139,7 @@ class Orchestrator:
                 print(f"  Generated {len(alerts)} alert(s)")
         
         report_data = self.report_builder.build_analysis_report(
-            ticker, features, signal, recommendation, price_series.df, news_events
+            ticker, features, signal, recommendation, price_series.df, enriched_news_events
         )
         
         return {

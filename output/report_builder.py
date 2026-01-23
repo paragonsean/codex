@@ -32,7 +32,7 @@ class ReportBuilder:
             "technical_summary": self._build_technical_summary(features),
             "news_summary": self._build_news_summary(features),
             "news_events": self._build_news_events(news_events, price_df),
-            "news_weekly_metrics": self._build_weekly_news_metrics(news_events),
+            "news_weekly_metrics": self._build_weekly_news_metrics(news_events, price_df, features),
             "reaction_summary": self._build_reaction_summary(features),
             "semiconductor_analysis": semiconductor_analysis,
             "signal_scores": {
@@ -86,7 +86,7 @@ class ReportBuilder:
         }
     
     def _build_news_events(self, news_events: Optional[List[NewsEvent]], price_df: Optional[any] = None) -> List[Dict[str, any]]:
-        """Extract top 10 news events with full details for display in reports."""
+        """Extract all news events with full details for display in reports."""
         if not news_events:
             return []
         
@@ -99,9 +99,9 @@ class ReportBuilder:
         if price_df is not None and not price_df.empty and 'Close' in price_df.columns:
             current_price = float(price_df['Close'].iloc[-1])
         
-        # Get top 10 news events
+        # Get all news events
         events = []
-        for event in news_events[:10]:
+        for event in news_events:
             # Classify sentiment as Positive/Negative/Neutral
             if event.sentiment > 0.1:
                 sentiment_label = "Positive"
@@ -159,8 +159,8 @@ class ReportBuilder:
         
         return events
     
-    def _build_weekly_news_metrics(self, news_events: Optional[List[NewsEvent]]) -> Dict[str, any]:
-        """Calculate comprehensive weekly news metrics for last 8 weeks."""
+    def _build_weekly_news_metrics(self, news_events: Optional[List[NewsEvent]], price_df: Optional[any] = None, features: Optional[any] = None) -> Dict[str, any]:
+        """Calculate comprehensive weekly news metrics for last 4 weeks."""
         if not news_events:
             return {"weeks": []}
         
@@ -170,9 +170,9 @@ class ReportBuilder:
         # Get current time
         now = datetime.now(timezone.utc)
         
-        # Initialize 8 weeks of data
+        # Initialize 4 weeks of data
         weeks = []
-        for week_num in range(8):
+        for week_num in range(4):
             week_start = now - timedelta(days=(week_num + 1) * 7)
             week_end = now - timedelta(days=week_num * 7)
             
@@ -201,6 +201,44 @@ class ReportBuilder:
             # High quality news count (quality > 0.7)
             high_quality_count = sum(1 for e in week_events if e.quality > 0.7)
             
+            # Calculate price change for this week
+            price_change = None
+            week_rsi = None
+            if price_df is not None and not price_df.empty:
+                # Get price data for this week
+                week_start_date = pd.Timestamp(week_start).tz_localize(None) if pd.Timestamp(week_start).tz is None else pd.Timestamp(week_start).tz_convert(None)
+                week_end_date = pd.Timestamp(week_end).tz_localize(None) if pd.Timestamp(week_end).tz is None else pd.Timestamp(week_end).tz_convert(None)
+                
+                # Ensure price_df index is timezone-naive for comparison
+                price_df_copy = price_df.copy()
+                if hasattr(price_df_copy.index, 'tz') and price_df_copy.index.tz is not None:
+                    price_df_copy.index = price_df_copy.index.tz_localize(None)
+                
+                week_data = price_df_copy[(price_df_copy.index >= week_start_date) & (price_df_copy.index < week_end_date)]
+                
+                if not week_data.empty and 'Close' in week_data.columns:
+                    start_price = float(week_data['Close'].iloc[0])
+                    end_price = float(week_data['Close'].iloc[-1])
+                    price_change = ((end_price - start_price) / start_price) * 100 if start_price > 0 else 0.0
+                    
+                    # Calculate RSI using the full price dataset up to the end of this week
+                    try:
+                        # Get all data up to the end of this week
+                        data_up_to_week_end = price_df_copy[price_df_copy.index < week_end_date]
+                        
+                        if len(data_up_to_week_end) >= 14 and 'Close' in data_up_to_week_end.columns:
+                            # Calculate RSI(14) for the full dataset
+                            delta = data_up_to_week_end['Close'].diff()
+                            gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+                            loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+                            rs = gain / loss
+                            rsi_series = 100 - (100 / (1 + rs))
+                            # Get the RSI value at the end of the week
+                            if not rsi_series.empty and not pd.isna(rsi_series.iloc[-1]):
+                                week_rsi = float(rsi_series.iloc[-1])
+                    except:
+                        week_rsi = None
+            
             weeks.append({
                 "week_num": week_num + 1,  # Week 1 is most recent
                 "week_label": f"Week {week_num + 1}",
@@ -214,6 +252,8 @@ class ReportBuilder:
                 "avg_quality": avg_quality,
                 "sentiment_balance": sentiment_balance,
                 "high_quality_count": high_quality_count,
+                "price_change": price_change,
+                "rsi": week_rsi,
             })
         
         # Reverse to show oldest to newest

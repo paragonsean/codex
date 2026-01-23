@@ -8,7 +8,7 @@ from typing import List, Optional
 @dataclass
 class Config:
     lookback_days: int = 180
-    max_headlines: int = 25
+    max_headlines: int = 100  # Increased to populate 8 weeks of news metrics
     benchmark_ticker: str = "SOXX"
     
     opportunity_buy_threshold: float = 60.0
