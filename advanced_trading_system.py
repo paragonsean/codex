@@ -29,8 +29,11 @@ from actionable_recommendations import ActionableRecommendationsEngine, Recommen
 from advanced_news_interpreter import AdvancedNewsInterpreter, CycleAnalysis, GoodNewsAnalysis
 from alerts_system import AlertsSystem
 from dual_scoring_system import DualScoringSystem
+from core.analysis_result import AnalysisResult
+from core.market_snapshot_builder import MarketSnapshotBuilder
 from market_data_processor import MarketDataProcessor
 from news import fetch_headlines_for_ticker
+from services.market_data_service import MarketDataService
 from trading_strategy_analyzer import Position, TradingStrategy, TRADING_STRATEGIES
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -46,6 +49,7 @@ class AdvancedTradingSystem:
         self.alerts_system = AlertsSystem()
         self.dual_scorer = DualScoringSystem()
         self.market_processor = MarketDataProcessor()
+        self.snapshot_builder = MarketSnapshotBuilder()
         
         # Load portfolio if available
         self.portfolio = self._load_portfolio()
@@ -62,8 +66,10 @@ class AdvancedTradingSystem:
             Dictionary containing comprehensive analysis results
         """
         try:
-            # Fetch market data
-            market_data = self.market_processor.fetch_and_process(ticker, lookback_days)
+            # Fetch market data (single canonical fetch path)
+            raw_df = MarketDataService().fetch_ohlcv(ticker, lookback_days, buffer_days=30)
+            market_data = self.market_processor.process_from_df(ticker, raw_df, lookback_days)
+            market_snapshot = self.snapshot_builder.build_from_df(ticker, raw_df)
             
             if market_data is None:
                 return {"error": f"Could not fetch market data for {ticker}"}
@@ -72,13 +78,13 @@ class AdvancedTradingSystem:
             data_gates = self._apply_data_quality_gates(market_data, lookback_days)
             
             # Generate dual scores
-            dual_scores = self.dual_scorer.calculate_scores(market_data)
+            dual_scores = self.dual_scorer.calculate_scores(market_snapshot)
             
             # Analyze news
             from news import fetch_headlines_for_ticker
             headlines = fetch_headlines_for_ticker(ticker, max_items=25, keywords=[])
-            news_catalysts = self.news_interpreter.analyze_news_catalysts(headlines, market_data)
-            good_news_analysis = self.news_interpreter.analyze_good_news_effectiveness(headlines, market_data)
+            news_catalysts = self.news_interpreter.analyze_news_catalysts(headlines, market_snapshot)
+            good_news_analysis = self.news_interpreter.analyze_good_news_effectiveness(headlines, market_snapshot)
             
             # Apply news availability gates
             news_gates = self._apply_news_availability_gates(news_catalysts, good_news_analysis)
@@ -92,7 +98,7 @@ class AdvancedTradingSystem:
             }
             
             # Perform cycle analysis
-            cycle_analysis = self.news_interpreter.analyze_cycle_conditions(ticker, headlines, market_data)
+            cycle_analysis = self.news_interpreter.analyze_cycle_conditions(ticker, headlines, market_snapshot)
             
             # Generate recommendation
             recommendation = self.recommendations_engine.generate_recommendation(
@@ -101,11 +107,13 @@ class AdvancedTradingSystem:
             
             # Apply final confidence gates
             final_recommendation = self._apply_confidence_gates(recommendation, data_gates, news_gates)
-            
-            return {
+
+            timestamp = datetime.now(timezone.utc).isoformat()
+            result = {
                 "ticker": ticker,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": timestamp,
                 "market_data": market_data,
+                "market_snapshot": market_snapshot,
                 "dual_scores": dual_scores,
                 "cycle_analysis": cycle_analysis,
                 "good_news_analysis": good_news_analysis,
@@ -115,6 +123,23 @@ class AdvancedTradingSystem:
                 "data_gates": data_gates,
                 "news_gates": news_gates
             }
+
+            result["analysis_result"] = AnalysisResult(
+                ticker=ticker,
+                timestamp=timestamp,
+                market_snapshot=market_snapshot,
+                market_data=market_data,
+                dual_scores=dual_scores,
+                cycle_analysis=cycle_analysis,
+                good_news_analysis=good_news_analysis,
+                recommendation=final_recommendation,
+                news_catalysts=news_catalysts,
+                news_catalysts_data=news_catalysts_data,
+                data_gates=data_gates,
+                news_gates=news_gates,
+            )
+
+            return result
             
         except Exception as e:
             return {"error": f"Analysis failed for {ticker}: {str(e)}"}
@@ -365,7 +390,8 @@ class AdvancedTradingSystem:
     def _fetch_market_data(self, ticker: str, days: int):
         """Fetch market data with fallback to mock data."""
         try:
-            return self.market_processor.fetch_and_process(ticker, days)
+            raw_df = MarketDataService().fetch_ohlcv(ticker, days, buffer_days=30)
+            return self.market_processor.process_from_df(ticker, raw_df, days)
         except Exception as e:
             print(f"Warning: Could not fetch real data for {ticker}, using mock data: {e}")
             # Fallback to mock data

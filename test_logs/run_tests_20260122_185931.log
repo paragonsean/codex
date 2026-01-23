@@ -5,14 +5,12 @@
 
 📰 Testing complete report generation for MU...
 Processing market data for MU (180 days)...
-✅ Report generation test completed successfully!
-📄 HTML length: 28039
-📋 Markdown length: 3997
+❌ Error: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 🧪 Running tests/test_csv_import.py
 📥 Testing CSV Import Functionality
 ========================================
-📄 Reading from: /Users/seanbaker/codex/sample_portfolio.csv
+📄 Reading from: /Users/seanbaker/codex/tests/fixtures/sample_portfolio.csv
 ✅ CSV columns validated: ticker, num_shares, cost_per_share, purchase_date, notes
   ✅ Row 1: AAPL - 100.0 shares @ $150.25
   ✅ Row 2: MSFT - 50.0 shares @ $250.5
@@ -263,26 +261,7 @@ Cluster Analysis:
 
 🔄 Running analyze_ticker...
 Processing market data for MU (180 days)...
-✅ Analysis completed successfully!
-📄 Testing HTML report...
-✅ HTML report generated (28039 characters)
-📋 Testing Markdown report...
-✅ Markdown report generated (3997 characters)
-📈 Testing News Impact Section...
-✅ News impact section generated (8505 characters)
-📋 Testing News Impact Markdown...
-✅ News impact markdown generated (929 characters)
-📊 Testing Sentiment Breakdown Section...
-✅ Sentiment breakdown generated (821 characters)
-📰 Testing News Headlines Section...
-✅ News headlines section generated (6849 characters)
-
-✅ All report generation tests passed!
-
-📊 Sample Data:
-  Data Quality Score: 100.0
-  News Catalysts: 25 items
-  Recommendation: EXIT/RISK OFF
+❌ Error in analysis: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 ✅ Fixed report test completed!
 
@@ -294,15 +273,7 @@ Processing market data for MU (180 days)...
 
 🔄 Running analyze_ticker...
 Processing market data for MU (180 days)...
-✅ Analysis completed successfully!
-
-📊 Data Quality Score: 100.0
-📰 News Catalysts: 25 items
-📈 Good News Analysis: <class 'advanced_news_interpreter.GoodNewsAnalysis'>
-🔍 First catalyst type: <class 'advanced_news_interpreter.NewsCatalyst'>
-📰 Headline type: <class 'news.Headline'>
-✅ Headline has sentiment: 0
-🎯 Recommendation: EXIT/RISK OFF (Confidence: 0.9%)
+❌ Error: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 ✅ Fixed system test completed!
 
@@ -312,30 +283,11 @@ Processing market data for MU (180 days)...
 
 📊 Testing MU with 30 days lookback...
 Processing market data for MU (30 days)...
-✅ Analysis completed
-📊 Data Quality Score: 100.0%
-🚫 Data Restrictions: 2
-📰 News Restrictions: 0
-🎯 Recommendation: EXIT/RISK OFF (Confidence: 0.9%)
-⚠️  Data Restrictions:
-   - 50DMA cluster disabled - insufficient lookback
-   - 200DMA cluster disabled - insufficient lookback
-🔒 Applied Gates: Data Score=100.0%
-📄 Generating report...
-✅ Report generated (28019 characters)
+❌ Error: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 📊 Testing MU with 180 days lookback...
 Processing market data for MU (180 days)...
-✅ Analysis completed
-📊 Data Quality Score: 100.0%
-🚫 Data Restrictions: 1
-📰 News Restrictions: 0
-🎯 Recommendation: EXIT/RISK OFF (Confidence: 0.9%)
-⚠️  Data Restrictions:
-   - 200DMA cluster disabled - insufficient lookback
-🔒 Applied Gates: Data Score=100.0%
-📄 Generating report...
-✅ Report generated (28039 characters)
+❌ Error: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 ✅ Gated report test completed!
 
@@ -345,35 +297,15 @@ Processing market data for MU (180 days)...
 
 📊 Testing MU with 30 days lookback...
 Processing market data for MU (30 days)...
-✅ Analysis completed
-📊 Data Quality Score: 100.0%
-🚫 Data Restrictions: 2
-📰 News Restrictions: 0
-🎯 Recommendation: EXIT/RISK OFF (Confidence: 0.9%)
-⚠️  Data Restrictions:
-   - 50DMA cluster disabled - insufficient lookback
-   - 200DMA cluster disabled - insufficient lookback
-🔒 Applied Gates: Data Score=100.0%
+❌ Error: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 📊 Testing MU with 180 days lookback...
 Processing market data for MU (180 days)...
-✅ Analysis completed
-📊 Data Quality Score: 100.0%
-🚫 Data Restrictions: 1
-📰 News Restrictions: 0
-🎯 Recommendation: EXIT/RISK OFF (Confidence: 0.9%)
-⚠️  Data Restrictions:
-   - 200DMA cluster disabled - insufficient lookback
-🔒 Applied Gates: Data Score=100.0%
+❌ Error: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 📊 Testing MU with 365 days lookback...
 Processing market data for MU (365 days)...
-✅ Analysis completed
-📊 Data Quality Score: 100.0%
-🚫 Data Restrictions: 0
-📰 News Restrictions: 0
-🎯 Recommendation: EXIT/RISK OFF (Confidence: 0.9%)
-🔒 Applied Gates: Data Score=100.0%
+❌ Error: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 ✅ Gated system test completed!
 
@@ -381,9 +313,8 @@ Processing market data for MU (365 days)...
 Testing market data processor with working approach...
 Fetching data for MU using news.py approach...
 ✅ Data fetched successfully: 131 rows
-Columns: [('Adj Close', 'MU'), ('Close', 'MU'), ('High', 'MU'), ('Low', 'MU'), ('Open', 'MU'), ('Volume', 'MU')]
+Columns: ['Adj Close', 'Close', 'High', 'Low', 'Open', 'Volume']
 Date range: 2025-07-16 00:00:00 to 2026-01-21 00:00:00
-Handling multi-index columns...
 ✅ Price summary created:
   Last price: $389.11
   RSI: 77.2
@@ -534,10 +465,10 @@ BRK.B:
 
 📋 Output:
 ================================================================================
-MU | combined_signal=44.71 | news_sent=1 | news_kw=1
+MU | combined_signal=45.22 | news_sent=2 | news_kw=1
 Price: last=389.11 | 5d=+15.08% 21d=+56.55% 63d=+88.18% | vol(21d ann)=65.9% | mdd=-20.5% | unknown | RSI14=77.2 | vol_z20=2.17
-News Analysis: 5 headlines | avg_quality=0.78 | high_impact=0
-Categories: financial(2), market(1), products(1)
+News Analysis: 5 headlines | avg_quality=0.75 | high_impact=0
+Categories: financial(1), market(1), products(1)
 Notes:
   - RSI suggests overbought (>=70).
   - Volume spike (z>=2).
@@ -549,14 +480,14 @@ Top headlines:
   - (+0, kw=0, LowImpact Q:0.90) [CNBC] (2026-01-20T17:36:19+00:00) [financial,market] Stocks making the biggest moves premarket: Nvidia, J.B. Hunt, 3M, Micron & more - CNBC
     https://news.google.com/rss/articles/CBMimwFBVV95cUxNcFR4Q0xHTDBudmQxUUMyZWtUZnF1RkxJLUpwRmtvTDVuTkg1UnhTejJWVXRkX3ZRNFpyb25qblV3U2hlLU1CSnFGb051VDBzbTQtSjhVcDFSQ2JGOS1uWmRxeENBV2kwbzlkYlpyOXlUc3VPUGw1UFFSRW5uY2hQWFNYMG4zeEo1ZmhjWnJhS3hnczhZUFg5ZFVxZw?oc=5
     Entities: companies:J.B.,3M,,CNBC
-  - (+0, kw=0, LowImpact Q:0.75) [The Motley Fool] (2026-01-20T08:00:00+00:00) [financial] 1 Dirt Cheap Artificial Intelligence Stock That Could Skyrocket in 2026 - The Motley Fool
-    https://news.google.com/rss/articles/CBMimAFBVV95cUxOUUVOOXhZOEZzdWxuNEtUYUdFYWRzQWlqclZkaHZycGRSTk1HNDJFOVlhZmpreGQzYzZZNG1kOFo5RmNmcDhkVVZ4X3prUFZrSGpYeWJaaC02UUFDX3dxZTBMcllJSllsdUc0ZURtdWJ0bTlCWWh2VzUxaGNrbUVpOHI3NkwweGdfT3NjRDRfOHZDTHFvUk1yMg?oc=5
-    Entities: companies:Could
   - (+0, kw=0, LowImpact Q:0.75) [Seeking Alpha] (2026-01-19T18:57:18+00:00) [none] Micron: Like 2023 Nvidia (But Better) (NASDAQ:MU) - Seeking Alpha
     https://news.google.com/rss/articles/CBMigAFBVV95cUxQc3cwVXpZZEx2ZWJ2UzdRMmNUMFNZUTg5ZzdSNEF1bHNfekFuS1kzRGc4N2xoOHNSU1Rka3NWdG10cGwxS21lcjNCQmxYNGlQMTVuYjZMOHNWRzVsZ3VEWjYycEczZXNOT2VjTGNUVlFLUjlKTW0wLVNoZ1pKc0Vadw?oc=5
     Entities: companies:(NASDAQ:MU)
   - (+0, kw=1, LowImpact Q:0.60) [Netflix] (2026-01-16T13:05:14+00:00) [products] The Can This Love Be Translated? Cast Explain the Heart-Wrenching Ending - Netflix
     https://news.google.com/rss/articles/CBMiiwFBVV95cUxNNzFleE1fSWFDakgxVGxBVkFzdDRtTHA2Qm1uYkFTV0NHdmpLakZORkJONktaamFnZ29jamNqQUphWERadE1rdHNRN0o5OGcwcU1fN3dEcHNJZUZLMWdKWUNxbTEzaGloRVh2aEdOWjhiRlZlOTJqcWoyb2UwTEs4em9xNzFfTDh3aHB3?oc=5
+  - (+1, kw=0, LowImpact Q:0.60) [FloTrack] (2026-01-17T06:07:40+00:00) [none] Sophie Rambo Breaks Athing Mu's 500m High School National Record - FloTrack
+    https://news.google.com/rss/articles/CBMiqgFBVV95cUxPSndJTW5jM2dvZkxQNzhWM01EbHhQWF92T0dqdXdtTUFPRnR4NGIxX3JDdXRyTDN5RFdnSVdTcEVWVG12R05SeDhGbVlWWG5KVjNFZTZJZV82aEYwWXdBRG54bDkwaEs1UzJTekJqZkVqbDJHV2FYa3VUbGJDSTNwZV9FMkhuLThTWnBkVnY3b282bWo1eTN6QUxlVlJMakU0dnFjaENxMm8yQQ?oc=5
+    Entities: companies:Record
 
 
 🧪 Running tests/test_portfolio_analysis.py
@@ -575,29 +506,16 @@ Processing market data for NVDA (180 days)...
 Processing market data for TSLA (180 days)...
 Processing market data for BRK.B (180 days)...
 Portfolio: Test Portfolio
-Total Positions: 5
-Total Value: $80,404.35
-Total P&L: $-56,951.90
+Total Positions: 0
+Total Value: $0.00
+Total P&L: $+0.00
 
 Top 3 Positions:
-  AAPL: $24,518.00 (+6318.1%)
-  MSFT: $21,934.00 (+7512.2%)
-  GOOGL: $7,983.75 (-8859.5%)
 
 Recommendations:
-  High Risk: 3 positions
+  High Risk: 0 positions
 
 Position Details:
-  AAPL: HOLD/TAKE PROFITS (CRITICAL)
-    Price: $245.18 | P&L: +6318.1%
-  MSFT: EXIT/RISK OFF (CRITICAL)
-    Price: $438.68 | P&L: +7512.2%
-  GOOGL: HOLD/TAKE PROFITS (CRITICAL)
-    Price: $319.35 | P&L: -8859.5%
-  NVDA: EXIT/RISK OFF (CRITICAL)
-    Price: $178.40 | P&L: -6042.2%
-  TSLA: EXIT/RISK OFF (CRITICAL)
-    Price: $419.62 | P&L: +10981.0%
 
 🧪 Running tests/test_report_functions.py
 🧪 Testing Report Generation Functions
@@ -607,16 +525,7 @@ Position Details:
 
 📄 Testing Single Stock Report Generation...
 Processing market data for MU (180 days)...
-📄 Testing HTML report...
-✅ HTML report generated (28039 characters)
-📋 Testing Markdown report...
-✅ Markdown report generated (3997 characters)
-📈 Testing News Impact Section...
-✅ News impact section generated (8505 characters)
-📋 Testing News Impact Markdown...
-✅ News impact markdown generated (929 characters)
-
-✅ All report generation tests passed!
+❌ Error in analysis: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
 🧪 Running tests/test_report_generation.py
 🧪 Testing Fixed Report Generation
@@ -629,22 +538,7 @@ Processing market data for MU (180 days)...
 
 🔄 Generating report for MU...
 Processing market data for MU (180 days)...
-✅ HTML report saved: reports/MU_report_20260122_170445.html
-✅ Markdown report saved: reports/MU_report_20260122_170445.md
-📁 Reports saved to 'reports/' directory
+❌ Error analyzing MU: Analysis failed for MU: 'AdvancedNewsInterpreter' object has no attribute '_calculate_forward_returns'
 
-✅ Report generation test completed successfully!
-📁 Found MU reports: 12 files
-  • reports/MU_report_20260122_164929.md
-  • reports/MU_report_20260122_170445.md
-  • reports/MU_report_20260122_163656.html
-  • reports/MU_report_20260122_163715.md
-  • reports/MU_report_20260122_164711.md
-  • reports/MU_report_20260122_164711.html
-  • reports/MU_report_20260122_163715.html
-  • reports/MU_report_20260122_164929.html
-  • reports/MU_report_20260122_164811.md
-  • reports/MU_report_20260122_164811.html
-  • reports/MU_report_20260122_163656.md
-  • reports/MU_report_20260122_170445.html
+⚠️  Report generation may have issues
 \n✅ All tests passed.

@@ -16,7 +16,7 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 import yfinance as yf
@@ -28,19 +28,44 @@ from news import (
     compute_combined_signal, TickerReport, Headline, PriceSummary
 )
 
+from core.analysis_result import AnalysisResult
+
 
 class StockReportGenerator:
     def __init__(self, output_dir: str = "reports"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
 
-    def generate_advanced_single_html(self, results: Dict, ticker: str, days: int) -> str:
-        market_data = results["market_data"]
-        dual_scores = results["dual_scores"]
-        cycle_analysis = results["cycle_analysis"]
-        recommendation = results["recommendation"]
-        good_news_analysis = results.get("good_news_analysis")
-        news_catalysts_data = results.get("news_catalysts_data", {})
+    def _extract_advanced_components(
+        self, results: Union[Dict[str, Any], AnalysisResult]
+    ):
+        if isinstance(results, AnalysisResult):
+            return (
+                results.market_data,
+                results.dual_scores,
+                results.cycle_analysis,
+                results.recommendation,
+                results.good_news_analysis,
+                results.news_catalysts_data or {},
+            )
+
+        ar = results.get("analysis_result") if isinstance(results, dict) else None
+        if isinstance(ar, AnalysisResult):
+            return self._extract_advanced_components(ar)
+
+        return (
+            results["market_data"],
+            results["dual_scores"],
+            results["cycle_analysis"],
+            results["recommendation"],
+            results.get("good_news_analysis"),
+            results.get("news_catalysts_data", {}),
+        )
+
+    def generate_advanced_single_html(self, results: Union[Dict[str, Any], AnalysisResult], ticker: str, days: int) -> str:
+        market_data, dual_scores, cycle_analysis, recommendation, good_news_analysis, news_catalysts_data = (
+            self._extract_advanced_components(results)
+        )
 
         html_content = f"""
 <!DOCTYPE html>
@@ -396,13 +421,10 @@ class StockReportGenerator:
         """
         return html_content
 
-    def generate_advanced_single_markdown(self, results: Dict, ticker: str, days: int) -> str:
-        market_data = results["market_data"]
-        dual_scores = results["dual_scores"]
-        cycle_analysis = results["cycle_analysis"]
-        recommendation = results["recommendation"]
-        good_news_analysis = results.get("good_news_analysis")
-        news_catalysts_data = results.get("news_catalysts_data", {})
+    def generate_advanced_single_markdown(self, results: Union[Dict[str, Any], AnalysisResult], ticker: str, days: int) -> str:
+        market_data, dual_scores, cycle_analysis, recommendation, good_news_analysis, news_catalysts_data = (
+            self._extract_advanced_components(results)
+        )
 
         md_content = f"""# 🎯 Advanced Stock Analysis Report - {ticker}
 

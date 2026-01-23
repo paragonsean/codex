@@ -16,7 +16,18 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 FAILED=0
 
-for test_file in "$ROOT_DIR"/tests/test_*.py; do
+shopt -s nullglob
+TEST_FILES=("$ROOT_DIR"/tests/test_*.py)
+shopt -u nullglob
+
+if [[ ${#TEST_FILES[@]} -eq 0 ]]; then
+  echo "❌ No test files found under tests/ (expected tests/test_*.py)." >&2
+  echo "   If you moved or deleted the tests directory, restore it or update run_tests.sh." >&2
+  cp -f "$LOG_FILE" "$LATEST_LOG"
+  exit 1
+fi
+
+for test_file in "${TEST_FILES[@]}"; do
   echo ""
   echo "🧪 Running ${test_file#$ROOT_DIR/}"
   if ! python "$test_file"; then

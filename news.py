@@ -34,7 +34,6 @@ import numpy as np
 import pandas as pd
 import requests
 import feedparser
-import yfinance as yf
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 try:
@@ -42,6 +41,8 @@ try:
     warnings.filterwarnings("ignore", category=Pandas4Warning)
 except Exception:
     pass
+
+from services.market_data_service import MarketDataService
 
 
 # ----------------------------
@@ -402,21 +403,11 @@ def fetch_prices(ticker: str, days: int) -> pd.DataFrame:
     """
     Fetch daily prices from yfinance for the last `days` calendar days.
     """
-    end = datetime.now(timezone.utc)
-    start = end - timedelta(days=days + 10)  # buffer for trading days
-    df = yf.download(
-        tickers=ticker,
-        start=start.strftime("%Y-%m-%d"),
-        end=end.strftime("%Y-%m-%d"),
-        interval="1d",
-        auto_adjust=False,
-        progress=False,
-        threads=False,
-    )
+    service = MarketDataService()
+    df = service.fetch_ohlcv(ticker, days, buffer_days=10)
     if df is None or df.empty:
         return pd.DataFrame()
-    df = df.dropna()
-    return df
+    return df.dropna()
 
 def summarize_prices(ticker: str, df: pd.DataFrame) -> Optional[PriceSummary]:
     if df is None or df.empty:

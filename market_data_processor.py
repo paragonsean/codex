@@ -27,7 +27,6 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 try:
@@ -35,6 +34,8 @@ try:
     warnings.filterwarnings("ignore", category=Pandas4Warning)
 except Exception:
     pass
+
+from services.market_data_service import MarketDataService
 
 
 @dataclass
@@ -98,47 +99,47 @@ class MarketDataProcessor:
             news_effectiveness=news_effectiveness,
             metadata=metadata
         )
+
+    def process_from_df(self, ticker: str, raw_data: pd.DataFrame, days: int = 252) -> MarketData:
+        """Process already-fetched OHLCV data and compute indicators/risk metrics."""
+        print(f"Processing market data for {ticker} ({days} days)...")
+
+        if raw_data is None or raw_data.empty:
+            raise ValueError(f"No data found for ticker {ticker}")
+
+        processed_data = self._process_data(raw_data)
+        indicators = self._calculate_indicators(processed_data)
+        risk_metrics = self._calculate_risk_metrics(processed_data)
+        news_effectiveness = self._calculate_news_effectiveness(processed_data, indicators)
+
+        current_price = float(processed_data['Close'].iloc[-1])
+
+        metadata = {
+            "data_points": len(processed_data),
+            "start_date": processed_data.index[0].strftime('%Y-%m-%d') if len(processed_data.index) else None,
+            "end_date": processed_data.index[-1].strftime('%Y-%m-%d') if len(processed_data.index) else None,
+            "missing_days": self._check_data_quality(processed_data),
+            "data_quality": "good" if len(processed_data) >= days * 0.95 else "limited"
+        }
+
+        return MarketData(
+            ticker=ticker,
+            data=processed_data,
+            current_price=current_price,
+            indicators=indicators,
+            risk_metrics=risk_metrics,
+            news_effectiveness=news_effectiveness,
+            metadata=metadata
+        )
     
     def _fetch_price_data(self, ticker: str, days: int) -> pd.DataFrame:
         """Fetch raw OHLCV data from Yahoo Finance."""
-        end_date = datetime.now(timezone.utc)
-        start_date = end_date - timedelta(days=days + 30)  # Buffer for weekends/holidays
-        
+        service = MarketDataService()
         try:
-            # Use the same approach as news.py that works
-            data = yf.download(
-                tickers=ticker,
-                start=start_date.strftime("%Y-%m-%d"),
-                end=end_date.strftime("%Y-%m-%d"),
-                interval="1d",
-                auto_adjust=False,
-                progress=False,
-                threads=False,
-            )
-            
+            data = service.fetch_ohlcv(ticker, days, buffer_days=30)
             if data is None or data.empty:
                 return pd.DataFrame()
-            
-            # Handle multi-index columns (yfinance can return MultiIndex columns)
-            if isinstance(data.columns, pd.MultiIndex):
-                # Extract the ticker data from multi-index
-                try:
-                    level_values = data.columns.get_level_values(1)
-                    if ticker in level_values.tolist():
-                        # Filter columns for our ticker
-                        ticker_data = data.xs(ticker, axis=1, level=1)
-                        ticker_data.columns = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
-                        data = ticker_data
-                    else:
-                        # Fallback: take first level
-                        data.columns = data.columns.get_level_values(0)
-                except (IndexError, KeyError, AttributeError) as e:
-                    print(f"MultiIndex handling failed for {ticker}: {e}")
-                    # Fallback: take first level
-                    data.columns = data.columns.get_level_values(0)
-            
             return data.dropna()
-            
         except Exception as e:
             print(f"Error fetching data for {ticker}: {e}")
             return pd.DataFrame()

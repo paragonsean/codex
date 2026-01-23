@@ -6,13 +6,13 @@
 📰 Testing complete report generation for MU...
 Processing market data for MU (180 days)...
 ✅ Report generation test completed successfully!
-📄 HTML length: 28039
-📋 Markdown length: 3997
+📄 HTML length: 28174
+📋 Markdown length: 4069
 
 🧪 Running tests/test_csv_import.py
 📥 Testing CSV Import Functionality
 ========================================
-📄 Reading from: /Users/seanbaker/codex/sample_portfolio.csv
+📄 Reading from: /Users/seanbaker/codex/tests/fixtures/sample_portfolio.csv
 ✅ CSV columns validated: ticker, num_shares, cost_per_share, purchase_date, notes
   ✅ Row 1: AAPL - 100.0 shares @ $150.25
   ✅ Row 2: MSFT - 50.0 shares @ $250.5
@@ -265,17 +265,17 @@ Cluster Analysis:
 Processing market data for MU (180 days)...
 ✅ Analysis completed successfully!
 📄 Testing HTML report...
-✅ HTML report generated (28039 characters)
+✅ HTML report generated (28174 characters)
 📋 Testing Markdown report...
-✅ Markdown report generated (3997 characters)
+✅ Markdown report generated (4069 characters)
 📈 Testing News Impact Section...
-✅ News impact section generated (8505 characters)
+✅ News impact section generated (8577 characters)
 📋 Testing News Impact Markdown...
-✅ News impact markdown generated (929 characters)
+✅ News impact markdown generated (1001 characters)
 📊 Testing Sentiment Breakdown Section...
-✅ Sentiment breakdown generated (821 characters)
+✅ Sentiment breakdown generated (822 characters)
 📰 Testing News Headlines Section...
-✅ News headlines section generated (6849 characters)
+✅ News headlines section generated (6921 characters)
 
 ✅ All report generation tests passed!
 
@@ -322,7 +322,7 @@ Processing market data for MU (30 days)...
    - 200DMA cluster disabled - insufficient lookback
 🔒 Applied Gates: Data Score=100.0%
 📄 Generating report...
-✅ Report generated (29606 characters)
+✅ Report generated (28142 characters)
 
 📊 Testing MU with 180 days lookback...
 Processing market data for MU (180 days)...
@@ -335,7 +335,7 @@ Processing market data for MU (180 days)...
    - 200DMA cluster disabled - insufficient lookback
 🔒 Applied Gates: Data Score=100.0%
 📄 Generating report...
-✅ Report generated (29626 characters)
+✅ Report generated (28174 characters)
 
 ✅ Gated report test completed!
 
@@ -381,13 +381,12 @@ Processing market data for MU (365 days)...
 Testing market data processor with working approach...
 Fetching data for MU using news.py approach...
 ✅ Data fetched successfully: 131 rows
-Columns: [('Adj Close', 'MU'), ('Close', 'MU'), ('High', 'MU'), ('Low', 'MU'), ('Open', 'MU'), ('Volume', 'MU')]
-Date range: 2025-07-16 00:00:00 to 2026-01-21 00:00:00
-Handling multi-index columns...
+Columns: ['Adj Close', 'Close', 'High', 'Low', 'Open', 'Volume']
+Date range: 2025-07-17 00:00:00 to 2026-01-22 00:00:00
 ✅ Price summary created:
-  Last price: $389.11
-  RSI: 77.2
-  21D return: +56.55%
+  Last price: $397.58
+  RSI: 78.5
+  21D return: +49.51%
 
 Testing MarketDataProcessor...
 
@@ -396,15 +395,15 @@ Testing MarketDataProcessor...
 ================================================================================
 
 📋 Data Overview:
-  Period: 2025-07-16 to 2026-01-21
+  Period: 2025-07-17 to 2026-01-22
   Data Points: 131
   Data Quality: good
   Missing Days: 0
 
-💰 Current Price: $389.11
+💰 Current Price: $397.58
 
 📈 Technical Indicators:
-  RSI(14): 77.5
+  RSI(14): 81.8
   50/200 DMA Trend: unknown
   Price vs 50DMA: +0.0%
   Price vs 200DMA: +0.0%
@@ -412,7 +411,7 @@ Testing MarketDataProcessor...
   20D Low: $0.00
   Position in 20D Range: 0.0%
   ATR(14): $0.00 (0.0%)
-  Volume Z-Score: 2.11
+  Volume Z-Score: 0.57
 
 📊 Returns:
   5D: +0.0%
@@ -423,7 +422,7 @@ Testing MarketDataProcessor...
 ⚠️ Risk Metrics:
   Max Drawdown: -20.5%
   Current Drawdown: 0.0%
-  Volatility (20D): 67.0%
+  Volatility (20D): 66.5%
   Volatility Regime: unknown
   Downside Deviation: 0.000
   VaR (95%): 0.00%
@@ -496,9 +495,9 @@ BRK.B:
 📡 Fetching headlines...
 ✅ Found 10 headlines
 📈 Fetching price data...
-✅ Price data: $389.11
+✅ Price data: $397.58
 📊 Computing combined signal...
-✅ Combined signal: +48.89
+✅ Combined signal: +48.16
 
 📋 Headlines Analysis:
   1. KeyBanc Sees Micron (MU) in a ‘Different’ Memory Cycle, Rais...
@@ -518,10 +517,10 @@ BRK.B:
      Quality: 0.9
 
 📈 Price Summary:
-  Current: $389.11
-  5D Return: +15.1%
-  21D Return: +56.6%
-  63D Return: +88.2%
+  Current: $397.58
+  5D Return: +19.3%
+  21D Return: +49.5%
+  63D Return: +96.5%
 
 ✅ News analysis test completed!
 
@@ -534,13 +533,12 @@ BRK.B:
 
 📋 Output:
 ================================================================================
-MU | combined_signal=45.22 | news_sent=2 | news_kw=1
-Price: last=389.11 | 5d=+15.08% 21d=+56.55% 63d=+88.18% | vol(21d ann)=65.9% | mdd=-20.5% | unknown | RSI14=77.2 | vol_z20=2.17
+MU | combined_signal=44.49 | news_sent=2 | news_kw=1
+Price: last=397.58 | 5d=+19.27% 21d=+49.51% 63d=+96.54% | vol(21d ann)=63.7% | mdd=-20.5% | unknown | RSI14=78.5 | vol_z20=0.59
 News Analysis: 5 headlines | avg_quality=0.75 | high_impact=0
 Categories: financial(1), market(1), products(1)
 Notes:
   - RSI suggests overbought (>=70).
-  - Volume spike (z>=2).
 
 Top headlines:
   - (+1, kw=0, LowImpact Q:0.90) [Yahoo Finance] (2026-01-19T11:09:58+00:00) [none] Is It Too Late To Consider Micron Technology (MU) After 244% One-Year Surge? - Yahoo Finance
@@ -575,29 +573,25 @@ Processing market data for NVDA (180 days)...
 Processing market data for TSLA (180 days)...
 Processing market data for BRK.B (180 days)...
 Portfolio: Test Portfolio
-Total Positions: 5
-Total Value: $80,404.35
-Total P&L: $-56,951.90
+Total Positions: 3
+Total Value: $35,607.30
+Total P&L: $-74,198.95
 
 Top 3 Positions:
-  AAPL: $24,518.00 (+6318.1%)
-  MSFT: $21,934.00 (+7512.2%)
-  GOOGL: $7,983.75 (-8859.5%)
+  GOOGL: $8,263.50 (-8819.5%)
+  NVDA: $13,863.00 (-5899.3%)
+  TSLA: $13,480.80 (+12468.0%)
 
 Recommendations:
-  High Risk: 3 positions
+  High Risk: 0 positions
 
 Position Details:
-  AAPL: HOLD/TAKE PROFITS (CRITICAL)
-    Price: $245.18 | P&L: +6318.1%
-  MSFT: EXIT/RISK OFF (CRITICAL)
-    Price: $438.68 | P&L: +7512.2%
   GOOGL: HOLD/TAKE PROFITS (CRITICAL)
-    Price: $319.35 | P&L: -8859.5%
-  NVDA: EXIT/RISK OFF (CRITICAL)
-    Price: $178.40 | P&L: -6042.2%
-  TSLA: EXIT/RISK OFF (CRITICAL)
-    Price: $419.62 | P&L: +10981.0%
+    Price: $330.54 | P&L: -8819.5%
+  NVDA: HOLD/TAKE PROFITS (LOW)
+    Price: $184.84 | P&L: -5899.3%
+  TSLA: HOLD/TAKE PROFITS (LOW)
+    Price: $449.36 | P&L: +12468.0%
 
 🧪 Running tests/test_report_functions.py
 🧪 Testing Report Generation Functions
@@ -608,32 +602,13 @@ Position Details:
 📄 Testing Single Stock Report Generation...
 Processing market data for MU (180 days)...
 📄 Testing HTML report...
-✅ HTML report generated (29626 characters)
+✅ HTML report generated (28174 characters)
 📋 Testing Markdown report...
-✅ Markdown report generated (4175 characters)
+✅ Markdown report generated (4069 characters)
 📈 Testing News Impact Section...
-✅ News impact section generated (9451 characters)
+✅ News impact section generated (8577 characters)
 📋 Testing News Impact Markdown...
-✅ News impact markdown generated (1019 characters)
-
-✅ All report generation tests passed!
-
-🧪 Running tests/test_report_functions_root.py
-🧪 Testing Report Generation Functions
-==================================================
-
-📰 Testing report functions for MU...
-
-📄 Testing Single Stock Report Generation...
-Processing market data for MU (180 days)...
-📄 Testing HTML report...
-✅ HTML report generated (29626 characters)
-📋 Testing Markdown report...
-✅ Markdown report generated (4175 characters)
-📈 Testing News Impact Section...
-✅ News impact section generated (9451 characters)
-📋 Testing News Impact Markdown...
-✅ News impact markdown generated (1019 characters)
+✅ News impact markdown generated (1001 characters)
 
 ✅ All report generation tests passed!
 
@@ -648,20 +623,32 @@ Processing market data for MU (180 days)...
 
 🔄 Generating report for MU...
 Processing market data for MU (180 days)...
-✅ HTML report saved: reports/MU_report_20260122_164929.html
-✅ Markdown report saved: reports/MU_report_20260122_164929.md
+✅ HTML report saved: reports/MU_report_20260122_190503.html
+✅ Markdown report saved: reports/MU_report_20260122_190503.md
 📁 Reports saved to 'reports/' directory
 
 ✅ Report generation test completed successfully!
-📁 Found MU reports: 10 files
+📁 Found MU reports: 22 files
   • reports/MU_report_20260122_164929.md
+  • reports/MU_report_20260122_190110.html
+  • reports/MU_report_20260122_170445.md
   • reports/MU_report_20260122_163656.html
   • reports/MU_report_20260122_163715.md
   • reports/MU_report_20260122_164711.md
   • reports/MU_report_20260122_164711.html
   • reports/MU_report_20260122_163715.html
+  • reports/MU_report_20260122_172015.html
   • reports/MU_report_20260122_164929.html
+  • reports/MU_report_20260122_172015.md
+  • reports/MU_report_20260122_172741.html
+  • reports/MU_report_20260122_190110.md
   • reports/MU_report_20260122_164811.md
+  • reports/MU_report_20260122_190503.html
   • reports/MU_report_20260122_164811.html
+  • reports/MU_report_20260122_172741.md
+  • reports/MU_report_20260122_190503.md
   • reports/MU_report_20260122_163656.md
+  • reports/MU_report_20260122_170957.md
+  • reports/MU_report_20260122_170957.html
+  • reports/MU_report_20260122_170445.html
 \n✅ All tests passed.

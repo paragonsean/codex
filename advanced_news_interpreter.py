@@ -21,10 +21,12 @@ from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+from types import SimpleNamespace
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from news import Headline, fetch_headlines_for_ticker
 from market_data_processor import MarketData
+from core.market_snapshot import MarketSnapshot
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -109,8 +111,9 @@ class AdvancedNewsInterpreter:
         return float(value) if value is not None else default
     
     def analyze_news_catalysts(self, headlines: List[Headline], 
-                              market_data: MarketData) -> List[NewsCatalyst]:
+                              market_data: Union[MarketData, MarketSnapshot]) -> List[NewsCatalyst]:
         """Analyze news headlines as catalysts and risk flags."""
+        market_data = self._coerce_market_data(market_data)
         catalysts = []
         
         for headline in headlines:
@@ -141,8 +144,9 @@ class AdvancedNewsInterpreter:
         return catalysts
     
     def analyze_cycle_conditions(self, ticker: str, headlines: List[Headline],
-                               market_data: MarketData) -> CycleAnalysis:
+                               market_data: Union[MarketData, MarketSnapshot]) -> CycleAnalysis:
         """Analyze cycle peak conditions for semiconductor/memory stocks."""
+        market_data = self._coerce_market_data(market_data)
         indicators = market_data.indicators
         risk_metrics = market_data.risk_metrics
         
@@ -216,8 +220,9 @@ class AdvancedNewsInterpreter:
         )
     
     def analyze_good_news_effectiveness(self, headlines: List[Headline],
-                                       market_data: MarketData) -> GoodNewsAnalysis:
+                                       market_data: Union[MarketData, MarketSnapshot]) -> GoodNewsAnalysis:
         """Analyze 'good news not working' phenomenon."""
+        market_data = self._coerce_market_data(market_data)
         # Filter positive headlines
         positive_headlines = [h for h in headlines if h.sentiment > 0]
         
@@ -269,6 +274,41 @@ class AdvancedNewsInterpreter:
             distribution_signals=distribution_signals,
             alert_triggered=alert_triggered
         )
+
+    def _calculate_forward_returns(self, headline: Headline, market_data) -> Dict[str, float]:
+        """Calculate forward returns after a news event.
+
+        This is a simplified proxy that uses recent returns from `market_data.indicators`.
+        A fuller implementation would map headline timestamps to price bars.
+        """
+        returns = {"1d": 0.0, "2d": 0.0, "3d": 0.0}
+
+        try:
+            indicators = getattr(market_data, "indicators", {}) or {}
+            ret_5d = indicators.get("ret_5d", 0) or 0
+            try:
+                ret_5d = float(ret_5d)
+            except Exception:
+                ret_5d = 0.0
+
+            returns["1d"] = ret_5d / 5
+            returns["2d"] = ret_5d / 2.5
+            returns["3d"] = ret_5d / 1.67
+
+            # Adjust based on sentiment
+            sentiment = getattr(headline, "sentiment", 0) or 0
+            try:
+                sentiment = float(sentiment)
+            except Exception:
+                sentiment = 0.0
+
+            sentiment_factor = 1 + (sentiment * 0.1)
+            for key in returns:
+                returns[key] *= sentiment_factor
+        except Exception:
+            return returns
+
+        return returns
     
     def _classify_catalyst_type(self, headline: Headline) -> str:
         """Classify headline as catalyst type."""
@@ -353,35 +393,90 @@ class AdvancedNewsInterpreter:
         # Supply/demand keywords
         if any(word in text_lower for word in ["supply", "demand", "inventory", "backlog"]):
             relevance += 10
-        
+
         return min(relevance, 100)
-    
-    def _calculate_forward_returns(self, headline: Headline, market_data: MarketData) -> Dict[str, float]:
-        """Calculate 1d, 2d, 3d forward returns from headline date."""
-        # This is a simplified implementation
-        # In practice, you'd match headline dates to price data
-        
-        returns = {"1d": 0.0, "2d": 0.0, "3d": 0.0}
-        
-        # Use recent returns as proxy (simplified)
-        indicators = market_data.indicators
-        returns["1d"] = indicators.get('ret_5d', 0) / 5  # Approximate daily
-        returns["2d"] = indicators.get('ret_5d', 0) / 2.5
-        returns["3d"] = indicators.get('ret_5d', 0) / 1.67
-        
-        # Adjust based on sentiment
-        if headline.sentiment > 0:
-            # Positive news should have positive returns
-            sentiment_factor = 1 + (headline.sentiment * 0.1)
-            for key in returns:
-                returns[key] *= sentiment_factor
-        elif headline.sentiment < 0:
-            # Negative news should have negative returns
-            sentiment_factor = 1 + (headline.sentiment * 0.1)
-            for key in returns:
-                returns[key] *= sentiment_factor
-        
-        return returns
+
+    def _coerce_market_data(self, market_data: Union[MarketData, MarketSnapshot]):
+        if isinstance(market_data, MarketSnapshot):
+            df = market_data.df
+            if df is None or df.empty:
+                raise ValueError(f"Empty market snapshot for {market_data.ticker}")
+
+            close = df["Close"].astype(float)
+            high = df["High"].astype(float) if "High" in df.columns else close
+            low = df["Low"].astype(float) if "Low" in df.columns else close
+            volume = df["Volume"].astype(float) if "Volume" in df.columns else pd.Series(index=df.index, dtype=float)
+
+            current_price = float(close.iloc[-1])
+
+            def ret_n(n: int) -> float:
+                try:
+                    return float((close.iloc[-1] / close.iloc[-1 - n]) - 1.0) if len(close) > n else float("nan")
+                except Exception:
+                    return float("nan")
+
+            def rsi(series: pd.Series, period: int = 14) -> float:
+                delta = series.diff()
+                up = delta.clip(lower=0)
+                down = -delta.clip(upper=0)
+                roll_up = up.ewm(alpha=1 / period, adjust=False).mean()
+                roll_down = down.ewm(alpha=1 / period, adjust=False).mean()
+                rs = roll_up / (roll_down.replace(0, np.nan))
+                out = 100 - (100 / (1 + rs))
+                return float(out.fillna(50).iloc[-1])
+
+            def zscore_last(x: pd.Series, window: int) -> float:
+                if len(x) < window + 1:
+                    return float("nan")
+                w = x.iloc[-window:]
+                mu = w.mean()
+                sd = w.std(ddof=0)
+                if sd == 0:
+                    return 0.0
+                return float((x.iloc[-1] - mu) / sd)
+
+            rets = close.pct_change()
+            vol_20d = float(rets.rolling(20).std(ddof=0).iloc[-1] * np.sqrt(252)) if len(rets.dropna()) >= 21 else float("nan")
+            vol_50d = float(rets.rolling(50).std(ddof=0).iloc[-1] * np.sqrt(252)) if len(rets.dropna()) >= 51 else float("nan")
+
+            indicators = {
+                "rsi_14": rsi(close, 14),
+                "ret_5d": ret_n(5),
+                "ret_21d": ret_n(21),
+                "ret_63d": ret_n(63),
+                "volatility_20d": vol_20d,
+                "volatility_50d": vol_50d,
+                "volume_z_score": zscore_last(volume, 20) if len(volume.dropna()) >= 21 else float("nan"),
+            }
+
+            peak = close.cummax()
+            current_drawdown = float((close.iloc[-1] / peak.iloc[-1]) - 1.0) if len(peak) else 0.0
+            max_drawdown = float(((close / peak) - 1.0).min()) if len(peak) else 0.0
+
+            vol_regime = "normal"
+            if not np.isnan(vol_20d):
+                if vol_20d < 0.20:
+                    vol_regime = "low"
+                elif vol_20d > 0.40:
+                    vol_regime = "high"
+
+            risk_metrics = {
+                "current_drawdown": current_drawdown,
+                "max_drawdown": max_drawdown,
+                "volatility_regime": vol_regime,
+                "volatility_20d": vol_20d,
+                "volatility_50d": vol_50d,
+            }
+
+            return SimpleNamespace(
+                ticker=market_data.ticker,
+                current_price=current_price,
+                indicators=indicators,
+                risk_metrics=risk_metrics,
+                news_effectiveness={},
+            )
+
+        return market_data
     
     def _classify_price_reaction(self, forward_returns: Dict[str, float]) -> str:
         """Classify price reaction based on forward returns."""

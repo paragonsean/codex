@@ -22,8 +22,11 @@ Usage:
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 from datetime import datetime, timezone
+from types import SimpleNamespace
+
+from core.market_snapshot import MarketSnapshot
 
 
 @dataclass
@@ -65,8 +68,9 @@ class DualScoringSystem:
             return float(value.iloc[-1]) if len(value) > 0 else default
         return float(value) if value is not None else default
     
-    def calculate_scores(self, market_data, news_data=None) -> DualScores:
+    def calculate_scores(self, market_data: Union[object, MarketSnapshot], news_data=None) -> DualScores:
         """Calculate comprehensive dual scores."""
+        market_data = self._coerce_market_data(market_data)
         ticker = market_data.ticker
         
         # Calculate opportunity clusters
@@ -98,6 +102,117 @@ class DualScoringSystem:
             timestamp=datetime.now(timezone.utc).isoformat(),
             key_factors=key_factors
         )
+
+    def _coerce_market_data(self, market_data: Union[object, MarketSnapshot]):
+        if isinstance(market_data, MarketSnapshot):
+            df = market_data.df
+            if df is None or df.empty:
+                raise ValueError(f"Empty market snapshot for {market_data.ticker}")
+
+            close = df["Close"].astype(float)
+            high = df["High"].astype(float) if "High" in df.columns else close
+            low = df["Low"].astype(float) if "Low" in df.columns else close
+            volume = df["Volume"].astype(float) if "Volume" in df.columns else pd.Series(index=df.index, dtype=float)
+
+            current_price = float(close.iloc[-1])
+
+            def ret_n(n: int) -> float:
+                try:
+                    return float((close.iloc[-1] / close.iloc[-1 - n]) - 1.0) if len(close) > n else float("nan")
+                except Exception:
+                    return float("nan")
+
+            def rsi(series: pd.Series, period: int = 14) -> float:
+                delta = series.diff()
+                up = delta.clip(lower=0)
+                down = -delta.clip(upper=0)
+                roll_up = up.ewm(alpha=1 / period, adjust=False).mean()
+                roll_down = down.ewm(alpha=1 / period, adjust=False).mean()
+                rs = roll_up / (roll_down.replace(0, np.nan))
+                out = 100 - (100 / (1 + rs))
+                return float(out.fillna(50).iloc[-1])
+
+            def zscore_last(x: pd.Series, window: int) -> float:
+                if len(x) < window + 1:
+                    return float("nan")
+                w = x.iloc[-window:]
+                mu = w.mean()
+                sd = w.std(ddof=0)
+                if sd == 0:
+                    return 0.0
+                return float((x.iloc[-1] - mu) / sd)
+
+            rets = close.pct_change()
+            vol_20d = float(rets.rolling(20).std(ddof=0).iloc[-1] * np.sqrt(252)) if len(rets.dropna()) >= 21 else float("nan")
+            vol_50d = float(rets.rolling(50).std(ddof=0).iloc[-1] * np.sqrt(252)) if len(rets.dropna()) >= 51 else float("nan")
+
+            ma50 = close.rolling(50).mean()
+            ma200 = close.rolling(200).mean()
+            trend = "unknown"
+            if len(ma50) and len(ma200) and not np.isnan(ma50.iloc[-1]) and not np.isnan(ma200.iloc[-1]):
+                trend = "bullish (50>200)" if ma50.iloc[-1] > ma200.iloc[-1] else "bearish (50<200)"
+
+            high_20d = float(high.rolling(20).max().iloc[-1]) if len(high) >= 20 else float("nan")
+            low_20d = float(low.rolling(20).min().iloc[-1]) if len(low) >= 20 else float("nan")
+            denom = (high_20d - low_20d) if (not np.isnan(high_20d) and not np.isnan(low_20d)) else float("nan")
+            position_20d_high = 0.5
+            if denom and denom != 0 and not np.isnan(denom):
+                position_20d_high = float((current_price - low_20d) / denom)
+
+            prev_close = close.shift(1)
+            tr = pd.concat(
+                [
+                    (high - low),
+                    (high - prev_close).abs(),
+                    (low - prev_close).abs(),
+                ],
+                axis=1,
+            ).max(axis=1)
+            atr14 = float(tr.rolling(14).mean().iloc[-1]) if len(tr.dropna()) >= 15 else float("nan")
+            atr_pct = float(atr14 / current_price) if current_price and not np.isnan(atr14) else float("nan")
+
+            peak = close.cummax()
+            current_drawdown = float((close.iloc[-1] / peak.iloc[-1]) - 1.0) if len(peak) else 0.0
+            max_drawdown = float(((close / peak) - 1.0).min()) if len(peak) else 0.0
+
+            vol_regime = "normal"
+            if not np.isnan(vol_20d):
+                if vol_20d < 0.20:
+                    vol_regime = "low"
+                elif vol_20d > 0.40:
+                    vol_regime = "high"
+
+            indicators = {
+                "rsi_14": rsi(close, 14),
+                "ret_5d": ret_n(5),
+                "ret_21d": ret_n(21),
+                "ret_63d": ret_n(63),
+                "trend_50_200": trend,
+                "volume_z_score": zscore_last(volume, 20) if len(volume.dropna()) >= 21 else float("nan"),
+                "position_20d_high": position_20d_high,
+                "high_20d": high_20d,
+                "volatility_20d": vol_20d,
+                "volatility_50d": vol_50d,
+                "atr_pct": atr_pct,
+            }
+
+            risk_metrics = {
+                "current_drawdown": current_drawdown,
+                "max_drawdown": max_drawdown,
+                "volatility_regime": vol_regime,
+                "volatility_20d": vol_20d,
+                "volatility_50d": vol_50d,
+            }
+
+            return SimpleNamespace(
+                ticker=market_data.ticker,
+                current_price=current_price,
+                indicators=indicators,
+                risk_metrics=risk_metrics,
+                news_effectiveness={},
+            )
+
+        return market_data
     
     def _analyze_opportunity_clusters(self, market_data, news_data=None) -> List[SignalCluster]:
         """Analyze opportunity-focused signal clusters."""
