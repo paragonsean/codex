@@ -2,11 +2,18 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
+
 from domain.models import ReactionRecord
+from output.graph_builder import GraphBuilder
 
 
 class HTMLReporter:
-    def render_analysis_report(self, report_data: Dict[str, any]) -> str:
+    
+    def __init__(self):
+        self.graph_builder = GraphBuilder()
+    
+    def render_analysis_report(self, report_data: Dict[str, any], price_df: pd.DataFrame = None) -> str:
         html = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -209,6 +216,28 @@ class HTMLReporter:
                 if level_value and level_value != 0.0:
                     html += f"""                <div class="level"><strong>{level_type.replace('_', ' ').title()}:</strong> ${level_value:.2f}</div>\n"""
             html += """            </div>
+        </div>
+"""
+        
+        # Charts Section
+        if price_df is not None and not price_df.empty and self.graph_builder.is_available():
+            html += """
+        <div class="section">
+            <h2>📊 Price Charts</h2>
+            <div style="display: grid; gap: 20px;">
+"""
+            # Combined chart
+            combined_chart = self.graph_builder.create_combined_chart(
+                price_df, report_data['ticker'], days=90
+            )
+            if combined_chart:
+                html += f"""
+                <div>
+                    {self.graph_builder.embed_in_html(combined_chart, "Technical Analysis Chart")}
+                </div>
+"""
+            html += """
+            </div>
         </div>
 """
         
@@ -790,6 +819,136 @@ class HTMLReporter:
 """
             
             html += """        </div>
+"""
+        
+        # Mining Stock Analysis Section
+        if report_data.get('mining_stock_analysis'):
+            mining = report_data['mining_stock_analysis']
+            stock_info = mining['stock_info']
+            momentum = mining['momentum']
+            semi_demand = mining['semi_demand']
+            composite = mining['composite']
+            
+            # Sensitivity icon
+            sensitivity_icons = {
+                "Very High": "🔥🔥",
+                "High": "🔥",
+                "Medium": "🟡",
+                "Low": "🔴",
+            }
+            sens_icon = sensitivity_icons.get(stock_info['semi_sensitivity'], "")
+            
+            # Direction color
+            direction_colors = {
+                "bullish": "#28a745",
+                "bearish": "#dc3545",
+                "neutral": "#6c757d",
+            }
+            
+            html += f"""
+        <div class="section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white;">
+            <h2 style="color: #ffc107;">⛏️ Mining Stock Analysis - {stock_info['name']}</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <h4 style="color: #ffc107; margin-top: 0;">Stock Info</h4>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Mineral:</span>
+                        <span class="metric-value" style="color: white;">{stock_info['mineral']}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Semi Sensitivity:</span>
+                        <span class="metric-value" style="color: white;">{sens_icon} {stock_info['semi_sensitivity']}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Exposure:</span>
+                        <span class="metric-value" style="color: white; font-size: 0.9em;">{stock_info['primary_exposure']}</span>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <h4 style="color: #ffc107; margin-top: 0;">Price Momentum</h4>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Current Price:</span>
+                        <span class="metric-value" style="color: white;">${momentum['current_price']:.2f}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">RSI:</span>
+                        <span class="metric-value" style="color: {'#dc3545' if momentum['rsi'] > 70 else '#28a745' if momentum['rsi'] < 30 else 'white'};">{momentum['rsi']:.1f}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Trend:</span>
+                        <span class="metric-value" style="color: white;">{momentum['trend'].replace('_', ' ').title()}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">vs MA20:</span>
+                        <span class="metric-value" style="color: {'#28a745' if momentum['vs_ma20_pct'] > 0 else '#dc3545'};">{momentum['vs_ma20_pct']:+.1f}%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <h4 style="color: #ffc107; margin-top: 0;">Semi Demand Score</h4>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <div style="font-size: 2.5em; font-weight: bold; color: {'#28a745' if semi_demand['score'] >= 60 else '#ffc107' if semi_demand['score'] >= 40 else '#dc3545'};">
+                            {semi_demand['score']:.0f}/100
+                        </div>
+                        <div style="color: #ccc;">Semiconductor Demand Score</div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Direction:</span>
+                        <span class="metric-value" style="color: {direction_colors.get(semi_demand['direction'], 'white')};">{semi_demand['direction'].upper()}</span>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                    <h4 style="color: #ffc107; margin-top: 0;">Composite Signal</h4>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <div style="font-size: 1.8em; font-weight: bold; color: {'#28a745' if 'BUY' in composite['overall_direction'] else '#dc3545' if 'SELL' in composite['overall_direction'] else '#ffc107'};">
+                            {composite['overall_direction']}
+                        </div>
+                        <div style="color: #ccc;">Net Signal: {composite['net_signal']:+d}</div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Risk Points:</span>
+                        <span class="metric-value" style="color: #dc3545;">{composite['total_risk_points']}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label" style="color: #ccc;">Opportunity Points:</span>
+                        <span class="metric-value" style="color: #28a745;">{composite['total_opportunity_points']}</span>
+                    </div>
+                </div>
+            </div>
+"""
+            
+            # Alerts
+            if composite.get('alerts'):
+                html += """
+            <div style="margin-top: 20px;">
+                <h4 style="color: #ffc107;">⚠️ Alerts</h4>
+"""
+                for alert in composite['alerts']:
+                    html += f"""
+                <div style="background: rgba(255,193,7,0.2); border-left: 4px solid #ffc107; padding: 10px 15px; margin: 10px 0; border-radius: 0 5px 5px 0;">
+                    {alert}
+                </div>
+"""
+                html += """
+            </div>
+"""
+            
+            # Key Assets
+            if stock_info.get('key_assets'):
+                html += f"""
+            <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px;">
+                <strong style="color: #ffc107;">Key Assets:</strong> 
+                <span style="color: #ccc;">{', '.join(stock_info['key_assets'])}</span>
+            </div>
+"""
+            
+            html += """
+        </div>
 """
         
         if report_data.get('reaction_summary', {}).get('count', 0) > 0:

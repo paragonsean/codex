@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 
 from domain.models import FeatureVector, NewsEvent, Recommendation, ReactionRecord, SignalScore
 from features.semiconductor_indicators import SemiconductorIndicators
+from features.mining_stock_indicators import MiningStockIndicators, MINING_UNIVERSE
 
 
 class ReportBuilder:
@@ -17,11 +18,16 @@ class ReportBuilder:
         news_events: Optional[List[NewsEvent]] = None,
     ) -> Dict[str, any]:
         semiconductor_analysis = None
+        mining_stock_analysis = None
+        
         if price_df is not None and not price_df.empty:
             current_price = float(price_df['Close'].iloc[-1]) if 'Close' in price_df.columns else 0.0
             semiconductor_analysis = SemiconductorIndicators.analyze_semiconductor_cycle_risk(
                 ticker, price_df, current_price
             )
+            
+            # Check if this is a mining stock and add mining analysis
+            mining_stock_analysis = self._build_mining_stock_analysis(ticker, price_df)
         else:
             current_price = None
         
@@ -35,6 +41,7 @@ class ReportBuilder:
             "news_weekly_metrics": self._build_weekly_news_metrics(news_events, price_df, features),
             "reaction_summary": self._build_reaction_summary(features),
             "semiconductor_analysis": semiconductor_analysis,
+            "mining_stock_analysis": mining_stock_analysis,
             "signal_scores": {
                 "opportunity": signal.opportunity,
                 "sell_risk": signal.sell_risk,
@@ -308,4 +315,61 @@ class ReportBuilder:
             "failed": failed,
             "absorbed": absorbed,
             "effectiveness": worked / (worked + failed) if (worked + failed) > 0 else 0.0,
+        }
+
+    def _build_mining_stock_analysis(self, ticker: str, price_df) -> Optional[Dict[str, any]]:
+        """Build mining stock analysis if ticker is in the mining universe."""
+        # Check if ticker is a mining stock (handle .AX suffix for ASX stocks)
+        ticker_key = ticker.replace(".AX", "")
+        
+        if ticker_key not in MINING_UNIVERSE:
+            return None
+        
+        stock = MINING_UNIVERSE[ticker_key]
+        
+        # Calculate indicators
+        momentum = MiningStockIndicators.calculate_price_momentum(price_df, ticker)
+        
+        # Calculate semi demand score (use default cycle phase MID)
+        semi_demand = MiningStockIndicators.calculate_semi_demand_score(
+            ticker=ticker,
+            semi_cycle_phase="MID",
+            ev_growth_yoy=20.0,  # Default assumption
+            ai_capex_growth_yoy=30.0,  # Default assumption
+        )
+        
+        # Build composite from available indicators
+        indicators = [momentum, semi_demand]
+        composite = MiningStockIndicators.calculate_composite_signal(indicators)
+        
+        return {
+            "is_mining_stock": True,
+            "stock_info": {
+                "ticker": ticker,
+                "name": stock.name,
+                "mineral": stock.mineral.value,
+                "semi_sensitivity": stock.semi_sensitivity.value,
+                "primary_exposure": stock.primary_exposure,
+                "key_assets": stock.key_assets,
+                "description": stock.description,
+            },
+            "momentum": {
+                "current_price": momentum.evidence.get("current_price", 0),
+                "rsi": momentum.evidence.get("rsi", 50),
+                "trend": momentum.evidence.get("trend", "neutral"),
+                "vs_ma20_pct": momentum.evidence.get("vs_ma20_pct", 0),
+                "vs_ma50_pct": momentum.evidence.get("vs_ma50_pct", 0),
+                "vs_ma200_pct": momentum.evidence.get("vs_ma200_pct", 0),
+                "pct_off_high": momentum.evidence.get("pct_off_high", 0),
+                "pct_off_low": momentum.evidence.get("pct_off_low", 0),
+                "direction": momentum.direction.value,
+                "alert": momentum.alert,
+            },
+            "semi_demand": {
+                "score": semi_demand.evidence.get("total_score", 0),
+                "sensitivity_weight": semi_demand.evidence.get("sensitivity_weight", 0),
+                "direction": semi_demand.direction.value,
+                "alert": semi_demand.alert,
+            },
+            "composite": composite,
         }
