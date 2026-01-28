@@ -148,6 +148,7 @@ class Orchestrator:
             "signal": signal,
             "recommendation": recommendation,
             "report_data": report_data,
+            "price_df": price_series.df,
             "is_valid": is_valid,
             "violations": violations,
         }
@@ -161,8 +162,9 @@ class Orchestrator:
         for result in run_result.results:
             ticker = result["ticker"]
             report_data = result["report_data"]
+            price_df = result.get("price_df")
             
-            html_content = self.html_reporter.render_analysis_report(report_data)
+            html_content = self.html_reporter.render_analysis_report(report_data, price_df)
             html_path = output_dir / f"{ticker}_report_{timestamp}.html"
             with open(html_path, "w") as f:
                 f.write(html_content)
