@@ -160,13 +160,25 @@ class TechnicalIndicators:
         indicators['atr_pct'] = (
             indicators['atr_14'] / current_price if current_price > 0 else 0.0
         )
+
+        # Key levels used by SemiconductorPolicy
+        if len(df) >= 1:
+            if 'High' in df.columns:
+                indicators['high_20d'] = float(df['High'].rolling(20).max().iloc[-1]) if len(df) >= 20 else float(df['High'].max())
+            else:
+                indicators['high_20d'] = float(close.rolling(20).max().iloc[-1]) if len(close) >= 20 else float(close.max())
+
+            if 'Low' in df.columns:
+                indicators['low_20d'] = float(df['Low'].rolling(20).min().iloc[-1]) if len(df) >= 20 else float(df['Low'].min())
+            else:
+                indicators['low_20d'] = float(close.rolling(20).min().iloc[-1]) if len(close) >= 20 else float(close.min())
         
         indicators['volume_z_score'] = TechnicalIndicators.calculate_volume_zscore(df, 20)
         
-        if 'Return' in df.columns:
-            returns = df['Return'].dropna()
-            indicators['volatility_20d'] = TechnicalIndicators.calculate_volatility(returns, 20)
-            indicators['volatility_50d'] = TechnicalIndicators.calculate_volatility(returns, 50)
+        # Volatility: compute from close-to-close returns (don't require a precomputed Return column)
+        returns = close.pct_change().dropna()
+        indicators['volatility_20d'] = TechnicalIndicators.calculate_volatility(returns, 20)
+        indicators['volatility_50d'] = TechnicalIndicators.calculate_volatility(returns, 50)
         
         indicators['max_drawdown'] = TechnicalIndicators.calculate_max_drawdown(close)
         indicators['current_drawdown'] = TechnicalIndicators.calculate_current_drawdown(close)

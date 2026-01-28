@@ -9,8 +9,9 @@ from data.market_data_service import MarketDataService
 from data.news_service import NewsService
 from decision.risk_manager import RiskManager
 from decision.semiconductor_policy import SemiconductorPolicy
-from domain.models import RunRequest, RunResult
+from domain.models import PriceSeries, RunRequest, RunResult
 from domain.portfolio import PortfolioContext
+from features.semiconductor_indicators import SemiconductorIndicators
 from features.feature_pipeline import FeaturePipeline
 from output.alerts import AlertsManager
 from output.html_reporter import HTMLReporter
@@ -99,11 +100,24 @@ class Orchestrator:
         portfolio_ctx: Optional[PortfolioContext],
     ) -> dict:
         print(f"\nAnalyzing {ticker}...")
-        
-        price_series = self.market_data_service.fetch_price_series(
+
+        # Indicators (cycle/vol/trend) require longer history than the scoring window.
+        # We fetch a longer series, then slice the last lookback window for the feature/scoring pipeline.
+        indicator_days = max(self.config.lookback_days, 260)
+        full_price_series = self.market_data_service.fetch_price_series(
             ticker,
-            self.config.lookback_days,
+            indicator_days,
             as_of_date=self.config.as_of_date,
+        )
+
+        price_df_full = full_price_series.df
+        price_df_scoring = price_df_full.tail(self.config.lookback_days) if price_df_full is not None else price_df_full
+        price_series = PriceSeries(
+            ticker=full_price_series.ticker,
+            df=price_df_scoring,
+            timezone=full_price_series.timezone,
+            interval=full_price_series.interval,
+            metadata=full_price_series.metadata,
         )
         
         news_events = self.news_service.fetch_news_events(
@@ -137,9 +151,76 @@ class Orchestrator:
             alerts = self.alerts_manager.check_alerts(ticker, signal, recommendation)
             if alerts:
                 print(f"  Generated {len(alerts)} alert(s)")
-        
+
+        semiconductor_analysis = None
+        mining_stock_analysis = None
+        if price_df_full is not None and not price_df_full.empty:
+            current_price = float(price_df_full["Close"].iloc[-1]) if "Close" in price_df_full.columns else 0.0
+            semiconductor_analysis = SemiconductorIndicators.analyze_semiconductor_cycle_risk(
+                ticker,
+                price_df_full,
+                current_price,
+            )
+
+            try:
+                from features.mining_stock_indicators import MiningStockIndicators, MINING_UNIVERSE
+
+                ticker_key = ticker.replace(".AX", "")
+                if ticker_key in MINING_UNIVERSE:
+                    momentum = MiningStockIndicators.calculate_price_momentum(price_df_full, ticker)
+                    semi_demand = MiningStockIndicators.calculate_semi_demand_score(
+                        ticker=ticker,
+                        semi_cycle_phase="MID",
+                        ev_growth_yoy=20.0,
+                        ai_capex_growth_yoy=30.0,
+                    )
+                    indicators = [momentum, semi_demand]
+                    composite = MiningStockIndicators.calculate_composite_signal(indicators)
+
+                    stock = MINING_UNIVERSE[ticker_key]
+                    mining_stock_analysis = {
+                        "is_mining_stock": True,
+                        "stock_info": {
+                            "ticker": ticker,
+                            "name": stock.name,
+                            "mineral": stock.mineral.value,
+                            "semi_sensitivity": stock.semi_sensitivity.value,
+                            "primary_exposure": stock.primary_exposure,
+                            "key_assets": stock.key_assets,
+                            "description": stock.description,
+                        },
+                        "momentum": {
+                            "current_price": momentum.evidence.get("current_price", 0),
+                            "rsi": momentum.evidence.get("rsi", 50),
+                            "trend": momentum.evidence.get("trend", "neutral"),
+                            "vs_ma20_pct": momentum.evidence.get("vs_ma20_pct", 0),
+                            "vs_ma50_pct": momentum.evidence.get("vs_ma50_pct", 0),
+                            "vs_ma200_pct": momentum.evidence.get("vs_ma200_pct", 0),
+                            "pct_off_high": momentum.evidence.get("pct_off_high", 0),
+                            "pct_off_low": momentum.evidence.get("pct_off_low", 0),
+                            "direction": momentum.direction.value,
+                            "alert": momentum.alert,
+                        },
+                        "semi_demand": {
+                            "score": semi_demand.evidence.get("total_score", 0),
+                            "sensitivity_weight": semi_demand.evidence.get("sensitivity_weight", 0),
+                            "direction": semi_demand.direction.value,
+                            "alert": semi_demand.alert,
+                        },
+                        "composite": composite,
+                    }
+            except Exception:
+                mining_stock_analysis = None
+
         report_data = self.report_builder.build_analysis_report(
-            ticker, features, signal, recommendation, price_series.df, enriched_news_events
+            ticker,
+            features,
+            signal,
+            recommendation,
+            price_df_full,
+            enriched_news_events,
+            semiconductor_analysis=semiconductor_analysis,
+            mining_stock_analysis=mining_stock_analysis,
         )
         
         return {
@@ -148,7 +229,7 @@ class Orchestrator:
             "signal": signal,
             "recommendation": recommendation,
             "report_data": report_data,
-            "price_df": price_series.df,
+            "price_df": price_df_full,
             "is_valid": is_valid,
             "violations": violations,
         }
