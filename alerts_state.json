@@ -1,39 +1,4 @@
 {
-  "MU": {
-    "ticker": "MU",
-    "last_sell_risk_score": 75.0,
-    "last_cycle_phase": "late",
-    "last_recommendation_tier": "TRIM 25-50%",
-    "last_good_news_effectiveness": 25.0,
-    "last_update": "2026-01-22T19:46:35.012403+00:00",
-    "alert_history": []
-  },
-  "WDC": {
-    "ticker": "WDC",
-    "last_sell_risk_score": 85.0,
-    "last_cycle_phase": "rollover_risk",
-    "last_recommendation_tier": "EXIT/RISK OFF",
-    "last_good_news_effectiveness": 15.0,
-    "last_update": "2026-01-22T19:46:35.012411+00:00",
-    "alert_history": []
-  },
-  "AAPL": {
-    "ticker": "AAPL",
-    "last_sell_risk_score": 45.0,
-    "last_cycle_phase": "late-mid",
-    "last_recommendation_tier": "HOLD/ADD",
-    "last_good_news_effectiveness": 60.0,
-    "last_update": "2026-01-22T19:46:35.012414+00:00",
-    "alert_history": []
-  },
-  "TSLA": {
-    "ticker": "TSLA",
-    "last_sell_risk_score": 75.0,
-    "last_cycle_phase": "late",
-    "last_recommendation_tier": "TRIM 25-50%",
-    "last_good_news_effectiveness": 25.0,
-    "last_update": "2026-01-22T19:46:35.012417+00:00",
-    "alert_history": []
-  },
-  "last_check": "2026-01-22T22:15:15.704822"
+  "alerts": [],
+  "last_check": "2026-01-28T13:05:53.600592"
 }

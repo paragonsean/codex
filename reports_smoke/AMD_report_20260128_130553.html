@@ -1,0 +1,1498 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Stock Analysis Report - AMD</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .section h2 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+        }
+        .metric-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .metric-value {
+            color: #333;
+        }
+        .score {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .score.opportunity {
+            color: #28a745;
+        }
+        .score.sell-risk {
+            color: #dc3545;
+        }
+        .positive {
+            color: #28a745;
+        }
+        .negative {
+            color: #dc3545;
+        }
+        .recommendation {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .recommendation.buy {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+        .recommendation.sell {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+        .recommendation.hold {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .reasons ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .reasons li {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+        }
+        .levels .level {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Advanced Stock Analysis Report</h1>
+            <p>AMD Analysis</p>
+            <p>Generated: 2026-01-28T13:05:53.544314</p>
+            <p>Regime: <strong>LOW</strong></p>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Signal Scores</h2>
+            <div class="metric">
+                <span class="metric-label">Opportunity Score:</span>
+                <span class="score opportunity">16.0/100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Sell-Risk Score:</span>
+                <span class="score sell-risk">11.5/100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Overall Bias:</span>
+                <span class="metric-value">NEUTRAL</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Confidence:</span>
+                <span class="metric-value">LOW</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Recommendation</h2>
+            <div class="recommendation hold">
+                HOLD
+            </div>
+            <div class="metric">
+                <span class="metric-label">Confidence:</span>
+                <span class="metric-value">50.0%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Urgency:</span>
+                <span class="metric-value">NORMAL</span>
+            </div>
+                        
+            <h3>💡 Key Reasons:</h3>
+            <div class="reasons">
+                <ul>
+                    <li>Neutral signal: opp=16.0, risk=11.5</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📍 Key Levels</h2>
+            <div class="levels">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 Technical Summary</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicator</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Rsi 14</td><td>74.5376</td></tr>
+                    <tr><td>Rsi Trend</td><td>neutral</td></tr>
+                    <tr><td>Rsi Weekly Values</td><td>[]</td></tr>
+                    <tr><td>Price Vs Sma 50</td><td>0.0000</td></tr>
+                    <tr><td>Price Vs Sma 200</td><td>0.0000</td></tr>
+                    <tr><td>Volatility 20D</td><td>0.0000</td></tr>
+                    <tr><td>Max Drawdown</td><td>-0.0908</td></tr>
+                    <tr><td>Current Drawdown</td><td>-0.0295</td></tr>
+                    <tr><td>Volume Z Score</td><td>-0.7825</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>📰 News Summary</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Total Count</td><td>100</td></tr>
+                    <tr><td>Avg Sentiment</td><td>0.1300</td></tr>
+                    <tr><td>Avg Quality</td><td>0.6615</td></tr>
+                    <tr><td>Positive Count</td><td>19</td></tr>
+                    <tr><td>Negative Count</td><td>6</td></tr>
+                    <tr><td>Neutral Count</td><td>75</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>📰 Recent News Articles (100 articles)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">Headline</th>
+                        <th>Published</th>
+                        <th>Source</th>
+                        <th>Sentiment</th>
+                        <th>Price Change</th>
+                        <th>Quality</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTFB5VTQ1bmdib05lMVhOMUVVQnlmdGQ5RlN6NlF1MWZzYW1yYkxwUF83alNnT1FkUzItQU5pbmpkZTZtb0s2UGxyWGxoWlNzcHFvMlkzckhUNXFocDNpMXRFckxtT3c0UQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Ryzen 7 9850X3D Review - The Best Just Got Better - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-28 19:00</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;">-</td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPS1E3aTJwOF8wejcxMkVDTDNkLWxKT01rcFpvZzh6QjhTekx3SHhzS0pXcWpDVWoxak1NZjVtRjJKX0dHRzk0Y0lOcnJtYURSbERSSUltMV96NkRYSVYzaWNXSGJSdWZma2FPZHF6dW5oZkduNExpbjNLMktTWnFqT21hZ3lmUklXS053MXBqeWFWZEo2M1lqY1htbzN0Y19SMlhFdi1yRUl2OGc?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Ryzen 7 9850X3D Review - The best gaming chip just got better - TweakTown</a></td>
+                        <td style="white-space: nowrap;">2026-01-28 19:00</td>
+                        <td>TweakTown</td>
+                        <td style="color: #dc3545; font-weight: bold;">📉 Negative</td>
+                        <td style="text-align: center;">-</td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiXkFVX3lxTFBRcWhNb19lN2ZqbnJ3ZHhHUm9HUU0yWjdhMnNvSEdsdXlyQ2REeVIxLVhBTk5fU3JlcURYWHRvczhmRmRtMzladV9Sbmh2SzJMYkRscklFb0p6Y1hJaFE?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD’s Latest Ryzen Is Still Gaming's Best Chip - WIRED</a></td>
+                        <td style="white-space: nowrap;">2026-01-28 19:00</td>
+                        <td>WIRED</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;">-</td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE10R3dfX3R6UUFPZTlWTWx4V2FJRkJyRzgwdnpPY3pwaWRPMXh0aTZEbHh0RFNhMDVaMFBUVjNOVEVHRnJFTzZiVVU1ZmQ0elFRTS1qeTZETk1zUE5hOUp1YkV4U1psdVAyS1BUTnJLelROWW1mcThZ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Ryzen 7 9850X3D Review: The Best Gaming CPU, Boosted - HotHardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-28 18:00</td>
+                        <td>HotHardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;">-</td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMikAFBVV95cUxNRlctSUxSQzFWaWl4Z1FrOVl0Tkw5Zl9RZUlUYWwtUS13azZ2Rm0zM3JhYVQtWld2azJaalFQZEpQZmFQSnZ2RW9GcUFTQzlKeEJ4dmNvRWg2X2tLRFJIbXZ3VW9naDFWZElDWElqZUQ0OWZJbmVWTkVTaWVucmNPOUdHdnNpaFZSVThmc29XY2Y?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Prediction: AMD Stock Will Soar on Feb. 3 - The Motley Fool</a></td>
+                        <td style="white-space: nowrap;">2026-01-28 17:44</td>
+                        <td>The Motley Fool</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;">-</td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxOYmRUdUZiSjBSem9JMTAzZi1FREhqYnVQMlN2RGZtUmRTRUptQzZQWVNCQXZCOGVSUzd3X2QtV2t6akhhSVlQN2RTeUtZRnZhQThxbmtWNFNEVnFHMGM1TWdpWEw4QzN1c011WGNNWE5GNlZBMGZ4Zkh2WU1XWFZ1RTBrWQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Stock Up 12%. Here’s the $400 Valuation Upside Case - TIKR.com</a></td>
+                        <td style="white-space: nowrap;">2026-01-27 20:10</td>
+                        <td>TIKR.com</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;">-</td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQRWNTdHdncTlMNkUyNnR1RDNxZzlWMGEtWVM3MXJOemF5QnFnZW1DcXA1UnJlNFJMRmNRd2NmeHlvaHNWLUdyc2I2c0wxNUNFQkZTd1RKZ2hiWWNiUWZmYTdVaFhhN2VuV2tGSllfbGlnZm1VWlczTEFaZTA1ZU8xeEdFTmVGVUplSE5DV2Q1Yw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Stock Flirts With Buy Point Ahead Of Q4 Report - Investor's Business Daily</a></td>
+                        <td style="white-space: nowrap;">2026-01-27 02:13</td>
+                        <td>Investor's Business Daily</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #6c757d; font-weight: bold;">⚪ +0.00%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxQbjVNNmdHVlRlUF9QR3NLbE9iczgwRENCRTFCeXplbW12NXRpNk9jY19ab0ZBUFBmbFVOampGU2wwMXF2QlZSbTNDNTRXQklzTkhiN2FYRFJzd0xRTXlkaFZhcVBiR2R0QUVvbG5GcU4wZjFhMXVnRGVkcGNmSFUwT0lLVTlBVkp4NzdGWUZrWFpJYzlMR2c?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's Profits Set To Surge, Analysts Say; Two Data Center Plays Also On Watch - Investor's Business Daily</a></td>
+                        <td style="white-space: nowrap;">2026-01-27 00:16</td>
+                        <td>Investor's Business Daily</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #6c757d; font-weight: bold;">⚪ +0.00%</span></td>
+                        <td style="color: #28a745;">0.85</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMi9wJBVV95cUxNaXNEOHlKelpXb2FySWtRU243allBc2VJWlFjMjF1UXhxOHFpdnYtc2ZtcmhyZHdKNDRoUmRhenN6UzhxS0tCVml5TWNyRlZnak9ENVV0UFNjcHpQSmcteWV2QVJ5NFdpNmtBZEZCMXB6aUlVQVJ5WlVkeG9pQUx3bWtfVHNxTHFkS1k4eUR1TDF6UFRHeWZDMS1xMHNKNE1rUlprcl9NQUZNbUlHX3pvbDI2d21xbW8zbUQxYWNBWDhjc1hYbjZudUp0SHY1bGh0SFlWNzhpVVoxWVhaLXk5MDJ2REF1T0N1cmp6bnRFdEtYaVJLMHBXaGIwY2NRWUFYNURBYVItUktrVGtnQ3ZDb0Vpd0dGcnNrb2F0T3pxQ0twVmJ0Rmt4OWJtbDh2WTZiY1VyWUl5NE9waXFfR0liRlFCTWR4MFRLMEtmbEpOZ3I1TDh2X3pXRk1KVVJjTElqUzNEZVNBUzByVi1RTVhiYWpKcHJGOW8?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Gets a Price-Target Raise on Its Strong 2026 Prospects - Barron's</a></td>
+                        <td style="white-space: nowrap;">2026-01-26 22:51</td>
+                        <td>Barron's</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.29%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxOX1JtbmVKZGdOMS1YZ0hTTmlNY0o4cEZDLXJya2U5NFJDSGRRUlB3cmV4U3ZIbjlpdy1nTHJPRDY3aTc5UW5LZFljUjllWHNySkFoaXJNN2lyLW1LMkNKbEZqU1NDMV9TM3RFTF9HODBqYmdwbEEwZm5pSE5kOFN6R0FZOTd2YWx2N1JhbVdPVUVsSkh3RXkydkVqNjNzaHJ3Tm8w?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">A powerful AMD gaming desktop is hundreds off at Costco - The Verge</a></td>
+                        <td style="white-space: nowrap;">2026-01-26 21:00</td>
+                        <td>The Verge</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.29%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxONmN6ME9jRDI4QUhzMmVjcmN3XzJ0MmhJa1dBRm15eHVETWlMMXMwdFp2NVRyeVF4bmtjaVJCbWgxMG9iMzAyREwtVXBtdkwwSER4eE5YV1pJekhwNmFoY0hRQnQ4SVoydExEUHNGN1p6SGpUZVA4Z1lwYTB4MmJpODc4QjVNbW1NTW1HWWVTY1U3TmlOZHRSTDl3eXBvLURL?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Morgan Stanley’s top picks into earnings include AMD and Costco - CNBC</a></td>
+                        <td style="white-space: nowrap;">2026-01-26 20:30</td>
+                        <td>CNBC</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.29%</span></td>
+                        <td style="color: #28a745;">1.00</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMijAJBVV95cUxNeWpGYlc0VFVGSEs1S0p6RXlUd0pJLWdBWFk0TklMS2pJZldKWWgtLXN4ZkMyQnNxaXBPU0t5YnQ1NlZfNUc1ZjBoWkNkUE9qRlQzWFdJSkVNdEVnYmRLWHh2UXB1aUVYQ3NrRS1DUENkcjFuT2M1Q0xicE0zd1RvUTh2dFBCUjU4c000cDlEVDQ0TVVUTHE0Z2RVa0hVMk5uU3JyS0NPZTdPVm9hS0pjOEpydHE3X01wYjl6MHRJbFh0VzB1SThsV0tRekdlQXFEM0M3aC04SVh1d2xQMEhPMWh6TmpINkcyMG9jNHdmNmdTVHFBdGRhLWkyR2hfd0ZsbE5ReEVBVnJKUFB6?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD reportedly addressing crushing memory shortages with Ryzen 7 9850X3D CPU bundles — 'official' boxset with CPU, memory and cooler spotted in China, worth ~$1,000 - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-26 19:29</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.29%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMinANBVV95cUxPMDc1TzZIbFFVVDNkd21BUTljWVRydS0zSGdSanJzZEpzQ0tWbzkyT3FMckZDRDh3U1BFN0Z1QjA2cjhsR1AyY29SeExBajI3UldJaTVtMkZmLTd5dUpRZ2pzNGRTRDJDUDJlQktiMUdycExkMWxTWHhLZ3U3QnVVVnViQVZPUE9va01BMk5zNGthWms1M0JhS2xTMENmdHB6VmFVWHBCSkZKOHVSc2tYWGh2cEZrTWZKVWhLU29pTm5OWUtrM1ByMlVoSjVWNF9NRldua0p1bWJNS3hIbzAzLWw2TzdiV3dFbkV4WHUxaFRReTdSMGVwZGpuM3gtUXNzN2hZNFk2QWNmdEV0QlN0bzRwN3VLdFVWb3ZjTE41bmM0UV9NamlUQmo1cTRqMmRnWF93eDdYNEhDRFdBZ3Q0eHRNdTlBdGZyZmlQSTUtblBreXpoUjIyS000OG9UYWZLakM5WmU3ZFBjUzlKd0FhRnZmb2F2eVRsLXhYcVhuVEk0LUFBYjVfVl9yYklWQXUtV3ZleElDZ29WcEt2?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Why AMD’s stock is charging higher as Intel’s sinks - MarketWatch</a></td>
+                        <td style="white-space: nowrap;">2026-01-24 02:15</td>
+                        <td>MarketWatch</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -2.95%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxNUUN1LTl0MDVoSVdDbmtKNnFKc1llVy10YkJET29FeUdxLVVJdi05R0tZQlBBVHZxS3hUU0ZQN1hRTjNJaURxNy14U2dVaHFxSW91UFFpVmtPOTNNalREQnlUV25HcjA3U19DOVBoM2IwTkFXbFhERlkxaW1CdlBFc29iODh3V3JzdHZV?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Ryzen AI Max+ 495 Specs Leak Reveals Boosted CPU And GPU Clocks - HotHardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-23 19:11</td>
+                        <td>HotHardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -2.95%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxQSTY4TW5BVmJ3UVJyd3M4R3hoeHB3bnFHU25OVHMxVmdOdDFpN3k1aU5rUzZMQlNzYTRBOGR1bFl1alV2cm0ySDZJU1BSUEx1U0kzTXdYbmgyeVdhUXVFOVZ1d0doa1I0M0xpZWlMMFQwdHNVZmlVeUl1c2lqbkJZSHVwTXB1ZEJ4Q3JIeUNnaVFkRms2cmk2aEdOdm9TNEpxTE9ONElPRzBqOVdrS3hJb3RwcXB2RlJMZG9ycV9LbklMajdyWHF4aWlTaGRBRHIySnhwNQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Official ASUS statement on recent ASUS AMD 800-series motherboard and AMD Ryzen 9800X3D concerns - ASUS Press</a></td>
+                        <td style="white-space: nowrap;">2026-01-23 11:00</td>
+                        <td>ASUS Press</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -2.95%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxNaEhwN1hJUW5lek1zRTRTMEpaRGdrRF9PT3JmNkdOSnU0cy1mcGw5c2hsYkZNbkotQVZpazJfZFNDQXB0eG1QY3pXNjNlakpMNUN4aEJ3QWFZYXFlTnRNVUpBemVOYmozZFNFbHJ1MGJFV2gxaTRBUGV5eHJmYUxHTHJNSFlMR0xaU2VmZ0FyZjR6S1BzRU1ELVhlZXhodl9TRkxQbmdKejdzcGtjUXBMeTEyWE5OM2lNU1Flai10WkU?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Shots fired! AMD claims its Ryzen AI CPUs beat Intel Panther Lake for gaming and AI - Tom's Guide</a></td>
+                        <td style="white-space: nowrap;">2026-01-23 01:13</td>
+                        <td>Tom's Guide</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -2.95%</span></td>
+                        <td style="color: #6c757d;">0.40</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxQX0p1dTRXVnUySXNwXzVDWlZkZGtQd01VNHRsMGlVeGJLQjFPMXdhTnRCMWJfZUVxbG9EdU1aUkExTDMwZHdRMHhfbVMzLVFrZ3ZKRmt2R1ZtazZLSXJsRlg3RnY4NF91V3J2akxkUEpSc3ZlTXUyUm1TVjlWNmlPVlYzWjZYbkRqbGZvbXV6Y1NGbUdGM2JUYmtBU2F1dFRVLWVUQ1Bn0gGrAUFVX3lxTE05TWxjZDNuUklfOE1vSkZqUVFFRjJPTU9fVWtibjZDSFBWaWoyRTJNQkdQUjV2OUdERGpIXzB2QXhKRWRtQkZjcHdWV2lkdDY5c1RvXzlBRWFnTXI3WDR4TnNpbXMydFdiUVhuSEJwbXhYZjdmcWJyeUVuaDlEOGdCLXZmamN4T0VMWWJ1ZjBReW1SX1RkWWdYOS1OeE9mWk9KYnNHaWhGeVdLRQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD "Gorgon Halo" Linked to Rumored Refresh of Ryzen AI MAX 400 Series - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-22 23:03</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -0.67%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxOVklJR3dnYmEtSzJDZDVnWWtEMXo1X2VDd2hhb3lNa3ZVbEZxblBPTVpkZUoxQmRQZ1FsalJEay1xY3VMaGdlOXJlY1o1UGdfWHNqeGEzMzBLQnRfU2dfcnJ2ak5NRVJicWpxZVNSV1hxTkZvUVU3S2lUUGw5aVN0d0xuQmZvYWFfRllqNEhEYVJuT1lxeklCbkc4ZkRVcmd2bXItZw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD preparing Ryzen MAX 400 "Gorgon Halo" refresh with higher CPU & GPU clocks - VideoCardz.com</a></td>
+                        <td style="white-space: nowrap;">2026-01-22 21:59</td>
+                        <td>VideoCardz.com</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -0.67%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMinwNBVV95cUxNSjI2UHZhcVd0RGpYYThUUlVfWVdCZTRsNUxpbVVXbUtBaTlNd1VCc1hhaHNvY0k4a2RvNmFzaDRxWVhVREdjNUFHVUJLaUVXOThiemRBb3Bwa01kZWFhRHZISXZkaklnQVpYZ1pHTkpRaHh1bkNXUFV2R0wzQ0MybXVvYzBMOVZCSWVBOXFLQnpfYzE5ZXNzR0VGRDZHelYyUHI2LU80U2UwWDgzanh5c0tKN3hwSHpPc1hLQ213Q0lFeGJGd2pueTgwTUpPNmJaWE9UYjU2YVd4S0xqTll5QmtLOEFZc3V6M3lXVFkxaXg4NXFyeUdOOENmRHJKdDhCOUFVbDA0ZW5QNnlhaG1Zb3VBTXV5RkVORGdkYUZ3bDhBWHRCNDBSbm1IZ0Z2WTdLR3FpaWoxMlQ1SThTWFlTYUI1WWJvTk9kN3FWWTV0YjdpNTZnUTdLb09BMjlGT2x6UjhMb09Bck1sYnZhN3VCbml0eFpWUmVVOHhZMThmZ0dhcDNuTmpkM2RETmlnZHBHVnZKOVJiUDdjZDBMbm1n?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD’s stock is on a hot streak not seen in six years - MarketWatch</a></td>
+                        <td style="white-space: nowrap;">2026-01-22 21:17</td>
+                        <td>MarketWatch</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -0.67%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPYTFhaTJ3ZjB4Y3F4bFFmY0NqblRhSTV4ZG1Ua0poTHhhSDMyd1JZdW83VF9hMVdVUWZNSndybkVSODhzX2ttUmY3Y1YtTXJkZTctZjR0SGNiNjdlSThaVnQ2enFYNXF1UW82TGRFQVVCU183ZVV4TVhRcVdsSGZydGVuZDRzSDc3eDVsbmpMUHZsaDYwRlYtSGRESWxIZVg5ekZrMUpMWi02cEhqSjVFVtIBtgFBVV95cUxPeGNJbXJQZFFaM0hjc1dQSzUzaXYxR24xQURUdGw2LXBsOXJqLWNzNFphWWdlbDBBOGJIT21wX2JZcHZLQzk0MXQ2WmNxdTVwWUw5RTJQUzZpdnMzcC14cDVmWGNzeHFTQjVjU3FBODk1ZzJRNnFLX2hQYkllVVY4ZVdzaHJkTTJxYk0zWEY4TF83M2dhdWRVY0JlcUlMYWtjX1lrOWltd1l6a1ZmVmdNRkg2NDktZw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Officially Confirms Ryzen 7 9850X3D MSRP: $499 - Launching on January 29 - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-22 20:57</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -0.67%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMikgFBVV95cUxQZU42WEV2bkliUklPQmd6RjF4em9zc1drSy16U1MtSTNiQl9Ua1ZXbFdLY0h4OVFlMWZsT3laUko4Nmp2QkhabW1QUEZQYXI1QXJhOGFLbjRIOGhnU3BpUjA0dGN6VDB3b3p4dEE4X1lORXVYSHJhOUNkSmZBRzZyMWQta3lQZmN3S3V0dC1fRnp2UQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD’s faster Ryzen 7 9850X3D CPU arrives on January 29th for $499 - The Verge</a></td>
+                        <td style="white-space: nowrap;">2026-01-22 20:29</td>
+                        <td>The Verge</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -0.67%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE43MWc3cnFxa1lfZnkyVTVhNVNlSVZ6cnh0T1lKZXFQUk83NUVibm12MXRJRF9Ta1NDY0JuTWktMkpEMWdoUzlWMDB1Vk5CSWlXbnIwNEh5Z1pkMmFfWHNyYXNfZVRtYmw3eVA3VVhkcTd5Z2l6Nm9r?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Why AMD Stock Jumped Today - The Motley Fool</a></td>
+                        <td style="white-space: nowrap;">2026-01-22 07:38</td>
+                        <td>The Motley Fool</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -0.67%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiwwNBVV95cUxQbXp0ZmQ2MzBxT01xTHVYMzllSTlCbDRFU3ZhUHBmZk1XVjdzdjhQMmY1RVpHVTNqSnhsYUdMTDFyZUI2VXpCMC1OMHNzLWp1WVM5c2NPdHZWVjNrRjVna0xOdVp0ZnoyU1FIdWtzc1FSS0k1TDZrS3NpMWF4M3V6ZlFvMHoyTGtLT2tjSlpWcm1Ta0lJVU9PX3lYaDR0MUZtSVZSYXRKcUJzZVNxVmtEdDFVZmhPZGJ6UHJvejRmUjJIcEtHdTZ1OXFfWHFIY0pVZFBvOEtiVXJJclFoYV9NNndJbmFSajJVemNuR3VaQmU4aEViMXpWQklWYVJ6aEtNNVFjc1k5YnJhWUh5XzYxQVVBanFNbm96TzZ4QnVqaFJEMWNOZFhYd2ZETHY1cUVoa2ZTWmxKc0hpOGFaYWZSZzNhNDZtYkZtY2tFbFZlSlhSazZxSXY3SWxXOEljS2ZwSkllYVczaElodTljVU5HbXdvcWx2R09ETmxPZE1iS0xBV0liNHJKNFh5cTA3YXRjYy1BRzl4cGp6eWlqZzJyVnNFdzNqMU1yNlR3aV9tQXFPVVJvZGd0d1JtdnY0TWVxZmpv?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Why AMD’s stock just rocketed to its longest winning streak in nearly a year - MarketWatch</a></td>
+                        <td style="white-space: nowrap;">2026-01-22 01:27</td>
+                        <td>MarketWatch</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #dc3545; font-weight: bold;">🔴 -0.67%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQRjhacUZiMHE3ZUxfNGFGeU4ycHRtN0d3N1NIbVhZd2RNRzdzd1RjOS1NXzhhQXV1TGJXU25PbFU5VHBld0xpN3F1a3V4alVnbzBLbmRHcHF0Q3Voeno5TUphVDhFOHRZRi1IcjljZ19QV0QtTHE2VWZSUEJyU2c2V0otVFF6T0phN1JjYVJsekg5UGQ4b1JUYmJNYS1OOTRLSmdvX2UzV2hqeXhvOVpnNEhCWTBFNHFmT1BHb1pvMNIBxAFBVV95cUxNVzd3TWxTVXg1TnAtQ2dTSzBGWW0yMXFPY2Z2S0lNdFl0eC1fbE50dGZLOFlmcGhnZldjZnBJY0NXLUJ6VVF6OGNKR0tPM1diZ2k2LW8yeGFOa0h3Tkt5WEFKQ1UzNl8yc3FMcElMLUlXTXZwZ2FfSEVCY0luV3FBUmozYjA3QTlDMHpPTU85dlBJZGR2cUZxTl9RWWlQenM2THlpTWlLM3JjWlpUV045N1NQR0NUYVFDUWxCV0dkUXB0WjNO?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Rolls Out Adrenalin Edition 26.1.1, Introducing The AI Bundle And Support For Ryzen AI 400 Series - Wccftech</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 22:58</td>
+                        <td>Wccftech</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE1OZ2laTzdjWjhoYzVnUlhzQm9QNWlsMExmS2E0UGxKZnprM0lsV09FVDZkMFJjSjVmUGRaVnNIbEJNd2tXeHZWQk03aUhkTU1GMzNCXzdnZ3N5WV9idl9xM2UxTEtQZmhFQW1OdFZITUk1RDhVT2J4X000WQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Why AMD (AMD) Stock Is Trading Up Today - Yahoo Finance</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 22:20</td>
+                        <td>Yahoo Finance</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxNS3VOUTNzakRJbE9XS1hXNkFTem9uTllwLUpxTzBDMm1NSk8tdEY0cUxRQlpQc1pLeVFNRzdUSjVpZTdYWVFDRlNtdURTQ3lGQ0hMWVU1V3NSdUNpTjU2X0Z5a2dmdXFZbG01WE5PV09XaEY1TW9BNjl2WVB3NGlnemJfdGRJV2tBUHViOXhn0gGTAUFVX3lxTE55cDZnS0Z1dHNzSjRvN0xzcXoxY0M0X2ZjVTYycjVPMDQ0LWFLem9BbnAtNjJLLXlFaDRYV0xzdGlYcllRSHdvUUVGQ1A5dld0TEV1dWhfU2VYY193LUY5cG11ZDFyS21TODlIYnNzX2d4M1pnaDR3SVFWODFoZHQzVUJET0dmekJHYXlfWUU1M2lIOA?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Releases Adrenalin Edition 26.1.1 WHQL Drivers - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 20:51</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxPV3BQVHhnVHRMTTJLRUV4cGpVX3BvZ3VCZGUtcmk4LVlmYmNqemZxQTNhbTduNDgwUVVpSENQWm1mb2YxaWlrenFQX2tPemhZMGFuRGlGNkFlVTRDYVFFMXVfVDI3RUZJSFJtelRkVU9iMWJleW1EY0M0ZWJ3V19VUlRSX25MNXI3c0hGUnpRYThEd3M?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Riot Platforms: A $311M AMD Deal Changes the HPC Game - MarketBeat</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 20:45</td>
+                        <td>MarketBeat</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxQVFFURHQyX3BnR0NISWI2ZER3LUduYXo0aUhHQWN0enlvaDI5WHM0enZpdGpCZG9Lck5obXc1LXJqRzVKcTBuRG5XSFJaSlB1aU53YTdPcFM4STlXYjk4OHJBQ1pmbDN4aDY2c0lFajdMczFTdEs2WDNaUGg3Z2hFblJFR0ptUXg1UHFDTk1ybURvWFFKcWtuamRqbjZfNVpILWp0aS14RVJRdXVwSDg1RUxqbG3SAbMBQVVfeXFMTnY4MWpZYXdhNVYyeDd3ZzU0dlJ5bmRWZHFuM0RJQmo5X0ItcVBYeUhsSUlvVm5sWHZabEEtSkNmS2F6TVhHdklzeVBxb1lBbTZBZUcyLWtmRklLODB0czBSbXpRNXNGUFZVdVZ1V01GRGMwVDNzVmJsaWJWWXJwa3FiZlVCLUQxOUFHZFlkUEpxQlNoWWNEellvbENWTG1JMnJfa29OYW4yWjA1R3R3WEs2Tkk?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's new Windows 11/10 WHQL 26.1.1 driver lets you save huge disk space with new feature - Neowin</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 20:16</td>
+                        <td>Neowin</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTFBvU0xfSDhMc2tjM0lIUXJ1aGNsUVR6Z1AxMDlpdU5peWEwbTVMNzgzYWpuenMwM1gzOEMxVDRGUjg1cVdLYTZIaXMyMEZ0dmNpUjBRdXVKOEhwSmFObVpVMXczVWVoQQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD AI Bundle Review - Conclusion - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 18:59</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE9ySVFnX1d6UmxqMkxkNnZrY2k3X044SktqVnNqX1dlOUdLY2ZiWmFYb1YzNkdSUGRVYTN4TWhKTFZFQ3lwdUROMEY3cndGNUFoNmYyZUw5RTRxOV9FYWdBcWZXaGY0QQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD AI Bundle Review - Installation - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 18:59</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE80NGxubmIycWQ3Z0xmbGlvVHJSdEptWjBRTHdLZGdYVTZXaW5MWk05MEN3UGR6d2E4RmVmSTVQZ25ELU8wR01hTk96ZHREWFA4Z1gwd2pKYVJaRmw2RTlNdXZtbFVlQQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD AI Bundle Review - ComfyUI - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 18:59</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiXkFVX3lxTE16X2k1SG9naEZ0TFRlaEdhUnJfVjYxczhORHhJRzI1VlRKLW9tRnJBN2VSd0MxQ05PLWN5eUtEOEwzOVhxYjNsNVV0dUpYYjEzY01GVkpacm0xeUlKVGc?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD AI Bundle Review - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 18:59</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.50</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE0xZXNjVFJOME5KRFZjejhUUVJDeVN3OGFYZmdzODVnU0M3ODY2blhVTnBhS1VmSkJ5cmtBSHRsaTY4d2drVnVrbHFQSDJ2RGlFYTNuT3JHbEkydFhfV0x3ZnRvdWZFUQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD AI Bundle Review - Amuse - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 18:59</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMingFBVV95cUxOeGdyVjc4cWdzSWNQM0I4MTlrY0RlVTN2ak94TThaSFZoS1Q5b2wzaHVSSzBQd1Axai1ZNTZ0T3NNOFU0MEhIN0R1ZVVTeWZvMy1WWHdVMUFCYWVKRjRobHZtdkcyTnZsOXNEeTNyVkNXTGtBUDN2Z1R5bzA2TWViTUtSQm5LMGVtTkxiNUZZOVppVjNOakZndkI5UVJOUQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Why a tiny Texas town could land a $1B data center deal - statesman.com</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 17:06</td>
+                        <td>statesman.com</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxNNGQ4Z0s0VkhxZDZWS3RZZnhWY3pGNHg3aE1jWExCejJvS3QyVklURlltcGhGUlRNVkQ3OGFFWGJJNVZLbWpBYjU4LXB5LXAwQUVaRkhMcHUwNVY0N3A4WGFwYk9MMkpkcU0wSldqWGJFYVoxVHNxNndpLXNnTHpFOFlBS3E4RExTX1E5VlZSdHp1VEFG?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Software: Adrenalin Edition™ AI Bundle — AI Made Simple - AMD</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 12:11</td>
+                        <td>AMD</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMie0FVX3lxTFBiaGEzUWhEa1BwYm1hZ05MODRwbFdCTDZfeDZZRkEwcXU3S2JtdV9PMEdiRnBvQkNBdmFGOElObHc4Z212T1NiUjZsa09sUHM2c0lBTS1TT3FzdFRmbDFGSHRYZmpiQTdiQW1LbnlZNVkwRjhZcFFLY3VTcw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's AI Comeback: Why 2026 Could Be the Turnaround Year - Yahoo Finance</a></td>
+                        <td style="white-space: nowrap;">2026-01-21 03:05</td>
+                        <td>Yahoo Finance</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +0.89%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxQSUdzcnJmekYwbHZiUGVoaG1RelZMOTBVZUFnUl9QSVUxNmxxazg1c2N5OTNKYm9scVVBVG1GMjRNNTJ0QXZzQVpheFI1TzB1N05hOENIYUJpa1JkR3BJWWFvd2lHQnVuT2l1YUU3WlhMQ0lMQzcyQjJTRlRjZzBGRUVNaFRIVEVmdkt0X2lOQmM2RHNh?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">How AMD Stock Can Surge In 2026 - Forbes</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 22:09</td>
+                        <td>Forbes</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMihwFBVV95cUxPeTdmNks5eE5LMm9DT3BWX3BPcHpMZE5IWXZJZ3dSd1FHcmotS0ZFWGxhUHlpNHF6VkJDRWdOVWRHaWg1RjE0aFI2UUFEYkZLWUNpRkUyMUtsN1FDRGRDeGIxYlYtdnpaSG9DRUh3bWdVSWhIWUFVVXR4M1lHMi14YVR0NF9yYk0?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD: Regret Comes Later (Rating Downgrade) (NASDAQ:AMD) - Seeking Alpha</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 18:33</td>
+                        <td>Seeking Alpha</td>
+                        <td style="color: #dc3545; font-weight: bold;">📉 Negative</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMifkFVX3lxTE51ejlYQ2VVVXpzTldZSTlfZ0J2UDdXUElRdEpvVGFnZFZjWjl1MnJ0VUpMdUlWU1ZuQ2pldmRtY1RjMDNTcm5xeUpKemV4QmpSaG9ta1Iydk9VSC0yLURGOEtta09wWEpleDJoanNvTElDb2xBWlRIOXptVFFUdw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Insider Filing Adds Pre-Earnings Noise - Yahoo Finance</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 16:45</td>
+                        <td>Yahoo Finance</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #28a745;">1.00</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxQZ0QzODljdkZRUmJOdzltYV9rMTBaRURJOFB1MXBtWGhHVll5WlNDY0I5RWstQTVFMElXZUdzT0dtNTc0ckF3VGh4VDV6RkZLbjJObEFrR3RHUU5FM0gzbUJRYmV2RWxNaGdRVS00RmZsUW5nUENmVGRBRkZUYk5OWlNsM2JFdlJhNlRwTHNrVjhEUEsxM1dyNmFfa0p4Y29YYjlpMNIBqgFBVV95cUxNbWlTOEEwalFZM2N3Z0xkem1sTGsxQnFLejZFaG1jMUwwTWNmQi1QdlZUUzJ3eExKRWRGVEJkT3lzOHg0elVtZHo0N2lXdlNwNm94c2hyZlVmUTMzNVQ3ZjZ1VU1fUklWaVdTdHpKbXlheG52S0lyNzJGQTdXR3pqNzlCeHZNLTRCRTBfVzdlTWtCWVhTUXhBc0g4cUJkWFN4bHc0cGs0QVdNQQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">NVIDIA’s Latest Prices Are Lower Than AMD As Both GPU Makers Notify Partners of Updated Price Bumps - Wccftech</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 13:00</td>
+                        <td>Wccftech</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxNVXNzM0gyX3pBS0lHWWMzZVh5RW1QWlZmYmdhWGJkRTJjQmM4cmVJbWd1eUhuWHFRVWJIdmN2UjVEOW8wcFdzb0xmeVBubEQwaWtxR0xXQU5HMGdLSWU4NzJ2VkU0TXpiUEVPR095QlI2YXUyajlING5FbFZnWE55ZGplZHVhWGdyLUF1UDVvNTF0NGxKX1VoUw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Stock Soared Past Nvidia Last Year. Will That Trend Continue in 2026? - The Motley Fool</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 13:00</td>
+                        <td>The Motley Fool</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxOX3pWdDhiU2QyNHFXblU5STN1RTBRRlBTSFdod3J6emhxbzU1YkYxWHdOa2pzSGYwMUNsUXUxeE1XeldQYzB4ZGFxdzBWRWJDTUVOTGR2VnN3RzhKUFR5bDB5MGlZNVRFMXRGcUplZ0ZSSmhoelhiR1lGS0R4LXhuWjlxbjJacEttQkdMcVEyb3BIUkVnNGc?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">It's Time To Buy AMD Before Earnings (Rating Upgrade) (NASDAQ:AMD) - Seeking Alpha</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 13:00</td>
+                        <td>Seeking Alpha</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #28a745;">0.85</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTE4tNGpIY05PN3BQbXhFVEYxeEhDbk51MWZVbFJFZjVlUnYwMWFCcXIyMVk4cl9Uc2xVeWxlVXRna3ZTQ3NoWmNFZ2FvVm40MGdFT0VyVy1MX3R6eVNjSks3X3kwQk5BVlpOdEpXNVFmWUE?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">The complete list of AMD Gorgon Point laptops (Ryzen AI 9 HX 470, AI 9 465, AI 7 450) - Ultrabookreview.com</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 13:00</td>
+                        <td>Ultrabookreview.com</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxOdi15aUI4dFY1LVZzT0tEMWpWYXFkNGF1WkVORXduMkVmaFJIYTgtYXNXcW94NU9acnNpM0padTJLcUtzRWxkc3liQ2dWQTBOS2EwSjFZdldSWTFodzFJNTVNQmNLZHpSM0xTdWE2NHBxQzFhYjhmaUw0UVdoS1NLdTVB?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Cathie Wood Sells Tesla, Boosts AMD, Broadcom, and TSMC Bets - Yahoo Finance</a></td>
+                        <td style="white-space: nowrap;">2026-01-20 13:00</td>
+                        <td>Yahoo Finance</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.67%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxPaTloZ0FUdDlWSzNxWmZmbHpBMkY4eXo0WW1KMjB2Mzl2UHRvVWdKV24zR1ZKOUlXNmcySUdSbDdHTXF5Y2IwWk5sV2lBMjJsOGlFZFhzS28wOUpoM3RqTFhySk1FbzJGVHpfRXh6SXRJSFUteWxXZzh2OExsSjE4eFFBTQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">New StackWarp Hardware Flaw Breaks AMD SEV-SNP Protections on Zen 1–5 CPUs - The Hacker News</a></td>
+                        <td style="white-space: nowrap;">2026-01-19 16:31</td>
+                        <td>The Hacker News</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxPb0ZUUWc1cl9vNWNHTjd3MWFDaElJcndYZDlxNDhSODkzOGRrS0VSSkI2SS15bHVNV2VNbnlaajVjaFg0djloXzUxTEJoVjFsTVFveVBBREdYV3VwSENvYTZwaGtuenBYdE5hS0ZPa1hOY3UybVVIMmxLSl9CX2hlVjFwMjN2aUY1MWdIbE1R?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD is reportedly pausing new GPU launches until 2027 - XDA</a></td>
+                        <td style="white-space: nowrap;">2026-01-19 13:00</td>
+                        <td>XDA</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQTVZOREFkQUVFOFQ5YmxfV3I0aVlldHhOdUFrMnhsYXR3UDNOdHZtV2RxNWpoaGstaG01ZDNwRGFFLUZyOXdVR1VtOWllbHVicDlvT0N5d0RjdTlqUnZ4NHRYSmlSYW4xRVhmbTdpanByZmlmV3JCZnk3cVdGNHpVdk43NUFpLWFVeU9vcFo4dmV3Y1dKNFU2NWpLeHg?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">5-star analyst drops jaw-dropping price target on AMD stock - thestreet.com</a></td>
+                        <td style="white-space: nowrap;">2026-01-19 13:00</td>
+                        <td>thestreet.com</td>
+                        <td style="color: #dc3545; font-weight: bold;">📉 Negative</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE9XWUl3RnRNTFFKVkgxdjVwUUtsYWZiZUd1VDZ1aDdJQkxZS0tkOE1LNUt5dHdlTW9lb251MFpuSW43VXY0Z3pzaFlVbnF2SHZkSnF2emF3cUNmdWppT0M1WkE3Sm9hTVFxQUNpbkxDcGM2TGVCSmNteTlJQQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Why Wells Fargo Calls AMD a Top AI Pick for 2026 - Yahoo Finance</a></td>
+                        <td style="white-space: nowrap;">2026-01-19 13:00</td>
+                        <td>Yahoo Finance</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxPSWFxTmhIVmpkWWJCa2RDU0d6V3lnT0ZvOXprTHliV1I2U19XNVhKNkRPMzJyXzJILUtxUkNQQlczTWxCUWdJOV9GOWVqeURGZklaeHh1YThPWVlXOERDdHhDbVhpQl9qNjdxMENRYlJoNUZXcmxLWk9iNDY2b1RYMVp2NjE0TlUwczBaZVQwZmxaV3VTSWVyQm53WHpnRDl6Mzlyd3hINFlNQUNhQkhLN19uS1hIMXcyUXUwUHVURQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Could AMD stock really surge 348% by 2030? Here’s what analysts say - TradingView</a></td>
+                        <td style="white-space: nowrap;">2026-01-19 13:00</td>
+                        <td>TradingView</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxNWmRydjNxNzJVZG9DbGRjVTNWeGxDc3JHT1MtbzJwU2xaZ1BHYmgtSEVNRWJ3MjJfQm5XNUdhSU5xMW94QmlnX0wyazFyMnkyWGtnUHduN1R6V29DaUpNWm9SRHJjMzFCN1FyWkp4T3I1TnFSODFrUXh2Q2RvcEJoNWk5T1JjTm9GTk1TS0htR2F3MVUzaXZnbA?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">A Once-in-a-Decade Opportunity: AMD's Stock Could Surge 348% Through 2030 - The Motley Fool</a></td>
+                        <td style="white-space: nowrap;">2026-01-18 13:00</td>
+                        <td>The Motley Fool</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxOWmlpMGRfQlhaem1pZFlUZmlhM1EzbXp2blFpek1LVC1YRl9xZkI3QW11cHVBQlFaZU1pemlmVHBEVFlYejBOTnJUVXZmeEZxTDY0c0d0ckE2MnE2eXJnYlZRem0wTERmX3k0d1Y5eGVJYk1OSm1LeTAxRndHTGNOQzZ1SnhTbFFKNkczZDMtb9IBlAFBVV95cUxOSjZIX1d2UlpyQThfdWduVXJHQkhsaXdScHBWUjRvbG1lY1dvRWVOREdDdW9SRnJwT3laQnljemRpa1lDOF82RmlJS2Y1TnE5TjhEV1BRdW1vaFFvOWh3YV9QRDl1VldTWkd1c2Y3VTJpMEFhLXU3Z19jbF9vSUFDeDRIa2szcHBDYW01ZmVhNU9YaTZu?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Expected To Focus More On RX 9070 XT Than Its Non-XT Variant As It Needs Less Price Adjustments - Wccftech</a></td>
+                        <td style="white-space: nowrap;">2026-01-17 13:00</td>
+                        <td>Wccftech</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE94ZjdTWHZueXhTdzFmSVNvVExMdzVsVTFYUEQ4ZzhDOTZGVmRCbzZUNG1MOHdzSG9PRzl1eGFqaWZXSW1lcmlQLWNGNThwWGp2eVU3Ym80aDlSTVpVVkpEWGVhdEpCT3BRUWhrZlYzV2lXRVoxRE53?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Why AMD’s Story Just Changed (NASDAQ:AMD) - Seeking Alpha</a></td>
+                        <td style="white-space: nowrap;">2026-01-17 13:00</td>
+                        <td>Seeking Alpha</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiiAJBVV95cUxNRkpOUHBTb3ctVnM5SkZMNmNMOTRETXA4ODBoVlhJcjJqN3AzWnUxVDB2bm5ybDFFdkdvSW1YeDc5bm5MYVhWcFlPZGs5a1hjUThYa3ZpZmJrU0VpdjE5emxRVVBJQ2ZyY0RBd3R0MVpHLW1TeGlWbHRPVEJZeWt5NEthQzAxX2dZVkpOa3dFNm5LaDRva3pCY0w0Uk41bnNCYmFMRWpzUmQzckZLMGs2MjJLWGtVUlRPSE9tMmtCQ2ZYZGo3aERFVnFaWHQtYzJNcVgwNGgyUkotVl9uNEJvTHFSNlo1Ti1hY0VIQ0czWHlVX0lKQW8xeTlzWFJJWUY0OEduWFVfVDI?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD vows to fight for gamers as DRAM shortage sends GPU prices skyrocketing — Radeon GPU prices have already surged over 10% - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-17 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxOc3JlbGVxUzlpbWtHTnNMVkl6OUJtMGdjUi13dEthUnVXSEJyTkl1V2dMNDFIWjU5SmRaSTNkUTdUdGFKdzNnTFl0WEFrbEFrQjZpaDRpci0wZ1dMUlYzOEc4cHJUTWYyMjZuazhwQ3VHWF9RUzNXcUo5cTFtdjFfQmREYkZoa1dteUhZYWxlVzl0cjZETS1CZ09kUzhBS1VUMWfSAacBQVVfeXFMTzZ5N25TMDZPWmJ6RHdMeU9odG12NzZwY3VIZEhrWFBNcTBVeU5LZzJKakYtOHZ5YzBPMWplbzRwdTlXaUkzTmpqUDNIM2lIekhFVUtGLVRpZHVLdTBQNGNwSTNzaFRaTFJpSlpUaHNwY0k0RFYtZGxvcVgxeXk2UE1SNnAzR2lhRl9jVlhGNWc3cDVyTG1xRWdmcmd0ZmN2dVNXdTQ1MFE?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD B650, X670, X870 AICs Offer More M.2 Slots, SATA Ports, USB Ports & Additional IO Expansion - Wccftech</a></td>
+                        <td style="white-space: nowrap;">2026-01-17 13:00</td>
+                        <td>Wccftech</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxOZ1Q1MDdqUnZ0NzcxOFQ5RVpQSnlDdlFwQUc1ZFl4T3dtOUF0RlUwaGVKOVJDRklCczFfY3ZlNHZMelhlcFE0Q0JfcndwQXNIc3lFd2ZyRGR4QmM3eUNFZnRSN2JpaGd1YmJDQU9tQlNjT0h3SVFaWEplSW9RMUc5NW1YYzZXSEtSNmxJbTZnSTh5dFljVzgxa09WN0JpMXFxSkVFNjRVUW5tbF85TGhfRtIBtgFBVV95cUxOeFl0dGV6SEZDYV94cUluZWJKenFKcmxmWlR1c2RlZ1NLX0J6MGVRZkFhYmQwd21YbnJ5dW5wZ0JYMTNUUEVNX1VYRUItMXAxY0FNY0VMdHh4NVhOWUM0ZFhmek5Va19yMVo5R1lfRXhVaXVIMU9mVkN2WGt6VmlTaGVQbzNvU1ZpTjBTWlBSazVfUVh2OGh4eWdSTHBzRlBXdDhaNm15d0NjekxtZnpoMzIxNGVkdw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Tata Consultancy Services and AMD to develop joint enterprise AI offerings - Consulting.us</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 20:37</td>
+                        <td>Consulting.us</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMizwFBVV95cUxQZUhDY3VxOTN1aGNtOGlqajhDR1pVcE1Rb19KSTBBaGswZ1ViRk1hM19Xb2h4OXlBTWtpR1AzSERwb3kxbmYxdjE1M1pNX2M1S3h6Z3pGbVJTUGpjeXpjdXBlaWlwbjVIVGVJMk9Pd0VIalpTNkwzX2p1R3ZoLU4yanEwbXdwQjViT000MUlwV1J0VS1iRzVKMEFMbVdvdEh6QUxVOU5FQ2RoNDNoRnZZcDhfWjhfWVFjUHUzMmlEZl9xWERDZ2VTVHBWTzA0cWM?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Riot Announces Fee Simple Acquisition of Land and First Data Center Lease with AMD at the Rockdale Site - Riot Platforms</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 13:00</td>
+                        <td>Riot Platforms</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiugFBVV95cUxPSjQ5aVI2c2lpdzdCODJhWExFeXpKRXFfajZONkdxd3VIaFRxaHRBSjh4MjNVYWFuSHFGb2dKNGRWS01Eel82MmMxZDB2eVlWLUM5ZEt3M1Nka2puZzdsNmJyZi11RHZGckFyQmctR3ZVc2JpcUI0Y0ZpY01KdXlldTliMG9Oa1dwdmoxSDlMSUhOQkpmMU5TLVhOVnFXejFsMG1GMGF3a29pMlIxRlVqX2QtaTZVZU02MmfSAb8BQVVfeXFMTTl1QlNEZ3pLYlNhZDZmQ09FT013c1pORW1wZzQydUFwQlFjOWdlc21ZYXdtQ3FhaFQ5M0h2dFNhT09CVFJSVjZRR2M5T1JrdjV2SmNMeDZEQzJ1Z1pycWZwa3ZCLV9DRDhQOWJBS00yM000c2pmRjdiNW9WRndIX0FibUJ2bW9uRkpaNDZDNVRIYXNVdFZUNEZzeG9tUWVBWGQ1dlVvMVhOdV9RS0ROa0JzZ28zZWZheC1YLWxzZlE?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Asserts Its Strategy Is To Keep GPU Prices As Low As Possible Amid The Ongoing DRAM Shortage - Wccftech</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 13:00</td>
+                        <td>Wccftech</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMi8wJBVV95cUxPZVJidjM5QUtkNUhzTTY2bE5CN09kVjdiejEyX0NVYXl5c25tODNhVHhpcXE0MVNrMmVTYnByeVRyc2Vld0VoQkFZSVhqYXBrRGppdkd3VlFCaFgxRDdzR0ZFN1BEanNfUG9zNUV2ZXNzV3J1WWpkN0s5dDNQb01EdFZJb2VtNVg4ZlV3QzlPYTJLenp2VGZKa1hFd3ExYm1pV28ta3I1eDIxR1EzSlozb0Y4a2xqMzFkYjE1MERvNkdGcF8zNnlQa1FqSXZyLWQ2Z1k5MXAtVHI2U29LMEtxYi03NWRXUDNIQkl5WWFoSjVla290dE5QUzBjM3JBMUxzOEI2ZXdmVHEzNVFUZFVhaTF5UlFSeFQ3dkIyY2JUSVhmdklGc1NWYnJmcFU1MDVDeFliaFNnQ082elY4MEZTTnN2TGRMMWZWMVFfVXczNE9BNkNhRWtVYlJWaUVKVUl2c3NsRTNDZ1h0ZVpmZWc1Sy1vNA?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Riot Platforms Leases a Data Center to AMD. The Stock Is Surging. - Barron's</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 13:00</td>
+                        <td>Barron's</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiigFBVV95cUxObUw3cm9iY2RUTkMtbDI0YkFqb1RobkxuTFYyYkRfV0hkWjFxUGFubXc5dzBVOHhUc3o3RlJjWkxFODBPOWJBTVh1alNnWkJydWtlaDZPMlk2aWM2MnlxS2hRRFdlRzdqY2FoYU1INXlvYlotLWJPQUJZSklEZUNXTTlLaGM4cnEySnc?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's Great Overtaking - Buy While It's Cheap (NASDAQ:AMD) - Seeking Alpha</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 13:00</td>
+                        <td>Seeking Alpha</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMikgFBVV95cUxPOFFDTVZUbk9SLXh5ajNLdzJTVEFSZDRjQnVtNHdESU9TOUxXTnBsa2hUOUFtUTg0aUJUOWF6cXM1TlRXeW1kMm1Mclh0VkNCUUQ5MEszWm5FR2pnZFkxUUx5NmhFSVd0NGl3U2hPNXdKR3U3SS1ZR1VvLWFjVV9kQjhpMDdqRk5NdWhVN0R2cWhjQQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">The two things AMD subtly revealed at CES that actually excite me - The Verge</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 13:00</td>
+                        <td>The Verge</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #6c757d;">0.40</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxOalhpMk5mb2dYbVRUejJNd0N5dEJTbENZYll0YlZrREctc0xsd1ItN2phZXQtaUhFNGl5cE93dXR4Rk5LeTR2bkpUenpucjAzSWhpcTF2SHh5QzBXTUhiTXZob3lsZWZqTVZCRVYzdGZNLUZyTXp5Nm02d3hYaE1wTVVkN0x5T0Njd0QtTFJqZnZDaTZMempESGtfNTdadDRURmVZaW00cw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">I Expect AMD's HBM Focus Will Steal Market Share Away From Nvidia (NASDAQ:AMD) - Seeking Alpha</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 13:00</td>
+                        <td>Seeking Alpha</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxONmcxRUZJME9lSzkzc0x2VTF6cjVPclNEZkU4TWFBQXY4T0tGUkJrNmh6MmpZeHBXWGdUOFg1ZWtvRHZwdG9jOEVSOHlYUjd4NV9odHI2S214YzN6R3VTRXdHaHplYktzYVpaZ3hwQzhudFNZRGxRRUY5Q1hSRUlSWkFnb1JQNnhSTkQzR1hBNXcxOEhMV1E4QXpvUVpzMzl0ZkhtcklpRXFobUNYVDhoYzAyb9IBuAFBVV95cUxNOVEtejVvZVR3MlhmVGN0amNYaGJmTTc5UWFodTFwaHRkbnFXVU5kVEY2ZVJVblRSTGdITEVfb3l4Z3VReXg4YTJfeGVjOWI5NDd0aTRZeXE3LXRBV2RJUnRpSWtQbGVnMEZqcVFvOF9vUVNJQnBmOGozWHAxRkdFMFByOGR0RDd4dVNsZXV3VDAxU29MU3JKYURtX1JFQl9rSFFhajh2Q1F0STROQ2dwb2hPVWUwTjQw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Ryzen 9 9950X3D2 Gets Benchmarked, Shows 7% Improvement over Regular X3D SKU - TechPowerUp</a></td>
+                        <td style="white-space: nowrap;">2026-01-16 13:00</td>
+                        <td>TechPowerUp</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +8.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxOOWYzWWdadG96MjJjQ2dlV0pNMGNNTUZiT2R3RDU0SmtYYlBtc3lRTmNEbWJMTGtlYWg4OVNLQ2l3ZEhWTTV0bmNYMExSTU5nX0Foekd3YkdiSHF1STZ5SEVCdllIQ0lMdjUwTEJ4b0xZcDBkYWU3NjZMM2todklWNm9LUUJkYS12aE1wNmhlWS1LLUZjQzdfa2JFTdIBoAFBVV95cUxQU1BTaFEtZUpnXzNCYXc2YndVOVZTUEllb0xOZzdoRlFVXzR6aFgxbG8xNjVWWExUVG9aVDQxRjNvSWg1TXdXVnVVSm85Z0pHRUNnT1d2MGx0ekRLblpESW0xRlowdGs0ZUNvZFhUcGlobTZYSzlYT0prLTVlZ1BNd0QwQWhncml2b0swRFc1WUJWeTRIYk14a2dyd1Z1c2pB?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">New ‘StackWarp’ Attack Threatens Confidential VMs on AMD Processors - SecurityWeek</a></td>
+                        <td style="white-space: nowrap;">2026-01-15 23:00</td>
+                        <td>SecurityWeek</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +10.58%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxNTkNyRjlTZzFqMXI1d2dfWXlfaWlXZXFxa1ZSc1k1T0hMSjdmeThJTkhxaGxNNlpaMGdmOUhNemZaa0d4ZURuQkkyZVNLWExOd1pyTnJicVpYczVKS2JPOExXLWM0SW90TVdPY3BwZXZfRlhoR3ItV2hGWmVpcDVvRkhOMmxpYUNldVNyLXV5NmJLbENqOVE?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Should You Buy Advanced Micro Devices (AMD) Stock After Its 21% Correction? - The Motley Fool</a></td>
+                        <td style="white-space: nowrap;">2026-01-15 13:00</td>
+                        <td>The Motley Fool</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +10.58%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxOZ2lSWlpRU2dVaWRQN1B2Q3lXOWpmMVI3Q3hBZklQV0VNYUFSbFU1NTFfMFhtUFd1eWdZUXUwTEVQU3VreTZEajJybUVoTHJUNnBPeGc2WnN4OFJ5bGR1YmstbWRkZlFqYVNibi13RDdRWXM2c1BVWW1FWWpPYWhEM0FndEdPOGIxemZBd0xWbWRMd1lXbU1OTFhWdVUtTnNjZll2bU9oaGRwZGo3UTRCelg2RWs?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Promises to Try and Keep GPU Prices Low Against the Ravages of the RAM Shortage - Gizmodo</a></td>
+                        <td style="white-space: nowrap;">2026-01-15 13:00</td>
+                        <td>Gizmodo</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +10.58%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxNN0FoRi1ueXUtSzROME1jWDRjX1VZNzk0N2ZFSlUyQl9NeVMzVUhzLWRVRUdPZkJMN0dMQzg1UTZaS1hjdlVsT1Z0bmt6WkZlX2k0RmlER1RBSHNuRHR1NHZ1NERoY2hxcGVvVmVBSUF6NVN6OWV4V2NhcWRCQTFTY2JNVGZvNy1XVGt2MlF2VGd3MGc0SDkydVJNdFhLSUVaNXdXZWNUczF0TE9BZkFIUnRR0gGwAUFVX3lxTE9RbkxhSjRzVk5hV1F5MzlCV1lNb1Q5eDkyM1JkYWdCdG1NeHlOSFFRcHFLSUtTV2FwRHk1eGY4UXQzdThDYkNhQS1lY2lRVXpvRkJST1o0VXNBSnlkOVM2bm5IUmwwVWdRWWhCRGYwbEZRNUUxcGZIM0k3NWxRN21iVWpvZktKSWZ6Z2doZk5YVUdlT3B1eWt6ck02Q21vVF9ZaW9UMmFoY2UzMURXMUdD?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's new patent suggests Ryzen 3D V-cache CPUs may get lot more powerful and faster - Neowin</a></td>
+                        <td style="white-space: nowrap;">2026-01-15 13:00</td>
+                        <td>Neowin</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +10.58%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMikgFBVV95cUxOTC1ibjB2TFZ1VVVqb3E0OG9TajItRU8yTlMxcEFPeUY1TFoxdTk5bWFnOVZGRHhaTUJWeEg2b0JsWF9zb0pyaDFvSHJ6NFlLeHlzaGI4ZlJkS1l2NTlXcEFCVFQwdDFMX2pZS2h0RFR1NEVPbXE4cXpsbTBQWXBhbE1YbFBLYWxyNDBSbWVBa3IxZw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD, IBD Stock Of The Day, Jumps Into Buy Area On TSMC Results - Investor's Business Daily</a></td>
+                        <td style="white-space: nowrap;">2026-01-15 13:00</td>
+                        <td>Investor's Business Daily</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +10.58%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE4zSnFkQWdLdVZEc3Y2NmtWNkxScGhWY2NzdU4yT1V6bldCY0prcFVRMmdQSV9XRkxzVkhDV0U0WE5KLU52cjZNSENOS1V6Z0FtRzZoWDMxaVpLb2JOeVItbTlReTdDaU5yY0NPcEw2Yw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Flipping one bit leaves AMD CPUs open to VM vuln - theregister.com</a></td>
+                        <td style="white-space: nowrap;">2026-01-15 13:00</td>
+                        <td>theregister.com</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +10.58%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiugFBVV95cUxPMEFIX3RmLUYwclFIMXBMX1UtVHJ4eDVJZjkwekw0ZDNlNlI5THhTRlJIVWpyeXV0T3otNDZwcmlyNF9RSHhxbEw3Q0ZHeTZINWRZUjZ4Yy1rRGlhanFMMEVOYU1MaFRocElkQlUtTGtNcUc1amYxZ202cHZzdEVFdHM5WG5IYm85TFRTaTMxWjZyMTM3YWZBNEVVZVNoTGs5a3lnaEwxN1g2djFURmZBV3RJYnJPLUhNWWc?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">TCS and AMD Announce Strategic Collaboration to Drive AI Adoption at Scale - Tata Consultancy Services (TCS)</a></td>
+                        <td style="white-space: nowrap;">2026-01-14 13:20</td>
+                        <td>Tata Consultancy Services (TCS)</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +12.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMixAFBVV95cUxNY0tJN2szQndqdFpNMWJac1Q5QlQyQ3lBMW9ZeWRNQ2xqVlU0c1VUSmNBSk80YURJd3RMZ2JOQ0J1dV9tNVp6Qy13cERDQl90ZzI3ZmVZbWNEVzhyUWhYMUFWSXo0QlY0M0w2LXVZcEtNZVAtRTlBU1psV0hVdEllZlo0LWFXNmJPX1BweXlwS2NEdVJaLW1KeHhYc2xZRURMTDNPaWpXNzJIRk9lZjJESkMwV3R6ZTcyYVhKd2pPa25WYmR6?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's Radeon Adrenalin drivers add 'AI Bundle' option that includes tools for AI - TweakTown</a></td>
+                        <td style="white-space: nowrap;">2026-01-14 13:00</td>
+                        <td>TweakTown</td>
+                        <td style="color: #dc3545; font-weight: bold;">📉 Negative</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +12.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxPYUhTMW83bWt5QmF3Y2RHM0lGaXB5UWZYc2RhWldkTmNNR0RXakdWNE1pTmtITm02bVpBSE5EQUJaZXFNSGZQU0R2YW9wVlZ6akVUXzBXck5YUmV3Y3ZtMzBXUHJxZlNIS0FNalFoV1h6T2U1S1gydXRhR0ozWEctVXhSdkpBbmJRS1U2M3otYVFwSGfSAZgBQVVfeXFMTmpDUlYwUE4yNUgtb0ZLSmdEOUctRVIyOUZISjBnX0djZE83YnNhUHU2UDFxbHBFdzB3Xzl0dEQzQ3hjU2Z3ZUJqandWQnQyX2dxSWZmS2p2UWpIb0xCaTl0bGVLMjFVQzBXaFpkLVd0WmVzdzJfQlg2bWhCOEtvTzVkall1b3g2cjJ3STNnYnFpWlliaVdkMDU?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD To Give Radeon GPU Owners All The Essential AI Tools As An Optional Feature Within Its Next Adrenalin Drivers - Wccftech</a></td>
+                        <td style="white-space: nowrap;">2026-01-14 13:00</td>
+                        <td>Wccftech</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +12.71%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiswJBVV95cUxNUWFYekFEenBaMklZUHpjeVlOWnhFZzNOaFo4UVZWYTRCN284OGhWVXBMRmpqbEc0R2NOdGk1ZVVZZFlodnVjdjlHWWNqanBMR3lZZzZ5Tjg5dlJsUVVsNy05UjNjcFdzdEZSR0ZKc2FEWUdyMXMwSmwtVEdaaG5lWUg3aWhfWVNMZVBQQ0swMm1laS1EMHBDMkVUeHU0YWhGX05OT2dEMmVkR05IcTV2YzVyMTNlTk55UlpvOW9qLXI2TGpBcXVHMVkyclcwejlrTnFLNUpXdkw4d2M3eDRCTm4yZ1pXVjltMU9TSDZQcDQ0T1hTeUgxZUNVRFpqMHl3bXh5a0llY2dlSGx5eG9SSW8yRzR3cUxOOHotZkRyTEtfS2JPOVlOaTlzdGdTN2trYTRJ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's next-gen Ryzen AI 400 laptops could launch on January 22, five days ahead of Panther Lake — Gorgon Point release date leaks through early Asus listing in China - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-13 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.06%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxNVVFicTVhZHFMTEhZQTRhbjJoWk5sYVFoZjZVNFFDY3FYLUUzTkRaRG9iWjBESXlaUFJJbFJvQmJ1d19nMXhpSmgtNG8wcmZLWFAzVW9DcHNpNk1iQ0FpSXVOcmtTMW1wWWNQMElaVkl1RGF4c3ppSGkwdDV3QVdkMHJobkw3SlBLRkhkaVUyQQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">This Popular Growth Stock Just Hit a Wall. What Comes Next? - The Motley Fool</a></td>
+                        <td style="white-space: nowrap;">2026-01-13 13:00</td>
+                        <td>The Motley Fool</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.06%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxQODNQU2NUUE9pMUZpTkduQm5zV3pyaEU2QkQxZzlxSFk2aHRjMXFLUnBBYTZNNXNBVURwV0JJQzE2Qk1YX0x2SFBVaXhvdVVHcHVTWFNVeGs1dnI0TktPclQ1SU02ZTRzYUNGaTFvOVEtbDRXN3JhbWpUSlRxeU9CaTkxdDI?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD upgraded, Arm downgraded: Wall Street's top analyst calls - Yahoo Finance</a></td>
+                        <td style="white-space: nowrap;">2026-01-13 13:00</td>
+                        <td>Yahoo Finance</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.06%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxPVERnQ2pqR2huZWVoWGNvYzN4bTlrbGpoWTdaMFV2cF8wX2h2dGFheWt5NllPVXp1Z0dkSUVNV3ROSmNOaC1lWHFreUg5WG9GYlRka0h0R1FBeEs2Y1FTWnR6R2dYRVhzSFV3aVNnMFl1T3k4VG93aGJXUEJwWTNUbnFNQ2NIek1mX2ZBUTkyQ1VCWlZCcnhzbk15WUVGbUFfU2dz0gGoAUFVX3lxTE5TQWJNQ3I0SERtQ0l6MGN2OGxpektLZTAydG1GNEdZbWJrOHZENmlnUzFLaVNxWUVSVzhmX1lCLUxhZXFkUGoxdS1JRkJ4X0tPM0tPZDBDaWw2T3hFMXI0QVBjQllSVlNtckF0WVJCSHVDUDAtT1BuNHlGYlF2LWpPck5taGE3d3ZwSWxUZFVIR2U5TW1ib2tzaTVYWXMwUXBFMXY5WG1KVQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD’s Next-Gen RDNA 5 Gaming GPUs Might Launch After NVIDIA’s RTX 60 Series In 2027 - Wccftech</a></td>
+                        <td style="white-space: nowrap;">2026-01-11 13:00</td>
+                        <td>Wccftech</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +24.05%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxQSkZFdzZrM0NMLUI1VW9tMVp6amktYXl2bUkxMUpadDAzbTgtU21GSXAya2wtZXVyQnNWYTFmRTVMajM4LWxINnF5NjVJNTR6bUVFejRQb2lvang1aHdOc3NqNVdReGEwei1UOE9NeGswYVdUZ1pmakFOUkliM0hfOXM0Zw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Where Will AMD Stock Be in 5 Years? - The Motley Fool</a></td>
+                        <td style="white-space: nowrap;">2026-01-09 13:00</td>
+                        <td>The Motley Fool</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +24.05%</span></td>
+                        <td style="color: #28a745;">0.75</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxQR1N6NGY0Yk1fck9HLUhNeWk0bnJ3Yy16MVdzcmdEZm9fYkswRFJ6N2VfMXRxcUs5Mm5GSnZCbHllakJORExsWUViWVJTUXhET3BNbFRDNm9wUWlyR3BQQlRkUjQ0QWt5S0k1eHpYLUUxc2lISXRBTHdpVm9IbjhBd1pjNVU0NDg5czNzcVl1N2NMVktES0FyTzB0OS04Rno3YjZpWUc0ZXRBb1RVaDgzYkxLYU83RDVxZUFGVkZGTlk?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">CES 2026: Everything revealed, from Nvidia’s debuts to AMD’s new chips to Razer’s AI oddities - TechCrunch</a></td>
+                        <td style="white-space: nowrap;">2026-01-09 13:00</td>
+                        <td>TechCrunch</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +24.05%</span></td>
+                        <td style="color: #6c757d;">0.40</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxPZUpqWnp2UndzTjd6WTdIRzVlT05PUFhJc3FwRnZjd28yZ2MteENkV01VWHNYTkMwNEt0LXhQOHlteXNIbXpGOWY5YW5rNkdIWWh0NS1TaHk4a3oxVDVINjYwdFN1SmkycU5OZ0tEMzd1cVY4eE1NUEVId01Ma2lfMy1wZkdQTmJWZzNDSVY4TFlRTE5RallRdTlmYUN3RGxicmUwX0VhRmdjaE85bGNLZ0NYeGpWZ24yclhwYQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Intel showed up for consumers at the 'Consumer Electronics Show;' AMD didn’t - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-09 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +24.05%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQSlJUMzFlVERrVWotdU9MeHNIMERidnUtTkVrNEk2c1dJakoxNUczc0MyRzZVdWNvejlVNk5hbWxkNjVSbWU0ajJxVUFVUFowNWhOb0QyQkFsNDRQX01ZT192RkVkSG55VS1YbktBQU5OaEd6YnVmazhrWlBOX2I2NTBacmR5RTlXRWd2OGNOV1pjbVFxNGFtcW1TVG5mdmQ1aVVEVEVOUmRfQkZoU1diSURIRVN1UEgyTE1TeU1MWQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD responds to concerns that there will be a Radeon GPU shortage in 2026 - TweakTown</a></td>
+                        <td style="white-space: nowrap;">2026-01-07 13:00</td>
+                        <td>TweakTown</td>
+                        <td style="color: #dc3545; font-weight: bold;">📉 Negative</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +20.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMixgJBVV95cUxQaG5vclkzNFAwMUhUMVJET2xibnBJakdIQ0dqS2xnTHpidE4tYzhVcGlKcXdDZTdDT1VkM0oyXzdEMm1JVUJsU2Z0Sy04UWV0STZOSmZ5a3RMYjc4TGsxZi1tNVFjMk9id1hXMXlqNE4tNGt2bFBDbG04REhRSGVsWjBDRnNxaXpiY0F3MU9BemkxUW1DaEw5U2pJSlJBSlg3cVR2M1kyQUFaSlBFLXo4MGgzVVJpa2lHRHVMMjQ5M0VPenhrM2xsa2NUYkd3Z3ZSQnZ2clFpc1VxR1gwTkdLa1h1X1dmeDU1NmZiX1dXVlhxR2hqaFVqbE5wdWhFZ3oxZGFXUjhFeTI5REM3R19UT0ZadjMtUTZ6TTFIZzhWM2l0Vlo4ak9vVVN4WUZlbkRqRmVoUkJKNzE5RUozOXpwNVlNRkRQZw?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Senior AMD executive suggests consumers buy cheap CPUs to combat memory pricing squeeze — says ‘consumers have a wide assortment of choice available for all kinds of price points’ - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-07 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #dc3545; font-weight: bold;">📉 Negative</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +20.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiiwJBVV95cUxQRVNYVEx5V1pORFpQcFN5cl9uMElCREFSMGFWb1lVMDlwSWdsQU9zeFBvUHdKcEJpa2E3M2hHRExrUHhmdml0bmtHYXNKY1pUYU1LWmhNdG5qN0E4OERRb3U0X3ZsVkZNUFV5QjY4eDg4TTZsdU9kdUE2Vl9TdUZiSTY1RXdITUhtUmxFelhVcHRwdXZDUVRKdFl3TVoxNXRsZjRNeEpIeGJGeWREM3Z2Q040ZHBSVkxEVEJMTmZ4aVRoMXVlN2dSX0Voa1RYYl9jNU45dnFVX29vUXJNc3pTbkV6ZE1QRFJTRkJ6VUxCTnVocm9ZWFlhbVlVZ2kxOXdYcnpoVkVMRDVLd28?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD is unfazed by Panther Lake's big integrated GPU — 'It's not even a fair fight' to compare the Arc B390 to Strix Halo, AMD exec claims - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-07 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +20.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQcXNhaTE1UzJ0T2dweFZRZ3dLcjY0RkxUX3g5bW1uSFFLOFJYbTJ1M0NWUnF5SG9OeVIzRl9DWTU0YzljMUd5bkFpY2ozNGI2MnpFNW43LVIzSnFoZzBhQmtieXBzUmc2Xzl3c1Z0ajZMczFkbjBlZXdNREJkWVF3T3NWWEJ1d2EzdU5FcjZEWQ?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD shows off new higher performing AI chip at CES event - Reuters</a></td>
+                        <td style="white-space: nowrap;">2026-01-06 13:00</td>
+                        <td>Reuters</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +17.58%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTFAydU9JUUNvLXliY1hTRVlieG1XM1RVZG4tU1hwZTVoZXFzMlA1QWVCOHh0UHdxRTQ0V1RsX0ZQdnlqeFFKOGw2REdmcGh0Ym1DTmJ3bkpWbWdYRUdDeXdocmhCeXc4WlAySHowcDY1SXrSAXZBVV95cUxNV0drNGpGQmlEWFRRLXp3N1R2U3RoQWNpc0J4b1FaUGJqdUJQTDgtUzh3aF9TbFRQWDBUTmllWGVoV3VlRzhnc3ZvbTJ3VTNXdEJfM3Z6cU83Y2hrbHNZRG1McURGRkh6MWtiVlktc1ZjaVVGWndR?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's Lisa Su says AI isn't replacing people, but is changing who gets hired - CNBC</a></td>
+                        <td style="white-space: nowrap;">2026-01-06 13:00</td>
+                        <td>CNBC</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +17.58%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiiAJBVV95cUxPN1EtNkstU21EdmZEeDNRZXRTNE5CQjhGcXlHeEJRMlNVWm52c1V2S3dBWV9OT3Q4dEYxZzBFeUYwQTRPc3g1bzUxRy1iZVRha3VNaHRrWEs3U1A3ZDh6NlhYUlZrUHdZQ2VWMU83TEw5Tm1mX0UtTUVKSV9pc05FMDFieVY1RkdZby1OM2FBVlVJdjZHcnJya1pfWHZnZEJBT0JUUEN6cWM4QVJ0aWJ3ZzJqYkZoTlBhMzVIT3ZCY0RkUFFhRVZPVlV5WnNkcjJnR1h4VWZMcUpjeUozS3dQZkxKYk1DY2FHUGI5TWlwcldRZGw4M29JQ19KN3N0ZFBTbjVtakZGZzY?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Ryzen chief teases return of older Zen 3 chips to fight soaring RAM prices — 'That's something we're actively working on right now' - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-06 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +17.58%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiwgJBVV95cUxQd1MtUGN4TVNQaThQMWJybFRfUTBDYW95UENHakt3XzdCckhTNl9BaDVEdERMNHRZYU5RYjU3dVVWV09mVVdvS0Frd05IOHRheW1hXzByYnZRWkZqTEg2Rk13Y3pwckFoa0FrNTd0VzQ3aVNMRjFmdVVKWVdQeWFBSTlFZlpsYVZuNXVwbVB0NHZPS2VCaEItbkhNUy1JaVhtTjZ0bERXUnJjRVlmVF9wYzJtbWFfN0JHWFJvVlVVcU5ObE5KOHVJaFNqLTlUS3BCeXpXWHppanBub21YUGVURmhYdmowUDNUMlBFRGhfM29zR1BCWkEyRlNkS00zenpqLWhDbnRXN2pfLXBiTm5kckRPMl9idFplMjkxbnk4WmVSalk4NVYzT0dRQncwRmFDNE1DMUdISW5BWjVON25aT1VR?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD hints at officially open-sourcing FSR 4 upscaling and frame generation technology in the wake of accidental release — accidental release may have forced the company's hand - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-06 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +17.58%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxQeFhkbDkwSC1PclB6b2wyQ1hNbjRpaVZwWThiYWpxdUlRNGJmR1lsMC05QnVnek5nRWNWOF9UOXhfdm44UFVpXzZXbGlnRWk5cWlPWjN6NndWazRFMDVRdjRxdTZuaTQzWW4wQy1VWkd3S0swNGZJRDJ1MTlvZ0VTT09kdm1GZU5ZS1lWTURfdFNLUHpSLUNvX2ljSk50MzAtdndrZ2x6d041dUVEbkpV?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Expands AI Leadership Across Client, Graphics, and Software with New Ryzen, Ryzen AI, and AMD ROCm Announcements at CES 2026 - AMD</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>AMD</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxQNGRWR2o4R1piYUZSRmdyQlA1QlR2VVFLSlRTTnN3VkF6OXI5eG4wd2lPSGpJMG13MzVXU21ZaWVHblVfQUllRnVkS3padFEzN2loUlhEUERXOVgxaFE3cEdzMDNNZHJtR0ItRlFWTzBmNEoyWk5fWnU4QjVWUk14SFNKVGUzeVFGV3R0Z3B2QUlSbTJaYjNtMjJ3TUtxeDBpR2ppZ2ZhQnlrdkltZTdoSU9YUGtIRUU2bVNPcg?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD reveals new AI PC chips, details next-gen data center chips at CES 2026 - Yahoo Finance</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>Yahoo Finance</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxNSy1PUlkyZzh3RC1ETVJwU3ZDUGNsX0h1ZWk5d1FRYU1UbVlKWFlVMC1fT0hZWlVhaVl0VFBtWmpsRWJncjNSQ1BtVnVPSHpPWEl1eENBMDZVbEVzT0hQZXpQTm9EYWxWRVVKZVdpdUpGNHZaNFhmekM3dmw3TWNuMlAyT0xDV1BJTjJrbGhEWm9td2dXMGhqSXdVQkg0VHEwWkNKV1JoT25lUkx1cnR4cA?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Introduces Ryzen AI Embedded Processor Portfolio, Powering AI-Driven Immersive Experiences in Automotive, Industrial and Physical AI - AMD</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>AMD</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxPZDBTUnRCYm9VempBWTBFaTBnaktYWDhXM19BaVJ6WjdJd1pDeDNobXE0Q3d3UlBJMWpnQUVGanpwMjk3N3l1R0JHMENzcEJDQWxyc3l5REJwMS1HWG9fSmhveXhicW5CWWx2NWlnLTE1Y3Q0cW9MdzRNNFpNbzY2XzVxQUkyMmFoNGxnZ2VZZ2FwXy1qMnRuQjZ0RnBjblJpSF9wU202aVlCQ3Q5WFFV?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD and its Partners Share their Vision for “AI Everywhere, for Everyone” at CES 2026 - AMD</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>AMD</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxQQW9hZXJsVDR1aUZoNW0zNkR6aDZvSGp6SUgtYmVhN0NGbk1MSVVHNEliZno1M2VqZVNXeHRWNFJyLU5BUUxCbXM0MDBGdjF1YkYxMDNaQmtYeWt3UzFLLWc3dkNvckt0YTFpNXMwZkNyT1RiSng1Y1FldkVrVkFrS1ozWVVmSE5NbUtTTXltd2V5Ymd6ZS1VaE51UDhndkZIZk9KaFNSSGxRWW0z?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD x ComfyUI: Advancing Professional-Quality Generative AI on AI PCs - AMD</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>AMD</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxOM1dTMm02Mm1OTGNPdlNYaXpCMTdONlF3clZmUE9vRzNCUlJzUUltaGxCRTRQUkx1a201ZTZzclV1UVFva0lpdHhBRVFienJSYXlqRlc4MUoteHE3ZEQ1NnJ4a05lbThHNlhNRzIycVk4UzZGcmQ4Rm5mQ0ZEcUw3RWplU2l3Q0Ff?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Speeds Up Its Mobile Processors - CNET</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>CNET</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxPcGF3N3RkVXhxS2hUMk52b2JVdU1qYlBxc0VXLUdUTERpTTZ0ckhRNzRsdlJnRWdSVHc5T01sRXVBMlVRVGhHWGtvVElwdzNpQXFUZU9odDJybmh2LWNfcFR2eDB5bmVBNTI0Z0xndFA3ZmhOSTB0MUVueU51WlV6LVlpaW5PdDdfYktvWFdFZ09XT3cxX0c4S3RjRU50LWg5alhxVjVnVmQ4bUhuMVM2UkEzcG54ZGVxUHo2cjRuelc4LVJKSTFyRUI2eW4yN3Jj?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's new Ryzen AI Max+ chips and Ryzen 7 9850X3D court desktop enthusiasts at CES 2026 - Engadget</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>Engadget</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxNZEI4ZjN4VHZhX0NZa19OQUVfaWpYV1JkTUNzaWVybF9nY3RoaFk2T2JaOWVKMWZnSnhqeWw1RWFaaVp3Z19ES2htbjJiekg2cDBuQkoxM3FCczBHbE1LTFRxNHRud2hHV19jbE5HMG50SzdvR0ZCZk5ZZmhXRDg5SjJfcV9jOEpLYi01US1uWHJMMTlPLXJKNWdwNEtpYXc0UFAxdXRMbV9abUV3QkVodGFkWGVkSXM?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD reheats last year’s Ryzen AI and X3D CPUs for 2026’s laptops and desktops - Ars Technica</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>Ars Technica</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMitAFBVV95cUxQTy1Ec2hnTzlSS3NzM1ZhOXNfUllaZUdpMkNDNkladVZ4Nm5NODk5SEQtb28tVy1UczRxUHlKbGV3Ui1kQTJmelNWUWZVNXFrbmVDSlFqQ3gyQkhjRVlSOWd1Y1ZURWZ6TFhzOV9SM3RjSkJIdHh1dGU1cXhZRHpwNmxhaHpzaGtJOGhKckxnc3pUVTdiejZVQ2JlMnNra0ktdnhWdVA2d1lxOFhScXhwejFKUHU?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD Unveils New Chip For Corporate Data Centers, Talks Up Demand - Bloomberg.com</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>Bloomberg.com</td>
+                        <td style="color: #28a745; font-weight: bold;">📈 Positive</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #28a745;">0.90</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxNbWxTQm5JeE92dmdoblBYZExmWW1LbVBPSGRoQVpYUGI3b2RtZ0gzZ09VdmxxRFFxQ2ZzU2Q5V0pLN3M1QXBEZFNZYkp1endiRG9DQXJkZ2syY3I3QTkwRTF2dEdTNlkxQmVvY2d1WUx5VFh2OHVPSXBpd19sd0VmMG5pUUUtUEJrMUhYZUZNNnRzMWdWMW9PbkxyTS1XUmN2Y2dnWS1xdkpJUHV2SGJ4N2ptaFRUMy1HVi15WA?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's Ryzen AI 400 chips are a big boost for laptops and desktops alike - Engadget</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>Engadget</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxNT05lbURYUXBlQ0hnNFM2a1M4TllFOFlnRU50M25yLUo0NGJWdVFJY2RHbFlwRHRMNGQ0V09PTS1waHg3UndmUkN4Nmg3MEhIbkV4REVCcHVBSTgwNTRUYjhhd0pVZzQyUjhVR0pOR1V3X1IwbjVlcURvMGZzY3hJZ0pIazJsYndsa0hwUXZzZ0lfaW9UalVnR3lBU1JGVE1nbEVN?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD unveils new AI PC processors for general use and gaming at CES - TechCrunch</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>TechCrunch</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMi7AFBVV95cUxOZUlFMzI4bmZ3d2JvNHNnYnR1WHlBd05vdEJQREZSUl90RGhXLVhJMUJuem5GU0JGeFhXLTJqQlFyak9aUEhJLUtPclFnYjlfekJFT2NoTXNwQzdNSHJsT1Z2ZzZNLVZFUWd0Y2c0UW1NN3VNbnB6TEEwTmJ6UGJIbHhEbC1fdTE3cEI1T3RtRWs0RnNLc0x2MnRuZk05VG9uWkxiUnVURExQSVpyM0d3Z21zdDR2eTB3WVk3YXR0NGRHejFmRERuWkt3OWo4b2YwUFEyZk1FOUxqUEx2UmFaS3RubUhOR0dJeVpDcA?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD's Ryzen AI 400 series includes the first Copilot+ desktop CPU — Team Red refreshes Zen 5 APUs and Strix Halo - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-05 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +14.00%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxOY0NYZ0NXUktyWVR0czI1MjFiTmlpcVBWdlBoQzJzQmpZM1lYVkx3UUVxQ0IzWmhjSTFrbjJLanRIaGtVM1J5RGQ5UGxxeWJJNkh5LW0ydFNHVVkxYjI3N2NLVUhTR1BCeXR3YUQyUFN6blNVU2EwS01UeWdSWVVIM0JOUXYzUUNIRU5hMkhRYTBxNnRlNG10TG9YRy1wckpIVWFBV3d3?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">New Report Suggests Phased Price Hikes for AMD and Nvidia GPUs in 2026 - VICE</a></td>
+                        <td style="white-space: nowrap;">2026-01-03 13:00</td>
+                        <td>VICE</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +12.78%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMi_wFBVV95cUxQYnYxOG5DdDl5ejFQOHFXV0JzR2MtV1V2aU9WMGVzU1ZfcjlvQWVrOHFxMVFKcktSaWNmdXpXRjNNcTRoUl9xVk9CckdrNERXY2s3OXR2YmZ0RDJPcU9QUHRVR3pXUFNQbDMzTmxIbWdzT285Y1llTXZRUzR4WFpqNFI4TmUwc0l0SzJ6dkZKcEFXR19VbElvbklHVUdVV2pYUjExZ3BCQXRhdnBwWkVHODJCOF9WblJHUUZhQ29fWF80ZFI4UDhfam12TlIwdXVrOHN0eHJEVnIwUzR3bEp4QVlYR2JoNjdiYk01ZnlmMWtxTkxGX1UwZXpDNXhsckE?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">AMD closes in on Intel in latest Steam Hardware Survey — RAM capacity continues to rise despite the ongoing memory crunch - Tom's Hardware</a></td>
+                        <td style="white-space: nowrap;">2026-01-02 13:00</td>
+                        <td>Tom's Hardware</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +12.78%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+
+                    <tr>
+                        <td><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxOc0o2NWFKUF9UYk85LXRSakpYOThlWElLU3FudEpLZzJ0TF9MbFpqMGpaLUxZcGpXaHVqUkpLNmNuN2FaM3JhczVYZHdwS2E1MWh1Y0hIRFpiY3Jka3JycWhzempyZW1YNUtHQmFxdHhudkNET3VKVXI5RVQycU5ULS1xS0YxeXFISFJUMU11YnpESmJQeE5DODNvYUk5YTYzVjF4Z0FB?oc=5" target="_blank" style="color: #007bff; text-decoration: none;">Nvidia, AMD, will significantly increase GPU value from next month - [H]ard|Forum</a></td>
+                        <td style="white-space: nowrap;">2025-12-31 13:00</td>
+                        <td>[H]ard|Forum</td>
+                        <td style="color: #6c757d; font-weight: bold;">➡️ Neutral</td>
+                        <td style="text-align: center;"><span style="color: #28a745; font-weight: bold;">🟢 +17.68%</span></td>
+                        <td style="color: #ffc107;">0.60</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.9em; color: #6c757d; margin-top: 10px;">* Price change shown for articles published more than 1 day ago</p>
+        </div>
+
+        <div class="section">
+            <h2>📈 Weekly News Trends (Last 4 Weeks)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Period</th>
+                        <th>Total</th>
+                        <th>Positive</th>
+                        <th>Negative</th>
+                        <th>Neutral</th>
+                        <th>Sentiment Balance</th>
+                        <th>Avg Quality</th>
+                        <th>Price Change</th>
+                        <th>RSI</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><strong>Week 4</strong></td>
+                        <td style="font-size: 0.85em;">2025-12-31 to 2026-01-07</td>
+                        <td style="text-align: center; font-weight: bold;">21</td>
+                        <td style="text-align: center; color: #28a745;">3</td>
+                        <td style="text-align: center; color: #dc3545;">2</td>
+                        <td style="text-align: center; color: #6c757d;">16</td>
+                        <td style="text-align: center; color: #28a745; font-weight: bold;">📈 +1</td>
+                        <td style="text-align: center; color: #ffc107;">0.66</td>
+                        <td style="color: #dc3545;"><strong>📉 -6.02%</strong></td>
+                        <td style="color: #6c757d;"><strong>-</strong></td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Week 3</strong></td>
+                        <td style="font-size: 0.85em;">2026-01-07 to 2026-01-14</td>
+                        <td style="text-align: center; font-weight: bold;">10</td>
+                        <td style="text-align: center; color: #28a745;">1</td>
+                        <td style="text-align: center; color: #dc3545;">1</td>
+                        <td style="text-align: center; color: #6c757d;">8</td>
+                        <td style="text-align: center; color: #6c757d; font-weight: bold;">➡️ +0</td>
+                        <td style="text-align: center; color: #ffc107;">0.64</td>
+                        <td style="color: #28a745;"><strong>📈 +9.24%</strong></td>
+                        <td style="color: #ffc107;"><strong>58.3</strong></td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Week 2</strong></td>
+                        <td style="font-size: 0.85em;">2026-01-14 to 2026-01-21</td>
+                        <td style="text-align: center; font-weight: bold;">35</td>
+                        <td style="text-align: center; color: #28a745;">8</td>
+                        <td style="text-align: center; color: #dc3545;">2</td>
+                        <td style="text-align: center; color: #6c757d;">25</td>
+                        <td style="text-align: center; color: #28a745; font-weight: bold;">📈 +6</td>
+                        <td style="text-align: center; color: #ffc107;">0.67</td>
+                        <td style="color: #28a745;"><strong>📈 +9.60%</strong></td>
+                        <td style="color: #dc3545;"><strong>72.3</strong></td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Week 1</strong></td>
+                        <td style="font-size: 0.85em;">2026-01-21 to 2026-01-28</td>
+                        <td style="text-align: center; font-weight: bold;">30</td>
+                        <td style="text-align: center; color: #28a745;">7</td>
+                        <td style="text-align: center; color: #dc3545;">0</td>
+                        <td style="text-align: center; color: #6c757d;">23</td>
+                        <td style="text-align: center; color: #28a745; font-weight: bold;">📈 +7</td>
+                        <td style="text-align: center; color: #ffc107;">0.67</td>
+                        <td style="color: #dc3545;"><strong>📉 -0.67%</strong></td>
+                        <td style="color: #dc3545;"><strong>74.5</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+                <h3 style="margin-top: 0;">Week-over-Week Changes</h3>
+
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Total Articles</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: #dc3545;">-5</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Positive</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: #dc3545;">-1</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Negative</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: #28a745;">-2</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #6c757d;">Avg Sentiment</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: #28a745;">+0.062</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔴 Semiconductor Cycle Risk Analysis</h2>
+            <div class="metric">
+                <span class="metric-label">Stock Type:</span>
+                <span class="metric-value">Non-Memory Semiconductor</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Cycle Risk Score:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">3.5 (LOW)</span>
+            </div>
+            
+            <h3>📊 RSI Trend Analysis (Past 8 Weeks)</h3>
+            <div class="metric">
+                <span class="metric-label">Current RSI:</span>
+                <span class="metric-value" style="font-weight: bold; color: #333;">50.0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">RSI Trend:</span>
+                <span class="metric-value">NEUTRAL</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Weeks Above 75:</span>
+                <span class="metric-value" style="font-weight: bold; color: #333;">0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+            
+            <h3>📊 Position vs 20-Day High (Exhaustion Signal)</h3>
+            <div class="metric">
+                <span class="metric-label">Current Position:</span>
+                <span class="metric-value" style="font-weight: bold; color: #333;">94.4%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Days Above 98%:</span>
+                <span class="metric-value" style="font-weight: bold; color: #333;">0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Exhaustion Status:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">NORMAL</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Exhaustion Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+            
+            <h3>📉 RSI Divergence (Early Momentum Decay)</h3>
+            <div class="metric">
+                <span class="metric-label">Divergence Type:</span>
+                <span class="metric-value" style="font-weight: bold; color: #333;">NONE DETECTED</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Bearish Divergence:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">NO</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Bullish Divergence:</span>
+                <span class="metric-value" style="font-weight: bold; color: #333;">NO</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Divergence Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+            
+            <h3>📉 ROC Compression (Cycle Aging)</h3>
+            <div class="metric">
+                <span class="metric-label">Compression Status:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">NONE</span>
+            </div>
+
+            <div class="metric">
+                <span class="metric-label">ROC Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+            
+            <h3>💚 RSI 55-70 Zone (Institutional Accumulation Band)</h3>
+            <div class="metric">
+                <span class="metric-label">Trend Health:</span>
+                <span class="metric-value" style="font-weight: bold; color: #ffc107;">UNKNOWN</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Current RSI:</span>
+                <span class="metric-value">74.5</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Zone Visits (Last 20D):</span>
+                <span class="metric-value">6</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Days Since Zone:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">1</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Zone Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+            
+            <h3>📊 Trend Persistence (% Time Above 50DMA)</h3>
+            <div class="metric">
+                <span class="metric-label">Trend Strength:</span>
+                <span class="metric-value" style="font-weight: bold; color: #ffc107;">UNKNOWN</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Persistence Declining:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">NO</span>
+            </div>
+
+            <div class="metric">
+                <span class="metric-label">Persistence Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+            
+            <h3>🔴 First 50DMA Failure (Cycle Turn Trigger)</h3>
+            <div class="metric">
+                <span class="metric-label">Currently Below 50DMA:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">NO</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">First Failure After Long Uptrend:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">NO</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Previous Uptrend Days:</span>
+                <span class="metric-value">0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Days in Current Streak:</span>
+                <span class="metric-value">0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Failure Severity:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">NONE</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">50DMA Failure Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+            
+            <h3>📊 ATR Expansion (Distribution Signature)</h3>
+            <div class="metric">
+                <span class="metric-label">ATR (14-day):</span>
+                <span class="metric-value">$0.00</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">ATR % of Price:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">0.00%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">ATR Z-Score:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">0.00</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Position vs 20D High:</span>
+                <span class="metric-value">0.0%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">ATR Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+            
+            <h3>📏 MA Extension (Rubber-Band Risk)</h3>
+            <div class="metric">
+                <span class="metric-label">Extension Level:</span>
+                <span class="metric-value" style="font-weight: bold; color: #ffc107;">MODERATE</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">% Above 21DMA:</span>
+                <span class="metric-value">11.5%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">% Above 50DMA:</span>
+                <span class="metric-value" style="font-weight: bold;">N/A</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">% Above 200DMA:</span>
+                <span class="metric-value">N/A</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Extension Risk Points:</span>
+                <span class="metric-value">5</span>
+            </div>
+
+            <div style="background: #ffc10720; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                <strong>⚠️ MODERATE EXTENSION: 11.5% above 50DMA - monitor for reversion</strong>
+            </div>
+
+            
+            <h3>📈 Volatility Regime (Two-Way Trade Detector)</h3>
+            <div class="metric">
+                <span class="metric-label">Vol Regime:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">UNKNOWN</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">20D Annualized Vol:</span>
+                <span class="metric-value">0.0%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Baseline Vol:</span>
+                <span class="metric-value">0.0%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Vol Ratio:</span>
+                <span class="metric-value" style="font-weight: bold; color: #28a745;">0.00x</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Vol Risk Points:</span>
+                <span class="metric-value">0</span>
+            </div>
+
+        </div>
+
+        <div class="section">
+            <h2>📊 News Reaction Analysis</h2>
+            <div class="metric">
+                <span class="metric-label">Total Reactions Analyzed:</span>
+                <span class="metric-value">100</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Worked:</span>
+                <span class="metric-value positive">5</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Failed:</span>
+                <span class="metric-value negative">13</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Absorbed:</span>
+                <span class="metric-value">34</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Effectiveness:</span>
+                <span class="metric-value">27.8%</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

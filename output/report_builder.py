@@ -4,7 +4,11 @@ from typing import Dict, List, Optional
 
 from domain.models import FeatureVector, NewsEvent, Recommendation, ReactionRecord, SignalScore
 from features.semiconductor_indicators import SemiconductorIndicators
-from features.mining_stock_indicators import MiningStockIndicators, MINING_UNIVERSE
+try:
+    from features.mining_stock_indicators import MiningStockIndicators, MINING_UNIVERSE
+except Exception:
+    MiningStockIndicators = None
+    MINING_UNIVERSE = {}
 
 
 class ReportBuilder:
@@ -319,6 +323,8 @@ class ReportBuilder:
 
     def _build_mining_stock_analysis(self, ticker: str, price_df) -> Optional[Dict[str, any]]:
         """Build mining stock analysis if ticker is in the mining universe."""
+        if MiningStockIndicators is None:
+            return None
         # Check if ticker is a mining stock (handle .AX suffix for ASX stocks)
         ticker_key = ticker.replace(".AX", "")
         
