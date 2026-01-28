@@ -3,7 +3,10 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 from datetime import datetime
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.config import Config
 from app.orchestrator import Orchestrator
